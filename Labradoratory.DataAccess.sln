@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess.Test", "test\Labradoratory.DataAccess.Test\Labradoratory.DataAccess.Test.csproj", "{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess.Mongo", "src\Labradoratory.DataAccess.Mongo\Labradoratory.DataAccess.Mongo.csproj", "{6CDA4F41-374E-44B6-8336-AD17CF892DD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{71263C17-9FC4-49B2-8D71-7739E901DB38} = {33262418-D92E-47F2-9D60-CDC9B0AA5021}
 		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F} = {69AC5702-2C35-4024-98AE-654A9AB07043}
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4} = {33262418-D92E-47F2-9D60-CDC9B0AA5021}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {738AA367-5637-44C1-B35F-5DD4775B824D}
