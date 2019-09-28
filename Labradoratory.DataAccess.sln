@@ -1,17 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33262418-D92E-47F2-9D60-CDC9B0AA5021}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{69AC5702-2C35-4024-98AE-654A9AB07043}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess", "src\Labradoratory.DataAccess\Labradoratory.DataAccess.csproj", "{71263C17-9FC4-49B2-8D71-7739E901DB38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.DataAccess", "src\Labradoratory.DataAccess\Labradoratory.DataAccess.csproj", "{71263C17-9FC4-49B2-8D71-7739E901DB38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess.Test", "test\Labradoratory.DataAccess.Test\Labradoratory.DataAccess.Test.csproj", "{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.DataAccess.Test", "test\Labradoratory.DataAccess.Test\Labradoratory.DataAccess.Test.csproj", "{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labradoratory.DataAccess.Mongo", "src\Labradoratory.DataAccess.Mongo\Labradoratory.DataAccess.Mongo.csproj", "{6CDA4F41-374E-44B6-8336-AD17CF892DD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.DataAccess.Mongo", "src\Labradoratory.DataAccess.Mongo\Labradoratory.DataAccess.Mongo.csproj", "{6CDA4F41-374E-44B6-8336-AD17CF892DD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A812C894-3CD8-4263-B2D2-E850814B017A}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
