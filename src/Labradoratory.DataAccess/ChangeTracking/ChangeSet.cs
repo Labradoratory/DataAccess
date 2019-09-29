@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Labradoratory.DataAccess.ChangeTracking
 {
-    public class ChangeSet
+    /// <summary>
+    /// Contains a set of changes.
+    /// </summary>
+    public class ChangeSet : Dictionary<string, ChangeValue>
     {
+        /// <summary>
+        /// Gets or sets the target of the changes in this set.
+        /// </summary>
+        public ChangeTarget Target { get; set; }
     }
 }

@@ -6,7 +6,9 @@ namespace Labradoratory.DataAccess.ChangeTracking
 {
     public class ChangeValue
     {
-        public object CurrentValue { get; set; }
+        public ChangeAction Action { get; set; }
+
+        public object NewValue { get; set; }
 
         public object OldValue { get; set; }
     }

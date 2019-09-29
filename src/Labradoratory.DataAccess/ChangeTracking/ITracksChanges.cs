@@ -3,7 +3,7 @@
 namespace Labradoratory.DataAccess.ChangeTracking
 {
     /// <summary>
-    /// Members that objects that track changes should implement.
+    /// Members that change tracking objects should implement.
     /// </summary>
     public interface ITracksChanges
     {
