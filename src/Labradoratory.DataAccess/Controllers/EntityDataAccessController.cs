@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
@@ -23,7 +24,7 @@ namespace Labradoratory.DataAccess.Controllers
         /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
         /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
         /// </param>
-        protected EntityDataAccessController(IDataAccess<TEntity> dataAccess, IMapper mapper)
+        protected EntityDataAccessController(DataAccessor<TEntity> dataAccess, IMapper mapper)
         {
             DataAccess = dataAccess;
             Mapper = mapper;
@@ -32,7 +33,7 @@ namespace Labradoratory.DataAccess.Controllers
         /// <summary>
         /// Gets the data access instance for <typeparamref name="TEntity"/>.
         /// </summary>
-        protected IDataAccess<TEntity> DataAccess { get; }
+        protected DataAccessor<TEntity> DataAccess { get; }
 
         /// <summary>
         /// Gets the object conversion mapper.
@@ -50,7 +51,7 @@ namespace Labradoratory.DataAccess.Controllers
             if(await CheckAllowGetAsync(cancellationToken))
                 return Unauthorized();
 
-            return null;
+            return Ok(DataAccess.GetAsyncQueryResolver().ToListAsync());
         }
 
         /// <summary>
