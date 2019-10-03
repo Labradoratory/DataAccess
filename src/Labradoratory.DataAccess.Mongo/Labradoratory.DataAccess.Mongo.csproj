@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Labradoratory.DataAccess\Labradoratory.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+
 </Project>
