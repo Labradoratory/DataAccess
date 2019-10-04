@@ -34,8 +34,9 @@ namespace Labradoratory.DataAccess.Processors
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="DataPackage"/> to process.</typeparam>
         /// <param name="package">The package to process.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
-        public async Task ProcessAsync<T>(T package) where T : DataPackage
+        public async Task ProcessAsync<T>(T package, CancellationToken cancellationToken = default) where T : DataPackage
         {
             // Keep track of the processing chain on a per thread branch basis.
             // On the first process call, the Current value will be NULL.
