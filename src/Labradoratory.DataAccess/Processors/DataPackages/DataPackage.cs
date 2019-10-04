@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Labradoratory.DataAccess.Processors
+namespace Labradoratory.DataAccess.Processors.DataPackages
 {
     /// <summary>
     /// Represents a piece of data that is to be processed.
@@ -10,6 +10,21 @@ namespace Labradoratory.DataAccess.Processors
     /// <seealso cref="Dictionary{String, Object}" />
     public abstract class DataPackage : Dictionary<string, object>
     {
+        /// <summary>
+        /// Gets the previous <see cref="DataPackage"/> that caused this <see cref="DataPackage"/>
+        /// to enter the processing pipeline.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Because processing can cause additional changes, it may be necessary to track the
+        /// <see cref="DataPackage"/> that resulted in this one.  This can be useful in some
+        /// scenarios, such as: processing loops, hierarchical data exchange, etc.
+        /// </para>
+        /// <para>This property will be <c>null</c> for the first package in a chain.</para>
+        /// <para>See <see cref="ProcessorPipeline"/> for more info.</para>
+        /// </remarks>
+        public DataPackage Previous { get; internal set; }
+
         /// <summary>
         /// Gets the value from the base dictionary for a specified property.
         /// </summary>
@@ -19,14 +34,17 @@ namespace Labradoratory.DataAccess.Processors
         /// Has the <see cref="CallerMemberNameAttribute"/> which is used if not specified.
         /// </param>
         /// <returns>The value for the specified property.</returns>
-        /// <exception cref="System.ArgumentNullException">property</exception>
-        /// <exception cref="System.Collections.Generic.KeyNotFoundException">property</exception>
+        /// <exception cref="ArgumentNullException">property</exception>
+        /// <exception cref="KeyNotFoundException">property</exception>
         /// <remarks>
+        /// <para>
         /// The <see cref="DataPackage"/> class inherits from <see cref="Dictionary{TKey, TValue}"/>
         /// so that undefined values can be stored in a package for use by other processors.
-        /// 
+        /// </para>
+        /// <para>
         /// Constant properties of a specialized instance of <see cref="DataPackage"/> should use the 
         /// GetValue/SetValue members to store values in the base dictionary.
+        /// </para>
         /// </remarks>
         /// <example>
         /// public class MyDataPackage : DataPackage
@@ -58,7 +76,7 @@ namespace Labradoratory.DataAccess.Processors
         /// [Optional] The name of the property to set the value for.
         /// Has the <see cref="CallerMemberNameAttribute"/> which is used if not specified.
         /// </param>
-        /// <exception cref="System.ArgumentNullException">property</exception>
+        /// <exception cref="ArgumentNullException">property</exception>
         protected void SetValue<T>(T value, [CallerMemberName] string property = null)
         {
             if (property == null)

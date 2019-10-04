@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Labradoratory.DataAccess.Processors.DataPackages;
 
 namespace Labradoratory.DataAccess.Processors
 {

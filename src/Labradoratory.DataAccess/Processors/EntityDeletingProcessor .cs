@@ -8,7 +8,7 @@ namespace Labradoratory.DataAccess.Processors
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="IProcessor{TEntity}" />
-    public abstract class EntityAddingProcessor<TEntity> : IProcessor<EntityAddingPackage<TEntity>>
+    public abstract class EntityDeletingProcessor<TEntity> : IProcessor<EntityDeletingPackage<TEntity>>
     {
         /// <summary>
         /// Gets the priority with which the processor should execute.
@@ -25,6 +25,6 @@ namespace Labradoratory.DataAccess.Processors
         /// <returns>
         /// The task.
         /// </returns>
-        public abstract Task ProcessAsync(EntityAddingPackage<TEntity> package);
+        public abstract Task ProcessAsync(EntityDeletingPackage<TEntity> package);
     }    
 }

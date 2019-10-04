@@ -4,11 +4,11 @@ using Labradoratory.DataAccess.Processors.DataPackages;
 namespace Labradoratory.DataAccess.Processors
 {
     /// <summary>
-    /// Processes an <typeparamref name="TEntity"/> being added.
+    /// Processes an <typeparamref name="TEntity"/> that was deleted.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="IProcessor{TEntity}" />
-    public abstract class EntityAddingProcessor<TEntity> : IProcessor<EntityAddingPackage<TEntity>>
+    public abstract class EntityDeletedProcessor<TEntity> : IProcessor<EntityDeletedPackage<TEntity>>
     {
         /// <summary>
         /// Gets the priority with which the processor should execute.
@@ -25,6 +25,6 @@ namespace Labradoratory.DataAccess.Processors
         /// <returns>
         /// The task.
         /// </returns>
-        public abstract Task ProcessAsync(EntityAddingPackage<TEntity> package);
+        public abstract Task ProcessAsync(EntityDeletedPackage<TEntity> package);
     }    
 }
