@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Labradoratory.DataAccess.Processors;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
@@ -18,7 +19,8 @@ namespace Labradoratory.DataAccess.Mongo
         /// Initializes a new instance of the <see cref="BaseMongoDataAccessor{T}"/> class.
         /// </summary>
         /// <param name="collection">The Mongo database collection.</param>
-        public BaseMongoDataAccessor(IMongoCollection<T> collection)
+        public BaseMongoDataAccessor(ProcessorPipeline processorPipeline, IMongoCollection<T> collection)
+            : base(processorPipeline)
         {
             Collection = collection;
         }

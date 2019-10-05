@@ -4,16 +4,210 @@
         <name>Labradoratory.DataAccess</name>
     </assembly>
     <members>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeAction">
+            <summary>
+            Represents the type of change.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.None">
+            <summary>There was no change.</summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.Add">
+            <summary>Value was added.</summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.Remove">
+            <summary>Value was removed.</summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.Update">
+            <summary>Value was updated.</summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet">
+            <summary>
+            Contains a set of changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeSet.Target">
+            <summary>
+            Gets or sets the target of the changes in this set.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTarget">
+            <summary>
+            Identifies the target of a change.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeTarget.Object">
+            <summary>An object was the target of a change.</summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeTarget.Collection">
+            <summary>A collection was the target of a change.</summary>
+        </member>
+        <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeTarget.Dictionary">
+            <summary>A dictionary was the target of a change.</summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.Changes">
+            <summary>
+            Gets the collection of changes that are being tracked.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.Boolean)">
+            <summary>
+            Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.
+            </summary>
+            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.Boolean)" /> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.</param>
+            <returns>
+            A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetValue``1(System.String)">
+            <summary>
+            Gets the value for the specified property.
+            </summary>
+            <typeparam name="T">The type of the object being retrieved.</typeparam>
+            <param name="propertyName">[Optional] Name of the property to get the value for.  This property uses <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> if not specified.</param>
+            <returns>The value of the specified property.</returns>
+            <exception cref="T:System.ArgumentNullException">propertyName</exception>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.SetValue``1(``0,System.String)">
+            <summary>
+            Sets the value for the specified property.
+            </summary>
+            <typeparam name="T">The type of the value being set.</typeparam>
+            <param name="value">The value to set the property to.</param>
+            <param name="propertyName">[Optional] Name of the property to set.  This property uses <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> if not specified.</param>
+            <exception cref="T:System.ArgumentNullException">propertyName</exception>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue">
+            <summary>
+            Represents a value change.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeValue.Action">
+            <summary>
+            Gets or sets the action that caused the change.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeValue.NewValue">
+            <summary>
+            Gets or sets the new value (post-change).
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeValue.OldValue">
+            <summary>
+            Gets or sets the old value (pre-change).
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ITracksChanges">
+            <summary>
+            Members that change tracking objects should implement.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.Boolean)">
+            <summary>
+            Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="commit">
+            Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.Boolean)"/> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.
+            </param>
+            <returns>A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/> containing all of the changes.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ITracksChangesExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.DataAccess.ChangeTracking.ITracksChanges"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.DataAccess.ChangeTracking.ITracksChanges)">
+            <summary>
+            Commits the changes.
+            </summary>
+            <param name="target">The target.</param>
+            <returns>A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer">
+            <summary>
+            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject"/> to track value changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.CurrentValue">
+            <summary>
+            Gets or sets the current value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.OldValue">
+            <summary>
+            Gets the old value, before any changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.HasChanges">
+            <summary>
+            Gets a value indicating whether this instance has changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.GetChangeValue(System.Boolean)">
+            <summary>
+            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
+            </summary>
+            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
+            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.Reset">
+            <summary>
+            Resets the changes.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`1">
+            <summary>
+            A base controller implementation that provides add, update and delete functionality for an entity.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`1.#ctor(Labradoratory.DataAccess.DataAccessor{`0},AutoMapper.IMapper)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`1"/> base class.
+            </summary>
+            <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
+            <param name="mapper">
+            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
+            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+            </param>
+        </member>
         <member name="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2">
             <summary>
-            
+            A base controller implementation that provides add, update and delete functionality for an entity
+            and a specialized view class to return to clients.
             </summary>
             <typeparam name="TEntity">The type of entity the controller manages.</typeparam>
-            <typeparam name="TView">The view respresentation of the entity to provided clients.</typeparam>
+            <typeparam name="TView">
+            The view respresentation of the entity to provided clients.  
+            This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
+            </typeparam>
         </member>
-        <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2.#ctor(Labradoratory.DataAccess.IDataAccess{`0},AutoMapper.IMapper)">
+        <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2.#ctor(Labradoratory.DataAccess.DataAccessor{`0},AutoMapper.IMapper)">
             <summary>
-            Initializes the <see cref="!:EntityDataAccessController"/> base class.
+            Initializes the <see cref="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2"/> base class.
             </summary>
             <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
             <param name="mapper">
@@ -93,6 +287,546 @@
             <param name="entity">The entity being deleted.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task that will contain the results.  TRUE, the delete operation is allowed; Otherwise, FALSE.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.GetAsyncQueryResolver">
+            <summary>
+            Gets as asynchronous query resolver working on the full set of data.
+            </summary>
+            <returns>
+            An instance of an async query resolver that queries <typeparamref name="T" /> and returns results as <typeparamref name="T" />.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.GetAsyncQueryResolver``1(System.Func{System.Linq.IQueryable{`0},System.Linq.IQueryable{``0}})">
+            <summary>
+            Gets as asynchronous query resolver that supports additional querying.
+            </summary>
+            <typeparam name="TResult">The type of the result of the query.</typeparam>
+            <param name="query">A root query to use for additional querying.</param>
+            <returns>
+            An instance of an async query resolver that queries <typeparamref name="T" /> and returns results as <typeparamref name="TResult" />.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Entity">
+            <summary>
+            Represents a storable, entity withing the data access framework.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Entity.ToKeys(System.Object[])">
+            <summary>
+            Converts the provided values into a keys array.
+            </summary>
+            <param name="keys">The key values to convert to an array.  Order of the keys is important to an entity.</param>
+            <returns>The provided key values as an array.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Entity.GetKeys">
+            <summary>
+            Gets the keys that uniquely identify the entity in storage.
+            </summary>
+            <returns>An array of uniquely identifying values.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.AnyAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously determines whether a sequence contains any elements.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.AnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously determines whether any element of a sequence satisfies a condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.CountAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the number of elements in a sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the number of elements in a sequence that satisfy a condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.FirstAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.FirstAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence that satisfies a specified condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.FirstOrDefaultAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence, or a default value if the sequence contains no elements.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence that satisfies a specified condition or a default value if no such element is found.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.SingleAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.SingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.SingleOrDefaultAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence, or a default value if the sequence is empty; 
+            this method throws an exception if there is more than one element in the sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.SingleOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence that satisfies a specified condition or a default value if no such element exists; 
+            this method throws an exception if more than one element satisfies the condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.ToListAsync(System.Threading.CancellationToken)">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.List`1"/> from an <see cref="T:System.Linq.IQueryable`1"/> by enumerating it asynchronously.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains a <see cref="T:System.Collections.Generic.List`1"/> that contains elements from the input sequence.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ISupportsAsyncQueryResolution`1">
+            <summary>
+            Defines members that a object that supports async query resolution should implement.
+            </summary>
+            <typeparam name="T">The type of the query to resolve asynchronously.</typeparam>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ISupportsAsyncQueryResolution`1.GetAsyncQueryResolver">
+            <summary>
+            Gets as asynchronous query resolver working on the full set of data.
+            </summary>
+            <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ISupportsAsyncQueryResolution`1.GetAsyncQueryResolver``1(System.Func{System.Linq.IQueryable{`0},System.Linq.IQueryable{``0}})">
+            <summary>
+            Gets as asynchronous query resolver that supports additional querying.
+            </summary>
+            <typeparam name="TResult">The type of the result of the query.</typeparam>
+            <param name="query">A root query to use for additional querying.</param>
+            <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="TResult"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage">
+            <summary>
+            Represents a piece of data that is to be processed.
+            </summary>
+            <seealso cref="T:System.Collections.Generic.Dictionary`2" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.DataPackage.Previous">
+            <summary>
+            Gets the previous <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> that caused this <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/>
+            to enter the processing pipeline.
+            </summary>
+            <remarks>
+            <para>
+            Because processing can cause additional changes, it may be necessary to track the
+            <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> that resulted in this one.  This can be useful in some
+            scenarios, such as: processing loops, hierarchical data exchange, etc.
+            </para>
+            <para>This property will be <c>null</c> for the first package in a chain.</para>
+            <para>See <see cref="T:Labradoratory.DataAccess.Processors.ProcessorPipeline"/> for more info.</para>
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.DataPackage.GetValue``1(System.String)">
+            <summary>
+            Gets the value from the base dictionary for a specified property.
+            </summary>
+            <typeparam name="T">The type of the value to get.</typeparam>
+            <param name="property">
+            [Optional] The property to get the value for.
+            Has the <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> which is used if not specified.
+            </param>
+            <returns>The value for the specified property.</returns>
+            <exception cref="T:System.ArgumentNullException">property</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">property</exception>
+            <remarks>
+            <para>
+            The <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> class inherits from <see cref="T:System.Collections.Generic.Dictionary`2"/>
+            so that undefined values can be stored in a package for use by other processors.
+            </para>
+            <para>
+            Constant properties of a specialized instance of <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> should use the 
+            GetValue/SetValue members to store values in the base dictionary.
+            </para>
+            </remarks>
+            <example>
+            public class MyDataPackage : DataPackage
+            {
+                public string MyValue
+                {
+                    get => GetValue{string}();
+                    set => SetValue(value);
+                }
+            } 
+            </example>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.DataPackage.SetValue``1(``0,System.String)">
+            <summary>
+            Sets the value for a specified property.
+            </summary>
+            <typeparam name="T">The type of the value being set.</typeparam>
+            <param name="value">The value.</param>
+            <param name="property">
+            [Optional] The name of the property to set the value for.
+            Has the <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> which is used if not specified.
+            </param>
+            <exception cref="T:System.ArgumentNullException">property</exception>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was added.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage`1.Entity">
+            <summary>
+            Gets the entity that was added.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage`1">
+            <summary>
+            The data related to adding a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage`1.Entity">
+            <summary>
+            Gets the entity that is being added.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was deleted.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity was deleted.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage`1.Entity">
+            <summary>
+            Gets the entity that was deleted.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage`1">
+            <summary>
+            The data related to deleting a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being deleted.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage`1.Entity">
+            <summary>
+            Gets the entity that is being deleted.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was updated.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage`1.#ctor(`0,Labradoratory.DataAccess.ChangeTracking.ChangeSet)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity that was updated.</param>
+            <param name="changes">The changes that were made.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage`1.Entity">
+            <summary>
+            Gets the entity that was updated.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage`1.Changes">
+            <summary>
+            Gets the changes that were made to the entity.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage`1">
+            <summary>
+            The data related to updating a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being updated.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage`1.Entity">
+            <summary>
+            Gets the entity that is being updated.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityAddedProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> that was added.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityAddedProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityAddedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityAddingProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> being added.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityAddingProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityAddingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityDeletedProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> that was deleted.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityDeletedProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityDeletedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityDeletingProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> being added.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityDeletingProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityDeletingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityUpdatedProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> that was updated.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityUpdatedProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityUpdatedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.EntityUpdatingProcessor`1">
+            <summary>
+            Processes an <typeparamref name="TEntity"/> being updated.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.EntityUpdatingProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.EntityUpdatingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage{`0})">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>
+            The task.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.IProcessor`1">
+            <summary>
+            Defines the members a data processor should implement.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.IProcessor`1.Priority">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.IProcessor`1.ProcessAsync(`0)">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.IProcessorProvider">
+            <summary>
+            Defines the members that a provider of processors should implement.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.IProcessorProvider.GetProcessors``1">
+            <summary>
+            Gets the all of the processors for the specified <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> to get processors for.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.Processors.ProcessorPipeline">
+            <summary>
+            The <see cref="T:Labradoratory.DataAccess.Processors.ProcessorPipeline"/> is used to manage processing of <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> objects.
+            </summary>
+            <remarks>
+            
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.ProcessorPipeline.#ctor(Labradoratory.DataAccess.Processors.IProcessorProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.Processors.ProcessorPipeline"/> class.
+            </summary>
+            <param name="processorProvider">The processor provider which is used to discover processors.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.Processors.ProcessorPipeline.ProcessorProvider">
+            <summary>
+            Gets the provider of <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> processors.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.Processors.ProcessorPipeline.ProcessAsync``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage"/> to process.</typeparam>
+            <param name="package">The package to process.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
         </member>
     </members>
 </doc>

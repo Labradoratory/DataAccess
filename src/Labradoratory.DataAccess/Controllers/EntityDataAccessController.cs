@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
@@ -8,16 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 namespace Labradoratory.DataAccess.Controllers
 {
     /// <summary>
-    /// 
+    /// A base controller implementation that provides add, update and delete functionality for an entity.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <seealso cref="EntityDataAccessController{TEntity, TEntity}" />
+    public abstract class EntityDataAccessController<TEntity> : EntityDataAccessController<TEntity, TEntity>
+        where TEntity : Entity
+    {
+        /// <summary>
+        /// Initializes the <see cref="EntityDataAccessController{TEntity}"/> base class.
+        /// </summary>
+        /// <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
+        /// <param name="mapper">
+        /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
+        /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+        /// </param>
+        protected EntityDataAccessController(DataAccessor<TEntity> dataAccess, IMapper mapper)
+            : base(dataAccess, mapper)
+        {}
+    }
+
+    /// <summary>
+    /// A base controller implementation that provides add, update and delete functionality for an entity
+    /// and a specialized view class to return to clients.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity the controller manages.</typeparam>
-    /// <typeparam name="TView">The view respresentation of the entity to provided clients.</typeparam>
+    /// <typeparam name="TView">
+    /// The view respresentation of the entity to provided clients.  
+    /// This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
+    /// </typeparam>
     public abstract class EntityDataAccessController<TEntity, TView> : ControllerBase
         where TEntity : Entity
         where TView : class
     {
         /// <summary>
-        /// Initializes the <see cref="EntityDataAccessController"/> base class.
+        /// Initializes the <see cref="EntityDataAccessController{TEntity, TView}"/> base class.
         /// </summary>
         /// <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">

@@ -69,45 +69,5 @@ namespace Labradoratory.DataAccess.ChangeTracking
             Changes.TryAdd(propertyName, new ValueChangeContainer());
             Changes[propertyName].CurrentValue = value;
         }
-    }
-
-    internal class ValueChangeContainer
-    {
-        private object currentValue;
-
-        public object CurrentValue
-        {
-            get => currentValue;
-            set
-            {
-                if(!HasChanges)
-                    OldValue = currentValue;
-
-                currentValue = value;
-            }
-        }
-
-        public object OldValue { get; private set; }
-
-        public bool HasChanges => OldValue == null;
-
-        public ChangeValue GetChangeValue(bool commit = false)
-        {
-            if (!HasChanges)
-                return null;
-
-            return new ChangeValue
-            {
-                OldValue = OldValue,
-                NewValue = CurrentValue,
-                Action = ChangeAction.Update
-            };
-        }
-
-        public void Reset()
-        {
-            CurrentValue = OldValue;
-            OldValue = null;
-        }
-    }
+    }    
 }

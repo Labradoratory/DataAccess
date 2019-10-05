@@ -7,6 +7,8 @@ namespace Labradoratory.DataAccess.ChangeTracking
     /// </summary>
     public enum ChangeAction
     {
+        /// <summary>There was no change.</summary>
+        None,
         /// <summary>Value was added.</summary>
         Add,
         /// <summary>Value was removed.</summary>
