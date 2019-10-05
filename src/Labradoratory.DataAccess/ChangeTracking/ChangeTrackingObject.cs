@@ -13,7 +13,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <summary>
         /// Gets the collection of changes that are being tracked.
         /// </summary>
-        protected Dictionary<string, ChangeValue> Changes { get; } = new Dictionary<string, ChangeValue>();
+        private Dictionary<string, ValueChangeContainer> Changes { get; } = new Dictionary<string, ValueChangeContainer>();
 
         /// <summary>
         /// Gets whether or not there are changes.
@@ -48,8 +48,8 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            if (Changes.TryGetValue(propertyName, out ChangeValue value))
-                return value.CurrentValue;
+            if (Changes.TryGetValue(propertyName, out ValueChangeContainer value))
+                return (T)value.CurrentValue;
 
             return default;
         }
@@ -66,8 +66,48 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            Changes.TryAdd(propertyName, new ChangeValue());
+            Changes.TryAdd(propertyName, new ValueChangeContainer());
             Changes[propertyName].CurrentValue = value;
+        }
+    }
+
+    internal class ValueChangeContainer
+    {
+        private object currentValue;
+
+        public object CurrentValue
+        {
+            get => currentValue;
+            set
+            {
+                if(!HasChanges)
+                    OldValue = currentValue;
+
+                currentValue = value;
+            }
+        }
+
+        public object OldValue { get; private set; }
+
+        public bool HasChanges => OldValue == null;
+
+        public ChangeValue GetChangeValue(bool commit = false)
+        {
+            if (!HasChanges)
+                return null;
+
+            return new ChangeValue
+            {
+                OldValue = OldValue,
+                NewValue = CurrentValue,
+                Action = ChangeAction.Update
+            };
+        }
+
+        public void Reset()
+        {
+            CurrentValue = OldValue;
+            OldValue = null;
         }
     }
 }
