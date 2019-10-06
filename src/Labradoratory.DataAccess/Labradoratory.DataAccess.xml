@@ -71,7 +71,6 @@
             <returns>
             A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
             </returns>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
         <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetValue``1(System.String)">
             <summary>

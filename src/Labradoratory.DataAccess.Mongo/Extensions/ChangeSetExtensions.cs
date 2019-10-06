@@ -36,10 +36,10 @@ namespace Labradoratory.DataAccess.Mongo.Extensions
                 switch (change.Value.Action)
                 {
                     case ChangeAction.Add:
+                        updateDefinition.Set(change.Key, change.Value.NewValue);
                         break;
                     case ChangeAction.Remove:
-                        break;
-                    case ChangeAction.Update:
+                        updateDefinition.Unset(change.Key);
                         break;
                 }
             }
@@ -56,8 +56,10 @@ namespace Labradoratory.DataAccess.Mongo.Extensions
                 switch(change.Value.Action)
                 {
                     case ChangeAction.Add:
+                        updateDefinition.Push(change.Key, change.Value.NewValue);
                         break;
                     case ChangeAction.Remove:
+                        updateDefinition.Pull(change.Key, change.Value.OldValue);
                         break;
                 }
             }

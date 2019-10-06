@@ -30,10 +30,18 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <returns>
         /// A <see cref="ChangeSet" /> containing all of the changes.
         /// </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public ChangeSet GetChangeSet(bool commit = false)
         {
-            throw new NotImplementedException();
+            if (!HasChanges)
+                return null;
+
+            var changes = new ChangeSet();
+            foreach(var change in Changes)
+            {
+                changes.Add(change.Key, change.Value.GetChangeValue(commit));
+            }
+
+            return changes;
         }
 
         /// <summary>
