@@ -13,24 +13,15 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <summary>
         /// Gets the collection of changes that are being tracked.
         /// </summary>
-        private Dictionary<string, ValueChangeContainer> Changes { get; } = new Dictionary<string, ValueChangeContainer>();
+        private Dictionary<string, ChangeContainerValue> Changes { get; } = new Dictionary<string, ChangeContainerValue>();
 
         /// <summary>
         /// Gets whether or not there are changes.
         /// </summary>
         public bool HasChanges => Changes.Values.Any(v => v.HasChanges);
 
-        /// <summary>
-        /// Gets the current changes as a <see cref="ChangeSet" />.
-        /// </summary>
-        /// <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
-        /// will clear all tracking and leave the current values as-is.  Another call to
-        /// <see cref="GetChangeSet(bool)" /> immdiately after a commit will return an
-        /// empty <see cref="ChangeSet" />.</param>
-        /// <returns>
-        /// A <see cref="ChangeSet" /> containing all of the changes.
-        /// </returns>
-        public ChangeSet GetChangeSet(bool commit = false)
+        /// <inheritdoc />
+        public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
             if (!HasChanges)
                 return null;
@@ -38,10 +29,17 @@ namespace Labradoratory.DataAccess.ChangeTracking
             var changes = new ChangeSet();
             foreach(var change in Changes)
             {
-                changes.Add(change.Key, change.Value.GetChangeValue(commit));
+                changes.Merge(change.Value.GetChangeSet($"{path}.{change.Key}", commit));
             }
 
             return changes;
+        }
+        
+        /// <inheritdoc />
+        public void Reset()
+        {
+            foreach (var change in Changes)
+                change.Value.Reset();
         }
 
         /// <summary>
@@ -56,7 +54,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            if (Changes.TryGetValue(propertyName, out ValueChangeContainer value))
+            if (Changes.TryGetValue(propertyName, out ChangeContainerValue value))
                 return (T)value.CurrentValue;
 
             return default;
@@ -74,7 +72,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            Changes.TryAdd(propertyName, new ValueChangeContainer());
+            Changes.TryAdd(propertyName, new ChangeContainerValue());
             Changes[propertyName].CurrentValue = value;
         }
     }    

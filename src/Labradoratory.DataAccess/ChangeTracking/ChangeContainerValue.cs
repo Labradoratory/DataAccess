@@ -5,7 +5,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
     /// <summary>
     /// This class is used internally by the <see cref="ChangeTrackingObject"/> to track value changes.
     /// </summary>
-    internal class ValueChangeContainer
+    internal class ChangeContainerValue : ITracksChanges
     {
         private object currentValue;
 
@@ -35,12 +35,20 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public bool HasChanges => OldValue != null || ((CurrentValue as ITracksChanges)?.HasChanges ?? false);
 
         /// <summary>
-        /// Creates <see cref="ChangeValue"/> that represents the current changes.
+        /// Gets the current changes as a <see cref="ChangeSet" />.
         /// </summary>
-        /// <param name="commit">[Optional] If <c>true</c>, <see cref="HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
-        /// <returns>The <see cref="ChangeValue"/> representing this container.</returns>
-        public ChangeValue GetChangeValue(bool commit = false)
+        /// <param name="path">[Optional] The path to the change set.  Default value is <see cref="string.Empty" />.</param>
+        /// <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+        /// will clear all tracking and leave the current values as-is.  Another call to
+        /// <see cref="GetChangeSet(string, bool)" /> immdiately after a commit will return an
+        /// empty <see cref="ChangeSet" />.</param>
+        /// <returns>
+        /// A <see cref="ChangeSet" /> containing all of the changes.
+        /// </returns>
+        public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
+            string property = "";
+
             if (!HasChanges)
                 return null;
 
@@ -54,7 +62,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (commit)
                 OldValue = null;
 
-            return value;
+            return new ChangeSet { { property, value } };
         }
 
         /// <summary>

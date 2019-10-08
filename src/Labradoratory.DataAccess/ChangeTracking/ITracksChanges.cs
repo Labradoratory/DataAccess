@@ -15,14 +15,20 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <summary>
         /// Gets the current changes as a <see cref="ChangeSet"/>.
         /// </summary>
+        /// <param name="path">[Optional] The path to the change set.  Default value is <see cref="string.Empty"/>.</param>
         /// <param name="commit">
         /// Whether or not to commit the changes during the get.  Commiting the changes
         /// will clear all tracking and leave the current values as-is.  Another call to
-        /// <see cref="GetChangeSet(bool)"/> immdiately after a commit will return an
+        /// <see cref="GetChangeSet(string, bool)"/> immdiately after a commit will return an
         /// empty <see cref="ChangeSet"/>.
         /// </param>
         /// <returns>A <see cref="ChangeSet"/> containing all of the changes.</returns>
-        ChangeSet GetChangeSet(bool commit = false);
+        ChangeSet GetChangeSet(string path = "", bool commit = false);
+
+        /// <summary>
+        /// Resets all changes.  After calling, <see cref="HasChanges"/> will return <c>false</c>.
+        /// </summary>
+        void Reset();
     }
 
     /// <summary>

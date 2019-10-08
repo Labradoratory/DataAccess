@@ -19,7 +19,7 @@ namespace Labradoratory.DataAccess.Processors
         public abstract uint Priority { get; }
 
         /// <summary>
-        /// Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+        /// Processes the provided <see cref="DataPackage" /> asynchronously.
         /// </summary>
         /// <param name="package">The package to be processed.</param>
         /// <returns>

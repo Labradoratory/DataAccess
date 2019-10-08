@@ -21,6 +21,77 @@
         <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.Update">
             <summary>Value was updated.</summary>
         </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem">
+            <summary>
+            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> and <see cref="!:ChangeTrackingDictionary&lt;TKey, TValue&gt;"/> to track item changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.#ctor(System.Object,Labradoratory.DataAccess.ChangeTracking.ChangeAction)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem"/> class.
+            </summary>
+            <param name="item">The value the container represents</param>
+            <param name="action">The action the container represents.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Action">
+            <summary>
+            Gets the action this change represents.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Item">
+            <summary>
+            Gets or sets the current value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.HasChanges">
+            <summary>
+            Gets a value indicating whether this instance has changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.GetChangeValue(System.Boolean)">
+            <summary>
+            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
+            </summary>
+            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
+            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Reset">
+            <summary>
+            Resets the changes.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue">
+            <summary>
+            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject"/> to track value changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.CurrentValue">
+            <summary>
+            Gets or sets the current value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.OldValue">
+            <summary>
+            Gets the old value, before any changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.HasChanges">
+            <summary>
+            Gets a value indicating whether this instance has changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.GetChangeValue(System.Boolean)">
+            <summary>
+            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
+            </summary>
+            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
+            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.Reset">
+            <summary>
+            Resets the changes.
+            </summary>
+        </member>
         <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet">
             <summary>
             Contains a set of changes.
@@ -71,6 +142,11 @@
             <returns>
             A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
             </returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.Reset">
+            <summary>
+            Resets all changes.  After calling, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.HasChanges" /> will return <c>false</c>.
+            </summary>
         </member>
         <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetValue``1(System.String)">
             <summary>
@@ -132,6 +208,11 @@
             </param>
             <returns>A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/> containing all of the changes.</returns>
         </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.Reset">
+            <summary>
+            Resets all changes.  After calling, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.HasChanges"/> will return <c>false</c>.
+            </summary>
+        </member>
         <member name="T:Labradoratory.DataAccess.ChangeTracking.ITracksChangesExtensions">
             <summary>
             Methods to make working with <see cref="T:Labradoratory.DataAccess.ChangeTracking.ITracksChanges"/> a little easier.
@@ -143,38 +224,6 @@
             </summary>
             <param name="target">The target.</param>
             <returns>A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
-        </member>
-        <member name="T:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer">
-            <summary>
-            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject"/> to track value changes.
-            </summary>
-        </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.CurrentValue">
-            <summary>
-            Gets or sets the current value.
-            </summary>
-        </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.OldValue">
-            <summary>
-            Gets the old value, before any changes.
-            </summary>
-        </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.HasChanges">
-            <summary>
-            Gets a value indicating whether this instance has changes.
-            </summary>
-        </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.GetChangeValue(System.Boolean)">
-            <summary>
-            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
-            </summary>
-            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
-            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
-        </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ValueChangeContainer.Reset">
-            <summary>
-            Resets the changes.
-            </summary>
         </member>
         <member name="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`1">
             <summary>
@@ -639,7 +688,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityAddedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityAddedPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
@@ -663,7 +712,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityAddingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityAddingPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
@@ -687,7 +736,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityDeletedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityDeletedPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
@@ -711,7 +760,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityDeletingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityDeletingPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
@@ -735,7 +784,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityUpdatedProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatedPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
@@ -759,7 +808,7 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Processors.EntityUpdatingProcessor`1.ProcessAsync(Labradoratory.DataAccess.Processors.DataPackages.EntityUpdatingPackage{`0})">
             <summary>
-            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackage" /> asynchronously.
+            Processes the provided <see cref="T:Labradoratory.DataAccess.Processors.DataPackages.DataPackage" /> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
             <returns>
