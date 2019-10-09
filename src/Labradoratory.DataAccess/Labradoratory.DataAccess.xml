@@ -21,41 +21,49 @@
         <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeAction.Update">
             <summary>Value was updated.</summary>
         </member>
-        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem">
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1">
             <summary>
-            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> and <see cref="!:ChangeTrackingDictionary&lt;TKey, TValue&gt;"/> to track item changes.
+            This class is used internally by the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> and <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2"/> to track item changes.
             </summary>
+            <typeparam name="T">The type of the item in the container.</typeparam>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.#ctor(System.Object,Labradoratory.DataAccess.ChangeTracking.ChangeAction)">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.#ctor(`0,Labradoratory.DataAccess.ChangeTracking.ChangeTarget,Labradoratory.DataAccess.ChangeTracking.ChangeAction)">
             <summary>
-            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem"/> class.
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> class.
             </summary>
             <param name="item">The value the container represents</param>
+            <param name="target"></param>
             <param name="action">The action the container represents.</param>
         </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Action">
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.Action">
             <summary>
             Gets the action this change represents.
             </summary>
         </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Item">
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.Item">
             <summary>
             Gets or sets the current value.
             </summary>
         </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.HasChanges">
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.HasChanges">
             <summary>
             Gets a value indicating whether this instance has changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.GetChangeValue(System.Boolean)">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.GetChangeSet(System.String,System.Boolean)">
             <summary>
-            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
+            Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.
             </summary>
-            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
-            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
+            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.GetChangeSet(System.String,System.Boolean)" /> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.</param>
+            <returns>
+            A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
+            </returns>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem.Reset">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerItem`1.Reset">
             <summary>
             Resets the changes.
             </summary>
@@ -80,12 +88,18 @@
             Gets a value indicating whether this instance has changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.GetChangeValue(System.Boolean)">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.GetChangeSet(System.String,System.Boolean)">
             <summary>
-            Creates <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> that represents the current changes.
+            Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.
             </summary>
-            <param name="commit">[Optional] If <c>true</c>, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.HasChanges"/> will return false after this method is called.  Default is <c>false</c>.</param>
-            <returns>The <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeValue"/> representing this container.</returns>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
+            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.GetChangeSet(System.String,System.Boolean)" /> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.</param>
+            <returns>
+            A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
+            </returns>
         </member>
         <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeContainerValue.Reset">
             <summary>
@@ -97,10 +111,20 @@
             Contains a set of changes.
             </summary>
         </member>
-        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeSet.Target">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeSet.CombinePaths(System.String,System.String)">
             <summary>
-            Gets or sets the target of the changes in this set.
+            Combines the paths into one.
             </summary>
+            <param name="path1">The path1.</param>
+            <param name="path2">The path2.</param>
+            <returns>The combined paths.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeSet.Merge(Labradoratory.DataAccess.ChangeTracking.ChangeSet)">
+            <summary>
+            Merges the specified changes into this <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="changes">The changes to merge with this <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.</param>
+            <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.</exception>
         </member>
         <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTarget">
             <summary>
@@ -115,6 +139,141 @@
         </member>
         <member name="F:Labradoratory.DataAccess.ChangeTracking.ChangeTarget.Dictionary">
             <summary>A dictionary was the target of a change.</summary>
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1">
+            <summary>
+            TODO
+            </summary>
+            <typeparam name="T">The type of items in the collection.</typeparam>
+            <seealso cref="T:System.Collections.Generic.ICollection`1" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.#ctor">
+            <summary>
+            Initializes a new, empty instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1"/> class that 
+            containes the provided item.
+            </summary>
+            <param name="items">The items to add to the collection.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.HasChanges">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Add(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Contains(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.CopyTo(`0[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Remove(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.GetChangeSet(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingCollection`1.Reset">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2">
+            <summary>
+            TODO
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <seealso cref="T:System.Collections.Generic.IDictionary`2" />
+            <seealso cref="T:Labradoratory.DataAccess.ChangeTracking.ITracksChanges" />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.#ctor">
+            <summary>
+            Initializes a new, empty instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2"/> class.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2"/> class, 
+            populated with the provided items.
+            </summary>
+            <param name="items">The items to populate the <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2"/> with.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Item(`0)">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Keys">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Values">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Add(`0,`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.ContainsKey(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Remove(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.TryGetValue(`0,`1@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.GetChangeSet(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingDictionary`2.Reset">
+            <inheritdoc />
         </member>
         <member name="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject">
             <summary>
@@ -131,22 +290,11 @@
             Gets whether or not there are changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.Boolean)">
-            <summary>
-            Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.
-            </summary>
-            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
-            will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.Boolean)" /> immdiately after a commit will return an
-            empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" />.</param>
-            <returns>
-            A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet" /> containing all of the changes.
-            </returns>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.String,System.Boolean)">
+            <inheritdoc />
         </member>
         <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.Reset">
-            <summary>
-            Resets all changes.  After calling, <see cref="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.HasChanges" /> will return <c>false</c>.
-            </summary>
+            <inheritdoc />
         </member>
         <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.GetValue``1(System.String)">
             <summary>
@@ -171,6 +319,11 @@
             Represents a value change.
             </summary>
         </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeValue.Target">
+            <summary>
+            Gets or sets the target of the changes in this set.
+            </summary>
+        </member>
         <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeValue.Action">
             <summary>
             Gets or sets the action that caused the change.
@@ -186,6 +339,33 @@
             Gets or sets the old value (pre-change).
             </summary>
         </member>
+        <member name="T:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1">
+            <summary>
+            A container that tracks whether or not a value has been set.
+            </summary>
+            <typeparam name="T">The type of value in the container.</typeparam>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.HasValue">
+            <summary>
+            Gets a value indicating whether this instance has value.
+            </summary>
+            <remarks>
+            <see cref="P:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.HasValue"/> is <c>true</c> if the <see cref="P:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.Value"/> property has been set.
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.Reset">
+            <summary>
+            Resets this container.
+            </summary>
+            <remarks>
+            After reset, <see cref="P:Labradoratory.DataAccess.ChangeTracking.HasValueContainer`1.HasValue"/> will be <c>false</c>.
+            </remarks>
+        </member>
         <member name="T:Labradoratory.DataAccess.ChangeTracking.ITracksChanges">
             <summary>
             Members that change tracking objects should implement.
@@ -196,14 +376,15 @@
             Gets whether or not there are changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.Boolean)">
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.String,System.Boolean)">
             <summary>
             Gets the current changes as a <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.
             </summary>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty"/>.</param>
             <param name="commit">
             Whether or not to commit the changes during the get.  Commiting the changes
             will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.Boolean)"/> immdiately after a commit will return an
+            <see cref="M:Labradoratory.DataAccess.ChangeTracking.ITracksChanges.GetChangeSet(System.String,System.Boolean)"/> immdiately after a commit will return an
             empty <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/>.
             </param>
             <returns>A <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeSet"/> containing all of the changes.</returns>
@@ -237,10 +418,7 @@
             Initializes the <see cref="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`1"/> base class.
             </summary>
             <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-            <param name="mapper">
-            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
-            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-            </param>
+            <param name="mapper">The mapper to use for object conversion.</param>
         </member>
         <member name="T:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2">
             <summary>
@@ -289,9 +467,9 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2.Add(`1,System.Threading.CancellationToken)">
             <summary>
-            
+            Handles an entity add request.
             </summary>
-            <param name="view"></param>
+            <param name="view">The view of the entity being added.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
@@ -305,10 +483,10 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2.Update(System.Object[],Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
             <summary>
-            
+            Handles an entity update request.
             </summary>
-            <param name="keys"></param>
-            <param name="patch"></param>
+            <param name="keys">The keys identifying the entity being updated.</param>
+            <param name="patch">The patch to apply to the entity.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
@@ -322,9 +500,9 @@
         </member>
         <member name="M:Labradoratory.DataAccess.Controllers.EntityDataAccessController`2.Delete(System.Object[],System.Threading.CancellationToken)">
             <summary>
-            
+            Handle an entity delete request.
             </summary>
-            <param name="keys"></param>
+            <param name="keys">The keys that identify the entity to delete.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
@@ -335,6 +513,93 @@
             <param name="entity">The entity being deleted.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task that will contain the results.  TRUE, the delete operation is allowed; Otherwise, FALSE.</returns>
+        </member>
+        <member name="T:Labradoratory.DataAccess.DataAccessor`1">
+            <summary>
+            The base implementation of an object used to access data.  
+            </summary>
+            <remarks>
+            <para>All data accessors derive from this class.</para>
+            <para>
+            The base implementation provides get, add, update and delete actions and 
+            pushes the modification actions into the processing pipeline.
+            </para>
+            </remarks>
+            <typeparam name="T">The type of entity the accessor supports.</typeparam>
+            <seealso cref="T:Labradoratory.DataAccess.ISupportsAsyncQueryResolution`1" />
+            <seealso cref="P:Labradoratory.DataAccess.DataAccessor`1.ProcessorPipeline"/>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.#ctor(Labradoratory.DataAccess.Processors.ProcessorPipeline)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.DataAccess.DataAccessor`1"/> class.
+            </summary>
+            <param name="processorPipeline">The processor pipeline.</param>
+        </member>
+        <member name="P:Labradoratory.DataAccess.DataAccessor`1.ProcessorPipeline">
+            <summary>
+            Gets the processor pipeline.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.Get">
+            <summary>
+            Gets a queryable collection of entities.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.FindAsync(System.Object[],System.Threading.CancellationToken)">
+            <summary>
+            Finds a specific entity using the identifing <paramref name="keys"/>.
+            </summary>
+            <param name="keys">The keys that uniquely identify the <typeparamref name="T"/>.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task containing the result of the find.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.AddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Adds an entity.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.ExecuteAddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Executes the add.
+            </summary>
+            <param name="entity">To add.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Updates an entity.
+            </summary>
+            <param name="entity">The entity with updates.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.ExecuteUpdateAsync(`0,Labradoratory.DataAccess.ChangeTracking.ChangeSet,System.Threading.CancellationToken)">
+            <summary>
+            Executes the update.
+            </summary>
+            <param name="entity">The entity to update.</param>
+            <param name="changes">The changes to the entity.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.DeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Deletes an entity.
+            </summary>
+            <param name="entity">The entity to delete.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.DataAccess.DataAccessor`1.ExecuteDeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Executes the delete.
+            </summary>
+            <param name="entity">The entity to delete.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.DataAccess.DataAccessor`1.GetAsyncQueryResolver">
             <summary>

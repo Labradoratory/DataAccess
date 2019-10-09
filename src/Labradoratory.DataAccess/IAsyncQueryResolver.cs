@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Labradoratory.DataAccess
 {
+    /// <summary>
+    /// Defines the members to be used for asynchronously resolving a query.
+    /// </summary>
+    /// <typeparam name="T">The type of object that results from the query.</typeparam>
     public interface IAsyncQueryResolver<T>
     {
         /// <summary>
@@ -108,7 +112,7 @@ namespace Labradoratory.DataAccess
         /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="List{T}"/> that contains elements from the input sequence.</returns>
         Task<IList<T>> ToListAsync(CancellationToken cancellationToken = default);
 
-        // What other linq methods should be required?  
+        // What other linq methods should be required?  What do all queryable repositories provide?
         // Specialized stuff should be left out.
     }
 }

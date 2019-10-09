@@ -48,10 +48,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public TValue this[TKey key] 
         { 
             get => Items[key].Item;
-            set
-            {
-                Remove()
-            }
+            set => Items[key].Item = value;
         }
 
         /// <inheritdoc />

@@ -8,7 +8,9 @@ namespace Labradoratory.DataAccess.ChangeTracking
     /// <typeparam name="T">The type of the item in the container.</typeparam>
     internal class ChangeContainerItem<T> : ITracksChanges
     {
+        private T _item;
         private ChangeAction _action;
+        private readonly HasValueContainer<T> _oldItem = new HasValueContainer<T>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangeTrackingCollection{T}"/> class.
@@ -19,7 +21,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public ChangeContainerItem(T item, ChangeTarget target, ChangeAction action = ChangeAction.None)
         {
             Target = target;
-            Item = item;
+            _item = item;
             _action = action;
         }
 
@@ -45,7 +47,18 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <summary>
         /// Gets or sets the current value.
         /// </summary>
-        public T Item { get; }
+        public T Item
+        {
+            get => _item;
+            set
+            {
+                Action = ChangeAction.Update;
+                if (!_oldItem.HasValue)
+                    _oldItem.Value = value;
+
+                _item = value;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether this instance has changes.
@@ -65,17 +78,29 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// </returns>
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
-            switch(Action)
+            ChangeSet changes;
+            switch (Action)
             {
                 case ChangeAction.Add:
-                    return ProcessAdd(path, commit);
+                    changes = ProcessAdd(path, commit);
+                    break;
                 case ChangeAction.Update:
-                    return ProcessUpdate(path, commit);
+                    changes = ProcessUpdate(path, commit);
+                    break;
                 case ChangeAction.Remove:
-                    return ProcessRemove(path, commit);
+                    changes = ProcessRemove(path, commit);
+                    break;
                 default:
                     return null;
             }
+
+            if (commit)
+            {
+                _oldItem.Reset();
+                Reset();
+            }
+
+            return changes;
         }
 
         private ChangeSet ProcessAdd(string path, bool commit)
@@ -103,6 +128,23 @@ namespace Labradoratory.DataAccess.ChangeTracking
 
         private ChangeSet ProcessUpdate(string path, bool commit)
         {
+            if (_oldItem.HasValue)
+            {
+                return new ChangeSet
+                {
+                    {
+                        path,
+                        new ChangeValue
+                        {
+                            Target = Target,
+                            Action = ChangeAction.Update,
+                            NewValue = Item,
+                            OldValue = _oldItem.Value
+                        }
+                    }
+                };
+            }
+
             if (Item is ITracksChanges tc)
                 return tc.GetChangeSet(path, commit);
 
@@ -137,9 +179,13 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// </summary>
         public void Reset()
         {
-            if (Action == ChangeAction.Update)
-                (Item as ITracksChanges).Reset();
+            if (_oldItem.HasValue)
+            {
+                Item = _oldItem.Value;
+                _oldItem.Reset();
+            }
 
+            (Item as ITracksChanges)?.Reset();
             _action = ChangeAction.None;
         }
     }

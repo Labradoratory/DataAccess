@@ -14,6 +14,7 @@ namespace Labradoratory.DataAccess.Mongo
     /// <typeparam name="T">They type of document the accessor accesses.</typeparam>
     /// <seealso cref="DataAccessor{T}" />
     public abstract class BaseMongoDataAccessor<T> : DataAccessor<T>
+        where T : Entity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseMongoDataAccessor{T}"/> class.

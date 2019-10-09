@@ -25,7 +25,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <param name="items">The items to add to the collection.</param>
         public ChangeTrackingCollection(IEnumerable<T> items)
         {
-            Items = items.Select(i => new ChangeContainerItem<T>(i, ChangeAction.None)).ToList();
+            Items = items.Select(i => new ChangeContainerItem<T>(i, ChangeTarget.Collection, ChangeAction.None)).ToList();
             Removed = new List<ChangeContainerItem<T>>();
         }
 
@@ -44,7 +44,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <inheritdoc />
         public void Add(T item)
         {
-            Items.Add(new ChangeContainerItem<T>(item, ChangeAction.Add));
+            Items.Add(new ChangeContainerItem<T>(item, ChangeTarget.Collection, ChangeAction.Add));
         }
 
         /// <inheritdoc />
@@ -54,8 +54,12 @@ namespace Labradoratory.DataAccess.ChangeTracking
             {
                 var container = Items[0];
                 Items.RemoveAt(0);
-                container.Action = ChangeAction.Remove;
-                Removed.Add(container);
+                // If the item was an add, we can just get rid of it.
+                if (container.Action != ChangeAction.Add)
+                {
+                    container.Action = ChangeAction.Remove;
+                    Removed.Add(container);
+                }
             }
         }
 

@@ -18,10 +18,7 @@ namespace Labradoratory.DataAccess.Controllers
         /// Initializes the <see cref="EntityDataAccessController{TEntity}"/> base class.
         /// </summary>
         /// <param name="dataAccess">The data accessor to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-        /// <param name="mapper">
-        /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
-        /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-        /// </param>
+        /// <param name="mapper">The mapper to use for object conversion.</param>
         protected EntityDataAccessController(DataAccessor<TEntity> dataAccess, IMapper mapper)
             : base(dataAccess, mapper)
         {}
@@ -89,9 +86,9 @@ namespace Labradoratory.DataAccess.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Handles an entity add request.
         /// </summary>
-        /// <param name="view"></param>
+        /// <param name="view">The view of the entity being added.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpPost, Route("")]
@@ -118,10 +115,10 @@ namespace Labradoratory.DataAccess.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Handles an entity update request.
         /// </summary>
-        /// <param name="keys"></param>
-        /// <param name="patch"></param>
+        /// <param name="keys">The keys identifying the entity being updated.</param>
+        /// <param name="patch">The patch to apply to the entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpPatch, Route("")]
@@ -129,7 +126,7 @@ namespace Labradoratory.DataAccess.Controllers
         {
             var entity = await DataAccess.FindAsync(keys, cancellationToken);
             if (entity == null)
-                return NotFound();            
+                return NotFound();
 
             var view = Mapper.Map<TView>(entity);
 
@@ -157,9 +154,9 @@ namespace Labradoratory.DataAccess.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Handle an entity delete request.
         /// </summary>
-        /// <param name="keys"></param>
+        /// <param name="keys">The keys that identify the entity to delete.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpDelete, Route("")]
