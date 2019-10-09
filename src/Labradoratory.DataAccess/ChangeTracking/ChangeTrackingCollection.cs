@@ -114,14 +114,21 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
             var changes = new ChangeSet();
+            // In order to have unique keys in the set, we add an integer to each
+            // add/remove paths (key).  This value can be ignored during processing.
+            var changeIndex = 1;
             foreach(var item in Items)
             {
-                changes.Merge(item.GetChangeSet(path, commit));
+                // Each ChangeContainerItem ChangeSet should only contain one item, so we get the first.
+                var itemChange = item.GetChangeSet(path, commit).First();
+                changes.Add($"{itemChange.Key}{changeIndex++}", itemChange.Value);
             }
 
+            changeIndex = 1;
             foreach(var removed in Removed)
             {
-                changes.Merge(removed.GetChangeSet(path, commit));
+                var removedChange = removed.GetChangeSet(path, commit).First();
+                changes.Add($"{removedChange.Key}{changeIndex++}", removedChange.Value);
             }
 
             return changes;

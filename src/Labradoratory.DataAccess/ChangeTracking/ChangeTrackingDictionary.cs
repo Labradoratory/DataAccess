@@ -48,6 +48,8 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public TValue this[TKey key] 
         { 
             get => Items[key].Item;
+            // NOTE: I thought about making a value update like this just be a remove plus an add instead
+            // of tracking as an update.  Either way would make sense, but we'll go with update for now.
             set => Items[key].Item = value;
         }
 

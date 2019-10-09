@@ -637,6 +637,12 @@
             </summary>
             <returns>An array of uniquely identifying values.</returns>
         </member>
+        <member name="T:Labradoratory.DataAccess.IAsyncQueryResolver`1">
+            <summary>
+            Defines the members to be used for asynchronously resolving a query.
+            </summary>
+            <typeparam name="T">The type of object that results from the query.</typeparam>
+        </member>
         <member name="M:Labradoratory.DataAccess.IAsyncQueryResolver`1.AnyAsync(System.Threading.CancellationToken)">
             <summary>
             Asynchronously determines whether a sequence contains any elements.
