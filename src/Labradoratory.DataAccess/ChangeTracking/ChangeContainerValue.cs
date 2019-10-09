@@ -47,8 +47,6 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// </returns>
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
-            string property = "";
-
             if (!HasChanges)
                 return null;
 
@@ -62,7 +60,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (commit)
                 OldValue = null;
 
-            return new ChangeSet { { property, value } };
+            return new ChangeSet { { path, value } };
         }
 
         /// <summary>

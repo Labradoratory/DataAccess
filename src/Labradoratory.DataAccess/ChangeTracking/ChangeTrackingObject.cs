@@ -29,7 +29,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             var changes = new ChangeSet();
             foreach(var change in Changes)
             {
-                changes.Merge(change.Value.GetChangeSet($"{path}.{change.Key}", commit));
+                changes.Merge(change.Value.GetChangeSet(ChangeSet.CombinePaths(path, change.Key), commit));
             }
 
             return changes;

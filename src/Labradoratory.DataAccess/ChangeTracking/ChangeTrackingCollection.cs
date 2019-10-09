@@ -110,15 +110,17 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
             var changes = new ChangeSet();
-            var addIndex = 1;
             foreach(var item in Items)
             {
-                switch(item.Action)
-                {
-                    case ChangeAction.Add:
-                        changes.Merge(item.GetChangeSet($")
-                }
+                changes.Merge(item.GetChangeSet(path, commit));
             }
+
+            foreach(var removed in Removed)
+            {
+                changes.Merge(removed.GetChangeSet(path, commit));
+            }
+
+            return changes;
         }
 
         /// <inheritdoc />

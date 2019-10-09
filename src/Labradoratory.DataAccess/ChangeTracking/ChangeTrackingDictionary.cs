@@ -30,7 +30,9 @@ namespace Labradoratory.DataAccess.ChangeTracking
         public ChangeTrackingDictionary(IDictionary<TKey, TValue> items)
         {
             Items = new Dictionary<TKey, ChangeContainerItem<TValue>>(
-                items.Select(i => new KeyValuePair<TKey, ChangeContainerItem<TValue>>(i.Key, new ChangeContainerItem<TValue>(i.Value, ChangeAction.None))));
+                items.Select(i => new KeyValuePair<TKey, ChangeContainerItem<TValue>>(
+                    i.Key, 
+                    new ChangeContainerItem<TValue>(i.Value, ChangeTarget.Dictionary, ChangeAction.None))));
             Removed = new Dictionary<TKey, ChangeContainerItem<TValue>>();
         }
 
@@ -67,7 +69,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <inheritdoc />
         public void Add(TKey key, TValue value)
         {
-            Items.Add(key, new ChangeContainerItem<TValue>(value, ChangeAction.Add));
+            Items.Add(key, new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.Add));
         }
 
         /// <inheritdoc />
@@ -125,7 +127,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             // anymore, so the below does not apply.
             if (container.Action != ChangeAction.Add)
             {
-                container.Remove();
+                container.Action = ChangeAction.Remove;
                 Removed[key] = container;
             }
 
@@ -146,7 +148,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
             // anymore, so the below does not apply.
             if (container.Action != ChangeAction.Add)
             {
-                container.Remove();
+                container.Action = ChangeAction.Remove;
                 Removed.Add(item.Key, container);
             }
 

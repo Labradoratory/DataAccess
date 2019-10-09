@@ -43,7 +43,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <returns>A <see cref="ChangeSet"/> containing the committed changes.</returns>
         public static ChangeSet CommitChanges(this ITracksChanges target)
         {
-            return target.GetChangeSet(true);
+            return target.GetChangeSet(commit: true);
         }
     }
 }

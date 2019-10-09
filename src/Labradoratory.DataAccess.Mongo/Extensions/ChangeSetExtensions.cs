@@ -14,69 +14,64 @@ namespace Labradoratory.DataAccess.Mongo.Extensions
         public static UpdateDefinition<T> CreateUpdateDefinition<T>(this ChangeSet changeSet)
         {
             var ud = Builders<T>.Update.Combine();
-            switch(changeSet.Target)
+            foreach (var change in changeSet)
             {
-                case ChangeTarget.Object:
-                    return CreateUpdateDefinitionForObject(changeSet, ud);
-                case ChangeTarget.Collection:
-                    return CreateUpdateDefinitionForCollection(changeSet, ud);
-                case ChangeTarget.Dictionary:
-                    return CreateUpdateDefinitionForDictionary(changeSet, ud);
+                switch (change.Value.Target)
+                {
+                    case ChangeTarget.Object:
+                        return CreateUpdateDefinitionForObject(change.Key, change.Value, ud);
+                    case ChangeTarget.Collection:
+                        return CreateUpdateDefinitionForCollection(change.Key, change.Value, ud);
+                    case ChangeTarget.Dictionary:
+                        return CreateUpdateDefinitionForDictionary(change.Key, change.Value, ud);
+                }
             }
 
             return null;
         }
 
         private static UpdateDefinition<T> CreateUpdateDefinitionForDictionary<T>(
-            ChangeSet changeSet, 
+            string path,
+            ChangeValue value,
             UpdateDefinition<T> updateDefinition)
         {
-            foreach (var change in changeSet)
+            switch (value.Action)
             {
-                switch (change.Value.Action)
-                {
-                    case ChangeAction.Add:
-                        updateDefinition.Set(change.Key, change.Value.NewValue);
-                        break;
-                    case ChangeAction.Remove:
-                        updateDefinition.Unset(change.Key);
-                        break;
-                }
+                case ChangeAction.Add:
+                    updateDefinition = updateDefinition.Set(path, value.NewValue);
+                    break;
+                case ChangeAction.Remove:
+                    updateDefinition = updateDefinition.Unset(path);
+                    break;
             }
 
             return updateDefinition;
         }
 
         private static UpdateDefinition<T> CreateUpdateDefinitionForCollection<T>(
-            ChangeSet changeSet,
+            string path,
+            ChangeValue value,
             UpdateDefinition<T> updateDefinition)
         {
-            foreach(var change in changeSet)
+            switch (value.Action)
             {
-                switch(change.Value.Action)
-                {
-                    case ChangeAction.Add:
-                        updateDefinition.Push(change.Key, change.Value.NewValue);
-                        break;
-                    case ChangeAction.Remove:
-                        updateDefinition.Pull(change.Key, change.Value.OldValue);
-                        break;
-                }
+                case ChangeAction.Add:
+                    updateDefinition.Push(path, value.NewValue);
+                    break;
+                case ChangeAction.Remove:
+                    updateDefinition.Pull(path, value.OldValue);
+                    break;
             }
 
             return updateDefinition;
         }
 
         private static UpdateDefinition<T> CreateUpdateDefinitionForObject<T>(
-            ChangeSet changeSet,
+            string path,
+            ChangeValue value,
             UpdateDefinition<T> updateDefinition)
         {
-            foreach(var change in changeSet)
-            {
-                updateDefinition = updateDefinition.Set(change.Key, change.Value.NewValue);
-            }
-
-            return updateDefinition;
+            return updateDefinition.Set(path, value.NewValue);
         }
     }
 }

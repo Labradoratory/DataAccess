@@ -14,12 +14,16 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// Initializes a new instance of the <see cref="ChangeTrackingCollection{T}"/> class.
         /// </summary>
         /// <param name="item">The value the container represents</param>
+        /// <param name="target"></param>
         /// <param name="action">The action the container represents.</param>
-        public ChangeContainerItem(T item, ChangeAction action = ChangeAction.None)
+        public ChangeContainerItem(T item, ChangeTarget target, ChangeAction action = ChangeAction.None)
         {
-            _action = action;
+            Target = target;
             Item = item;
+            _action = action;
         }
+
+        public ChangeTarget Target { get; }
 
         /// <summary>
         /// Gets the action this change represents.
@@ -61,10 +65,71 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// </returns>
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
-            if (!HasChanges)
-                return null;
+            switch(Action)
+            {
+                case ChangeAction.Add:
+                    return ProcessAdd(path, commit);
+                case ChangeAction.Update:
+                    return ProcessUpdate(path, commit);
+                case ChangeAction.Remove:
+                    return ProcessRemove(path, commit);
+                default:
+                    return null;
+            }
+        }
 
-            throw new NotImplementedException();
+        private ChangeSet ProcessAdd(string path, bool commit)
+        {
+            if(commit)
+                Action = ChangeAction.None;
+
+            path = ChangeSet.CombinePaths(path, "add");
+            if (Item is ITracksChanges tc)
+                return tc.GetChangeSet(path, commit);
+
+            return new ChangeSet
+            {
+                {
+                    path,
+                    new ChangeValue
+                    {
+                        Target = Target,
+                        Action = Action,
+                        NewValue = Item
+                    }
+                }
+            };
+        }
+
+        private ChangeSet ProcessUpdate(string path, bool commit)
+        {
+            if (Item is ITracksChanges tc)
+                return tc.GetChangeSet(path, commit);
+
+            throw new InvalidOperationException($"Updates are not allowed for types that don't implement {nameof(ITracksChanges)}");
+        }
+
+        private ChangeSet ProcessRemove(string path, bool commit)
+        {
+            if (commit)
+                Action = ChangeAction.None;
+
+            path = ChangeSet.CombinePaths(path, "remove");
+            if (Item is ITracksChanges tc)
+                return tc.GetChangeSet(path, commit);
+
+            return new ChangeSet
+            {
+                {
+                    path,
+                    new ChangeValue
+                    {
+                        Target = Target,
+                        Action = Action,
+                        OldValue = Item
+                    }
+                }
+            };
         }
 
         /// <summary>
