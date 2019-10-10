@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ChangeTracking\" />
+    <ProjectReference Include="..\..\src\Labradoratory.DataAccess\Labradoratory.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
