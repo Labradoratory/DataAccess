@@ -280,6 +280,19 @@
             TODO
             </summary>
         </member>
+        <member name="M:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.CreateTrackable``1">
+            <summary>
+            Creates a new instance of type <typeparamref name="T"/> and
+            initializes its values with the default for each property.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns>The new, intialized instance.</returns>
+            <remarks>
+            This method should be used to create new instances of any <see cref="T:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject"/>
+            where you want to start tracking changes immediately.  If you do not use this method, 
+            the initial values set will not be treated as changes.
+            </remarks>
+        </member>
         <member name="P:Labradoratory.DataAccess.ChangeTracking.ChangeTrackingObject.Changes">
             <summary>
             Gets the collection of changes that are being tracked.

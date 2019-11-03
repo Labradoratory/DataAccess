@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Labradoratory.AspNetCore.JsonPatch.Patchable\Labradoratory.AspNetCore.JsonPatch.Patchable.csproj" />
-  </ItemGroup>
-
 </Project>

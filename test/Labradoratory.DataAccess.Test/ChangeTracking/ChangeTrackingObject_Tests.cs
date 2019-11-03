@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Labradoratory.DataAccess.ChangeTracking;
+﻿using Labradoratory.DataAccess.ChangeTracking;
 using Xunit;
 
 namespace Labradoratory.DataAccess.Test.ChangeTracking
@@ -13,6 +10,14 @@ namespace Labradoratory.DataAccess.Test.ChangeTracking
         {
             var subject = new TestObject();
             Assert.False(subject.HasChanges);
+        }
+
+        [Fact]
+        public void HasChanges_TrueWhenChanges()
+        {
+            var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
+            subject.StringValue = "NewValue";
+            Assert.True(subject.HasChanges);
         }
 
         private class TestObject : ChangeTrackingObject

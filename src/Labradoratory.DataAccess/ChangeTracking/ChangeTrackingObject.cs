@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Labradoratory.DataAccess.ChangeTracking
@@ -10,6 +11,33 @@ namespace Labradoratory.DataAccess.ChangeTracking
     /// </summary>
     public class ChangeTrackingObject : ITracksChanges
     {
+        /// <summary>
+        /// Creates a new instance of type <typeparamref name="T"/> and
+        /// initializes its values with the default for each property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The new, intialized instance.</returns>
+        /// <remarks>
+        /// This method should be used to create new instances of any <see cref="ChangeTrackingObject"/>
+        /// where you want to start tracking changes immediately.  If you do not use this method, 
+        /// the initial values set will not be treated as changes.
+        /// </remarks>
+        public static T CreateTrackable<T>() where T : ChangeTrackingObject, new()
+        {
+            var instance = new T();
+
+            var method = typeof(ChangeTrackingObject).GetMethod("SetDefaultValue", BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach(var pi in typeof(T)
+                .GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead && p.CanWrite))
+            {
+                var gm = method.MakeGenericMethod(pi.PropertyType);
+                gm.Invoke(instance, new object[] { pi.Name });
+            }
+
+            return instance;
+        }
+
         /// <summary>
         /// Gets the collection of changes that are being tracked.
         /// </summary>
@@ -72,8 +100,16 @@ namespace Labradoratory.DataAccess.ChangeTracking
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            Changes.TryAdd(propertyName, new ChangeContainerValue());
-            Changes[propertyName].CurrentValue = value;
+            if(!Changes.TryAdd(propertyName, new ChangeContainerValue(value)))
+                Changes[propertyName].CurrentValue = value;
         }
-    }    
+
+
+#pragma warning disable RCS1213 // Remove unused member declaration.  This is used via reflection.
+        private void SetDefaultValue<T>(string propertyName)
+        {
+            SetValue<T>(default, propertyName);
+        }
+#pragma warning restore RCS1213 // Remove unused member declaration.
+    }
 }

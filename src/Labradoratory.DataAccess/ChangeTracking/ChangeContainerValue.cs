@@ -8,6 +8,12 @@ namespace Labradoratory.DataAccess.ChangeTracking
     internal class ChangeContainerValue : ITracksChanges
     {
         private object currentValue;
+        private bool oldValueHasValue;
+
+        public ChangeContainerValue(object initialValue)
+        {
+            currentValue = initialValue;
+        }
 
         /// <summary>
         /// Gets or sets the current value.
@@ -17,8 +23,11 @@ namespace Labradoratory.DataAccess.ChangeTracking
             get => currentValue;
             set
             {
-                if (!HasChanges)
+                if (!oldValueHasValue)
+                {
+                    oldValueHasValue = true;
                     OldValue = currentValue;
+                }
 
                 currentValue = value;
             }
@@ -32,7 +41,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         /// <summary>
         /// Gets a value indicating whether this instance has changes.
         /// </summary>
-        public bool HasChanges => OldValue != null || ((CurrentValue as ITracksChanges)?.HasChanges ?? false);
+        public bool HasChanges => oldValueHasValue || ((CurrentValue as ITracksChanges)?.HasChanges ?? false);
 
         /// <summary>
         /// Gets the current changes as a <see cref="ChangeSet" />.
@@ -58,7 +67,10 @@ namespace Labradoratory.DataAccess.ChangeTracking
             };
 
             if (commit)
+            {
                 OldValue = null;
+                oldValueHasValue = false;
+            }
 
             return new ChangeSet { { path, value } };
         }
@@ -70,6 +82,7 @@ namespace Labradoratory.DataAccess.ChangeTracking
         {
             CurrentValue = OldValue;
             OldValue = null;
+            oldValueHasValue = false;
         }
     }
 }
