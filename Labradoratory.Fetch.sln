@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{33262418-D92E-47F2-9D60-CDC9B0AA5021}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{69AC5702-2C35-4024-98AE-654A9AB07043}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.Fetch", "src\Labradoratory.Fetch\Labradoratory.Fetch.csproj", "{71263C17-9FC4-49B2-8D71-7739E901DB38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.Fetch.Test", "test\Labradoratory.Fetch.Test\Labradoratory.Fetch.Test.csproj", "{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.Fetch.Mongo", "src\Labradoratory.Fetch.Mongo\Labradoratory.Fetch.Mongo.csproj", "{6CDA4F41-374E-44B6-8336-AD17CF892DD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A812C894-3CD8-4263-B2D2-E850814B017A}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.Fetch.Mongo.Test", "test\Labradoratory.Fetch.Mongo.Test\Labradoratory.Fetch.Mongo.Test.csproj", "{F5C17BD1-6329-4A85-B53F-E92722EADAE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71263C17-9FC4-49B2-8D71-7739E901DB38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71263C17-9FC4-49B2-8D71-7739E901DB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71263C17-9FC4-49B2-8D71-7739E901DB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71263C17-9FC4-49B2-8D71-7739E901DB38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5C17BD1-6329-4A85-B53F-E92722EADAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5C17BD1-6329-4A85-B53F-E92722EADAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5C17BD1-6329-4A85-B53F-E92722EADAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5C17BD1-6329-4A85-B53F-E92722EADAE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71263C17-9FC4-49B2-8D71-7739E901DB38} = {33262418-D92E-47F2-9D60-CDC9B0AA5021}
+		{CBAE9BA2-90FB-43E0-900D-D935A44ED96F} = {69AC5702-2C35-4024-98AE-654A9AB07043}
+		{6CDA4F41-374E-44B6-8336-AD17CF892DD4} = {33262418-D92E-47F2-9D60-CDC9B0AA5021}
+		{F5C17BD1-6329-4A85-B53F-E92722EADAE5} = {69AC5702-2C35-4024-98AE-654A9AB07043}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {738AA367-5637-44C1-B35F-5DD4775B824D}
+	EndGlobalSection
+EndGlobal
