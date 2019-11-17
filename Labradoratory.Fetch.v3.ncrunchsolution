@@ -1,0 +1,10 @@
+﻿<SolutionConfiguration>
+  <Settings>
+    <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>test\Labradoratory.Fetch.Test\Labradoratory.Fetch.Test.csproj</Value>
+      <Value>test\Labradoratory.Fetch.Mongo.Test\Labradoratory.Fetch.Mongo.Test.csproj</Value>
+    </MetricsExclusionList>
+    <SolutionConfigured>True</SolutionConfigured>
+  </Settings>
+</SolutionConfiguration>

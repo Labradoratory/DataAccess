@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Labradoratory.AspNetCore.JsonPatch.Patchable;
+using System.Collections.Generic;
 
 namespace Labradoratory.Fetch.Controllers
 {
@@ -122,7 +124,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpPatch, Route("")]
-        public async Task<IActionResult> Update(object[] keys, JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(object[] keys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
             var entity = await Repository.FindAsync(keys, cancellationToken);
             if (entity == null)
@@ -130,7 +132,11 @@ namespace Labradoratory.Fetch.Controllers
 
             var view = Mapper.Map<TView>(entity);
 
-            // TODO: Apply patch to view
+            var errors = new List<JsonPatchError>();
+            patch.ApplyToIfPatchable(view, error => errors.Add(error));
+
+            if (errors.Count > 0)
+                return BadRequest(errors);
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);

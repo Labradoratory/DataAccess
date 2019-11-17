@@ -1,4 +1,5 @@
-﻿using Labradoratory.Fetch.ChangeTracking;
+﻿using System;
+using Labradoratory.Fetch.ChangeTracking;
 using Xunit;
 
 namespace Labradoratory.Fetch.Test.ChangeTracking
@@ -94,6 +95,14 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.False(subject.HasChanges);
             var changes = subject.GetChangeSet(commit: true);
             Assert.Null(changes);
+        }
+
+        [Fact]
+        public void GetChangeSet_ThrowWhenPathNull()
+        {
+            var subject = new ChangeContainerValue("Initial Value");
+            subject.CurrentValue = "new value";
+            Assert.Throws<ArgumentNullException>(() => subject.GetChangeSet(null));
         }
     }
 }

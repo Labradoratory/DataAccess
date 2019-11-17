@@ -39,6 +39,14 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
+        public void GetValue_ReturnsDefaultWhenNotSet()
+        {
+            var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
+            var result = subject.TestGetValue<int>("someproperty");
+            Assert.Equal(default, result);
+        }
+
+        [Fact]
         public void SetValue_Success()
         {
             var expectedValue = "My expected value";
@@ -54,6 +62,18 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.Throws<ArgumentNullException>(() => subject.TestSetValue("test value", null));
         }
 
+        [Fact]
+        public void Reset_ClearsAllChanges()
+        {
+            var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
+            subject.IntValue = 100;
+            subject.StringValue = "test";
+            subject.NestedValue = new NestedObject();
+            Assert.True(subject.HasChanges);
+            subject.Reset();
+            Assert.False(subject.HasChanges);
+        }
+
         private class TestObject : ChangeTrackingObject
         {
             public string StringValue
@@ -62,9 +82,9 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
                 set => SetValue(value);
             }
 
-            public string IntValue
+            public int IntValue
             {
-                get => GetValue<string>();
+                get => GetValue<int>();
                 set => SetValue(value);
             }
 
