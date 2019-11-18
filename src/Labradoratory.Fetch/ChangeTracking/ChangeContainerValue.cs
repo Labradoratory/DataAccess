@@ -62,6 +62,9 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
 
+            if (CurrentValue is ITracksChanges tc)
+                return tc.GetChangeSet(path, commit);
+
             var value = new ChangeValue
             {
                 OldValue = OldValue,

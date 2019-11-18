@@ -67,6 +67,22 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
+        public void GetChangeSet_GeneratesCorrectChangeSetForITracksChanges()
+        {
+            var path = "Key";
+            var expectedKey = $"{path}.{nameof(NestedObject.StringValue)}";
+            var nested = ChangeTrackingObject.CreateTrackable<NestedObject>();
+            var subject = new ChangeContainerValue(nested);
+
+            nested.StringValue = "My new value;";
+
+            var changes = subject.GetChangeSet(path);
+
+            Assert.Single(changes);
+            Assert.True(changes.ContainsKey(expectedKey));
+        }
+
+        [Fact]
         public void GetChangeSet_CommitFalseKeepsChanges()
         {
             var subject = new ChangeContainerValue("Initial Value");
@@ -103,6 +119,15 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var subject = new ChangeContainerValue("Initial Value");
             subject.CurrentValue = "new value";
             Assert.Throws<ArgumentNullException>(() => subject.GetChangeSet(null));
+        }
+
+        private class NestedObject : ChangeTrackingObject
+        {
+            public string StringValue
+            {
+                get => GetValue<string>();
+                set => SetValue(value);
+            }
         }
     }
 }

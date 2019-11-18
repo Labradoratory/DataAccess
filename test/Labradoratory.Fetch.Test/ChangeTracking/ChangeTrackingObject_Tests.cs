@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Labradoratory.Fetch.ChangeTracking;
 using Xunit;
 
@@ -72,6 +73,30 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.True(subject.HasChanges);
             subject.Reset();
             Assert.False(subject.HasChanges);
+        }
+
+        [Fact]
+        public void GetChangeSet_HasChangesFalse_ReturnsNull()
+        {
+            var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
+            Assert.False(subject.HasChanges);
+            var result = subject.GetChangeSet();
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void GetChangeSet_HasChangesTrue_ReturnsMergedChangeSet()
+        {
+            var subject = new TestObject()
+            {
+                IntValue = 50,
+                StringValue = "The old value"
+            };
+            subject.IntValue = 100;
+            subject.StringValue = "The new value";
+
+            var result = subject.GetChangeSet();
+            Assert.Equal(2, result.Count);    
         }
 
         private class TestObject : ChangeTrackingObject

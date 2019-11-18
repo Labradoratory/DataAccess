@@ -20,11 +20,16 @@ namespace Labradoratory.Fetch.ChangeTracking
             {
                 if (string.IsNullOrWhiteSpace(path2))
                     return string.Empty;
-                
+
                 return path2;
             }
-            
-            return "${path1}.{path2}";
+            else
+            {
+                if (string.IsNullOrWhiteSpace(path2))
+                    return path1;
+            }
+
+            return $"{path1}.{path2}";
         }
 
         /// <summary>
