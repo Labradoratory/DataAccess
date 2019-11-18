@@ -27,6 +27,8 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         public ChangeTarget Target { get; }
 
+        private bool ItemHasChanges => (Item as ITracksChanges)?.HasChanges ?? false;
+
         /// <summary>
         /// Gets the action this change represents.
         /// </summary>
@@ -42,8 +44,6 @@ namespace Labradoratory.Fetch.ChangeTracking
             set => _action = value;
         }
 
-        private bool ItemHasChanges => (Item as ITracksChanges)?.HasChanges ?? false;
-
         /// <summary>
         /// Gets or sets the current value.
         /// </summary>
@@ -54,7 +54,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             {
                 Action = ChangeAction.Update;
                 if (!_oldItem.HasValue)
-                    _oldItem.Value = value;
+                    _oldItem.Value = _item;
 
                 _item = value;
             }
@@ -82,13 +82,13 @@ namespace Labradoratory.Fetch.ChangeTracking
             switch (Action)
             {
                 case ChangeAction.Add:
-                    changes = ProcessAdd(path, commit);
+                    changes = ProcessAdd(path);
                     break;
                 case ChangeAction.Update:
                     changes = ProcessUpdate(path, commit);
                     break;
                 case ChangeAction.Remove:
-                    changes = ProcessRemove(path, commit);
+                    changes = ProcessRemove(path);
                     break;
                 default:
                     return null;
@@ -103,14 +103,9 @@ namespace Labradoratory.Fetch.ChangeTracking
             return changes;
         }
 
-        private ChangeSet ProcessAdd(string path, bool commit)
+        private ChangeSet ProcessAdd(string path)
         {
-            if(commit)
-                Action = ChangeAction.None;
-
             path = ChangeSet.CombinePaths(path, "add");
-            if (Item is ITracksChanges tc)
-                return tc.GetChangeSet(path, commit);
 
             return new ChangeSet
             {
@@ -151,15 +146,9 @@ namespace Labradoratory.Fetch.ChangeTracking
             throw new InvalidOperationException($"Updates are not allowed for types that don't implement {nameof(ITracksChanges)}");
         }
 
-        private ChangeSet ProcessRemove(string path, bool commit)
+        private ChangeSet ProcessRemove(string path)
         {
-            if (commit)
-                Action = ChangeAction.None;
-
             path = ChangeSet.CombinePaths(path, "remove");
-            if (Item is ITracksChanges tc)
-                return tc.GetChangeSet(path, commit);
-
             return new ChangeSet
             {
                 {
