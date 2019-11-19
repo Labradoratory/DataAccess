@@ -52,14 +52,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         {
             while(Items.Count > 0)
             {
-                var container = Items[0];
-                Items.RemoveAt(0);
-                // If the item was an add, we can just get rid of it.
-                if (container.Action != ChangeAction.Add)
-                {
-                    container.Action = ChangeAction.Remove;
-                    Removed.Add(container);
-                }
+                RemoveItemAt(0);
             }
         }
 
@@ -91,16 +84,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (index < 0)
                 return false;
 
-            var container = Items[index];
-            Items.RemoveAt(index);
-            // If the item being removed was added, that means we don't need to track it 
-            // anymore, so the below does not apply.
-            if (container.Action != ChangeAction.Add)
-            {
-                container.Action = ChangeAction.Remove;
-                Removed.Add(container);
-            }
-
+            RemoveItemAt(index);
             return true;
         }
 
@@ -157,6 +141,19 @@ namespace Labradoratory.Fetch.ChangeTracking
                 removed.Reset();
                 // Just add the item back, order doesn't really matter.
                 Items.Add(removed);
+            }
+        }
+
+        private void RemoveItemAt(int index)
+        {
+            var container = Items[index];
+            Items.RemoveAt(index);
+            // If the item being removed was added, that means we don't need to track it 
+            // anymore, so the below does not apply.
+            if (container.Action != ChangeAction.Add)
+            {
+                container.Action = ChangeAction.Remove;
+                Removed.Add(container);
             }
         }
     }

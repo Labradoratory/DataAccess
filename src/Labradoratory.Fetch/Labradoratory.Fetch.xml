@@ -671,6 +671,37 @@
             <param name="query">A root query to use for additional querying.</param>
             <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="TResult"/>.</returns>
         </member>
+        <member name="T:Labradoratory.Fetch.Processors.BaseEntityProcessor`2">
+            <summary>
+            The base implementation of a processor that handles an <see cref="T:Labradoratory.Fetch.Entity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of entity handled by the processor.</typeparam>
+            <typeparam name="TDataPackage">The type of the data package.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.Priority">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.ProcessAsync(`1)">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1">
+            <summary>
+            A base implementation of a <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that contains <see cref="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity"/> data.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity">
+            <summary>
+            Gets the entity that was added.
+            </summary>
+        </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage">
             <summary>
             Represents a piece of data that is to be processed.
@@ -750,11 +781,6 @@
             </summary>
             <param name="entity">The entity being added.</param>
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityAddedPackage`1.Entity">
-            <summary>
-            Gets the entity that was added.
-            </summary>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1">
             <summary>
             The data related to adding a <typeparamref name="TEntity"/>.
@@ -767,11 +793,6 @@
             Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1"/> class.
             </summary>
             <param name="entity">The entity being added.</param>
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1.Entity">
-            <summary>
-            Gets the entity that is being added.
-            </summary>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage`1">
             <summary>
@@ -786,11 +807,6 @@
             </summary>
             <param name="entity">The entity was deleted.</param>
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage`1.Entity">
-            <summary>
-            Gets the entity that was deleted.
-            </summary>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1">
             <summary>
             The data related to deleting a <typeparamref name="TEntity"/>.
@@ -803,11 +819,6 @@
             Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1"/> class.
             </summary>
             <param name="entity">The entity being deleted.</param>
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1.Entity">
-            <summary>
-            Gets the entity that is being deleted.
-            </summary>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1">
             <summary>
@@ -822,11 +833,6 @@
             </summary>
             <param name="entity">The entity that was updated.</param>
             <param name="changes">The changes that were made.</param>
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1.Entity">
-            <summary>
-            Gets the entity that was updated.
-            </summary>
         </member>
         <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1.Changes">
             <summary>
@@ -846,34 +852,12 @@
             </summary>
             <param name="entity">The entity being updated.</param>
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage`1.Entity">
-            <summary>
-            Gets the entity that is being updated.
-            </summary>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityAddedProcessor`1">
             <summary>
             Processes an <typeparamref name="TEntity"/> that was added.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityAddedProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityAddedProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityAddedPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityAddingProcessor`1">
             <summary>
@@ -882,46 +866,12 @@
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityAddingProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityAddingProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityDeletedProcessor`1">
             <summary>
             Processes an <typeparamref name="TEntity"/> that was deleted.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityDeletedProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityDeletedProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityDeletingProcessor`1">
             <summary>
@@ -930,23 +880,6 @@
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityDeletingProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityDeletingProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityUpdatedProcessor`1">
             <summary>
             Processes an <typeparamref name="TEntity"/> that was updated.
@@ -954,46 +887,12 @@
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityUpdatedProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityUpdatedProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.EntityUpdatingProcessor`1">
             <summary>
             Processes an <typeparamref name="TEntity"/> being updated.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.EntityUpdatingProcessor`1.Priority">
-            <summary>
-            Gets the priority with which the processor should execute.
-            </summary>
-            <remarks>
-            TODO
-            </remarks>
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.EntityUpdatingProcessor`1.ProcessAsync(Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage{`0})">
-            <summary>
-            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" /> asynchronously.
-            </summary>
-            <param name="package">The package to be processed.</param>
-            <returns>
-            The task.
-            </returns>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.IProcessor`1">
             <summary>
