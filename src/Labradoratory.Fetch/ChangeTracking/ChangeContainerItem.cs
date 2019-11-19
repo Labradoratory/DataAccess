@@ -97,7 +97,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (commit)
             {
                 _oldItem.Reset();
-                Reset();
+                _action = ChangeAction.None;
             }
 
             return changes;

@@ -159,7 +159,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_ContainsAdds()
+        public void GetChangeSet_CommitFalse_ContainsAdds()
         {
             var subject = new ChangeTrackingCollection<TestItem>();
             var expectedItem = new TestItem();
@@ -167,6 +167,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var path = "path";
             var expectedKey = $"{path}.1.add";
             var result = subject.GetChangeSet(path);
+            Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
             Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
@@ -178,7 +179,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_ContainsRemoves()
+        public void GetChangeSet_CommitFalse_ContainsRemoves()
         {
             var expectedRemove = new TestItem();
             var expectedItems = new List<TestItem>
@@ -192,6 +193,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectedKey = $"{path}.1.remove";
             Assert.True(subject.Remove(expectedRemove));
             var result = subject.GetChangeSet(path);
+            Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
             Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
@@ -203,7 +205,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_ContainsUpdates()
+        public void GetChangeSet_CommitFalse_ContainsUpdates()
         {
             var expectedOldValue = "My old value";
             var expectedNewValue = "The new value";
@@ -222,6 +224,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectedKey = $"{path}.1.{nameof(TestItem.StringValue)}";
             expectedUpdate.StringValue = expectedNewValue;
             var result = subject.GetChangeSet(path);
+            Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
             Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
@@ -230,6 +233,66 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.Equal(ChangeTarget.Object, change.Target);
             Assert.Equal(expectedNewValue, change.NewValue);
             Assert.Equal(expectedOldValue, change.OldValue);
+        }
+
+        [Fact]
+        public void GetChangeSet_CommitTrue_MakesChangesPermanent()
+        {
+            var removeMe = ChangeTrackingObject.CreateTrackable<TestItem>();
+            var expectedUpdate = ChangeTrackingObject.CreateTrackable<TestItem>();
+            var expectedItems = new List<TestItem>
+            {
+                removeMe,
+                expectedUpdate
+            };
+            var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
+            subject.Add(new TestItem());
+            subject.Remove(removeMe);
+            var expectedNewValue = "New Value";
+            expectedUpdate.StringValue = expectedNewValue;
+
+            var result = subject.GetChangeSet(commit: true);
+            Assert.Equal(3, result.Count);
+            Assert.False(subject.HasChanges);
+            Assert.False(expectedUpdate.HasChanges);
+            Assert.Equal(expectedNewValue, expectedUpdate.StringValue);
+            Assert.DoesNotContain(removeMe, subject);
+            Assert.Equal(2, subject.Count);
+        }
+
+        [Fact]
+        public void Reset_HasChangesTrue_ResetsAllchanges()
+        {
+            var removeMe = new TestItem();
+            var expectedOldValue = "My old value";
+            var expectedNewValue = "The new value";
+            var expectedUpdate = new TestItem
+            {
+                StringValue = expectedOldValue
+            };
+            var expectedItems = new List<TestItem>
+            {
+                removeMe,
+                expectedUpdate
+            };
+            var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
+            expectedUpdate.StringValue = expectedNewValue;
+            subject.Add(new TestItem());
+            subject.Remove(removeMe);
+
+            subject.Reset();
+
+            Assert.False(subject.HasChanges);
+            var changes = subject.GetChangeSet();
+            Assert.Null(changes);
+            Assert.False(expectedUpdate.HasChanges);
+        }
+
+        [Fact]
+        public void Reset_HasChangesFalse_DoesNothing()
+        {
+            var subject = new ChangeTrackingCollection<TestItem>();
+            subject.Reset();
         }
 
         private class TestItem : ChangeTrackingObject

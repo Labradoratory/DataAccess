@@ -97,6 +97,9 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
+            if (!HasChanges)
+                return null;
+
             var changes = new ChangeSet();
             // In order to have unique keys in the set, we add an integer to each
             // add/remove paths (key).  This value can be ignored during processing.
@@ -118,12 +121,18 @@ namespace Labradoratory.Fetch.ChangeTracking
                         commit));
             }
 
+            if (commit)
+                Removed.Clear();
+
             return changes;
         }
 
         /// <inheritdoc />
         public void Reset()
         {
+            if (!HasChanges)
+                return;
+
             // Remove all adds and reset the rest.
             for(var i = 0; i < Items.Count; )
             {
@@ -145,6 +154,7 @@ namespace Labradoratory.Fetch.ChangeTracking
                 // Just add the item back, order doesn't really matter.
                 Items.Add(removed);
             }
+            Removed.Clear();
         }
 
         private void RemoveItemAt(int index)
