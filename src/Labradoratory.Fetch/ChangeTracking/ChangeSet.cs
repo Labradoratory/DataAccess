@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -15,7 +16,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>The combined paths.</returns>
         public static string CombinePaths(params string[] paths)
         {
-            return String.Join('.', paths);
+            return string.Join('.', paths.Where(p => !string.IsNullOrWhiteSpace(p)));
         }
 
         /// <summary>

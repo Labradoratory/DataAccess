@@ -261,6 +261,13 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
+        public void GetChangeSet_NullWhenNoChanges()
+        {
+            var subject = new ChangeTrackingCollection<TestItem>();
+            Assert.Null(subject.GetChangeSet());
+        }
+
+        [Fact]
         public void Reset_HasChangesTrue_ResetsAllchanges()
         {
             var removeMe = new TestItem();

@@ -50,7 +50,17 @@ namespace Labradoratory.Fetch.ChangeTracking
             get => Items[key].Item;
             // NOTE: I thought about making a value set like this just be a remove plus an add instead
             // of tracking as an update.  Either way would make sense, but we'll go with update for now.
-            set => Items[key].Item = value;
+            set
+            {
+                if (Items.TryGetValue(key, out var container))
+                {
+                    container.Item = value;
+                }
+                else
+                {
+                    Items[key] = new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.Add);
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -176,12 +186,39 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public ChangeSet GetChangeSet(string path = "", bool commit = false)
         {
-            throw new NotImplementedException();
+            if (!HasChanges)
+                return null;
+
+            var changes = new ChangeSet();
+
+            foreach (var item in Items.Where(i => i.Value.HasChanges))
+            {
+                changes.Merge(
+                    item.Value.GetChangeSet(
+                        ChangeSet.CombinePaths(path, item.Key.ToString()),
+                        commit));
+            }
+
+            foreach (var removed in Removed)
+            {
+                changes.Merge(
+                    removed.Value.GetChangeSet(
+                        ChangeSet.CombinePaths(path, removed.Key.ToString()),
+                        commit));
+            }
+
+            if (commit)
+                Removed.Clear();
+
+            return changes;
         }
 
         /// <inheritdoc />
         public void Reset()
         {
+            if (!HasChanges)
+                return;
+
             // Remove all adds and reset the rest.
             foreach(var item in Items.ToList())
             {
@@ -197,6 +234,8 @@ namespace Labradoratory.Fetch.ChangeTracking
                 removed.Value.Reset();
                 Items.Add(removed.Key, removed.Value);
             }
+
+            Removed.Clear();
         }
     }
 }
