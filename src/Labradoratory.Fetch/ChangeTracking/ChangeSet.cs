@@ -11,25 +11,11 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <summary>
         /// Combines the paths into one.
         /// </summary>
-        /// <param name="path1">The path1.</param>
-        /// <param name="path2">The path2.</param>
+        /// <param name="paths">The paths to combine.</param>
         /// <returns>The combined paths.</returns>
-        public static string CombinePaths(string path1, string path2)
+        public static string CombinePaths(params string[] paths)
         {
-            if (string.IsNullOrWhiteSpace(path1))
-            {
-                if (string.IsNullOrWhiteSpace(path2))
-                    return string.Empty;
-
-                return path2;
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(path2))
-                    return path1;
-            }
-
-            return $"{path1}.{path2}";
+            return String.Join('.', paths);
         }
 
         /// <summary>

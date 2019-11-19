@@ -15,36 +15,6 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var part2 = "Part2";
             var expectedResult = $"{part1}.{part2}";
             var result = ChangeSet.CombinePaths(part1, part2);
-            Assert.Equal(expectedResult, result);    
-        }
-
-        [Fact]
-        public void CombinePaths_NullValue()
-        {
-            var part1 = default(string);
-            var part2 = "Part2";
-            var expectedResult = $"{part2}";
-            var result = ChangeSet.CombinePaths(part1, part2);
-            Assert.Equal(expectedResult, result);
-        }
-
-        [Fact]
-        public void CombinePaths_ValueNull()
-        {
-            var part1 = "Part1";
-            var part2 = default(string);
-            var expectedResult = $"{part1}";
-            var result = ChangeSet.CombinePaths(part1, part2);
-            Assert.Equal(expectedResult, result);
-        }
-
-        [Fact]
-        public void CombinePaths_NullNull()
-        {
-            var part1 = default(string);
-            var part2 = default(string);
-            var expectedResult = string.Empty;
-            var result = ChangeSet.CombinePaths(part1, part2);
             Assert.Equal(expectedResult, result);
         }
 

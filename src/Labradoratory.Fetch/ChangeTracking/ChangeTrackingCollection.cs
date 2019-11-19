@@ -101,18 +101,21 @@ namespace Labradoratory.Fetch.ChangeTracking
             // In order to have unique keys in the set, we add an integer to each
             // add/remove paths (key).  This value can be ignored during processing.
             var changeIndex = 1;
-            foreach(var item in Items)
+            foreach(var item in Items.Where(i => i.HasChanges))
             {
-                // Each ChangeContainerItem ChangeSet should only contain one item, so we get the first.
-                var itemChange = item.GetChangeSet(path, commit).First();
-                changes.Add($"{itemChange.Key}{changeIndex++}", itemChange.Value);
+                changes.Merge(
+                    item.GetChangeSet(
+                        ChangeSet.CombinePaths(path, (changeIndex++).ToString()),
+                        commit));
             }
 
             changeIndex = 1;
             foreach(var removed in Removed)
             {
-                var removedChange = removed.GetChangeSet(path, commit).First();
-                changes.Add($"{removedChange.Key}{changeIndex++}", removedChange.Value);
+                changes.Merge(
+                    removed.GetChangeSet(
+                        ChangeSet.CombinePaths(path, (changeIndex++).ToString()),
+                        commit));
             }
 
             return changes;
