@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Labradoratory.AspNetCore.JsonPatch.Patchable;
 using System.Collections.Generic;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Labradoratory.Fetch.Controllers
 {
@@ -21,7 +23,7 @@ namespace Labradoratory.Fetch.Controllers
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">The mapper to use for object conversion.</param>
-        protected EntityRepositoryController(Repository<TEntity> repository, IMapper mapper)
+        public EntityRepositoryController(Repository<TEntity> repository, IMapper mapper)
             : base(repository, mapper)
         {}
     }
@@ -71,18 +73,60 @@ namespace Labradoratory.Fetch.Controllers
         [HttpGet, Route("")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            if(await CheckAllowGetAsync(cancellationToken))
+            if(await CheckAllowPreGetAllAsync(cancellationToken))
                 return Unauthorized();
 
-            return Ok(Repository.GetAsyncQueryResolver().ToListAsync());
+            return Ok(
+                Mapper.Map<IEnumerable<TView>>(
+                    await FilterAccessibleEntities(
+                        await Repository.GetAsyncQueryResolver().ToListAsync(),
+                        cancellationToken)));
         }
 
         /// <summary>
-        /// Checks whether or not the get operation is allowed.
+        /// Checks whether or not the get all operation is allowed for the user.
         /// </summary>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task that will contain the results.  TRUE, the get operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<bool> CheckAllowGetAsync(CancellationToken cancellationToken)
+        protected virtual Task<bool> CheckAllowPreGetAllAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// Filters the list of entities to just those the user is allowed to access.
+        /// </summary>
+        /// <param name="entities">The list of entities to filter.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <returns>The task that will contain the results.  TRUE, the get operation is allowed; Otherwise, FALSE.</returns>
+        protected virtual Task<IEnumerable<TEntity>> FilterAccessibleEntities(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(entities);
+        }
+
+        /// <summary>
+        /// Gets all of the entities.
+        /// </summary>
+        /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <returns></returns>
+        [HttpGet, Route("{encodedKeys}")]
+        public async Task<IActionResult> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
+        {
+            var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
+            if (await CheckAllowGetByKeysAsync(keys, cancellationToken))
+                return Unauthorized();
+
+            return Ok(Mapper.Map<IEnumerable<TView>>(await Repository.GetAsyncQueryResolver().ToListAsync()));
+        }
+
+        /// <summary>
+        /// Checks whether or not the entity specified by the keys can be accessed by the current user.
+        /// </summary>
+        /// <param name="keys">The keys to check.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <returns></returns>
+        protected virtual Task<bool> CheckAllowGetByKeysAsync(object[] keys, CancellationToken cancellationToken)
         {
             return Task.FromResult(true);
         }
@@ -119,13 +163,14 @@ namespace Labradoratory.Fetch.Controllers
         /// <summary>
         /// Handles an entity update request.
         /// </summary>
-        /// <param name="keys">The keys identifying the entity being updated.</param>
+        /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="patch">The patch to apply to the entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
-        [HttpPatch, Route("")]
-        public async Task<IActionResult> Update(object[] keys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
+        [HttpPatch, Route("encodedKeys")]
+        public async Task<IActionResult> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
+            var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
             if (entity == null)
                 return NotFound();
@@ -136,16 +181,16 @@ namespace Labradoratory.Fetch.Controllers
             patch.ApplyToIfPatchable(view, error => errors.Add(error));
 
             if (errors.Count > 0)
-                return BadRequest(errors);
+                return BadRequest(errors);            
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
-
+            
             if (await CheckAllowUpdateAsync(entity, cancellationToken))
                 return Unauthorized();
 
-            await Repository.UpdateAsync(null, cancellationToken);
-            return Ok(null);
+            await Repository.UpdateAsync(entity, cancellationToken);
+            return Ok(entity);
         }
 
         /// <summary>

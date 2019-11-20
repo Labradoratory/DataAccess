@@ -111,12 +111,11 @@
             Contains a set of changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.CombinePaths(System.String,System.String)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.CombinePaths(System.String[])">
             <summary>
             Combines the paths into one.
             </summary>
-            <param name="path1">The path1.</param>
-            <param name="path2">The path2.</param>
+            <param name="paths">The paths to combine.</param>
             <returns>The combined paths.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Merge(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
