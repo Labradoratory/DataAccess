@@ -77,6 +77,16 @@ namespace Labradoratory.Fetch.Mongo.Test
                 return ToKeys(Id);
             }
 
+            public override string EncodeKeys()
+            {
+                return string.Join('.', GetKeys());
+            }
+
+            public override object[] DecodeKeys(string encodedKeys)
+            {
+                return encodedKeys.Split('.');
+            }
+
             [BsonId]
             public string Id { get; set; }
 

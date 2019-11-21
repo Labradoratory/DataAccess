@@ -41,7 +41,7 @@ namespace Labradoratory.Fetch
         /// Gets the instance's keys as a URL friendly string.
         /// </summary>
         /// <returns>The string representation of the entity's keys.</returns>
-        public abstract string EncodedKeys();
+        public abstract string EncodeKeys();
 
         /// <summary>
         /// Decodes the string encoded keys.

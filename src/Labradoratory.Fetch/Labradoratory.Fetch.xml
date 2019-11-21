@@ -4,6 +4,35 @@
         <name>Labradoratory.Fetch</name>
     </assembly>
     <members>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies">
+            <summary>
+            The names of <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationPolicy"/> instances related to <see cref="T:Labradoratory.Fetch.Entity"/> access.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetAll">
+            <summary>Resource authorize policy for getting all of a type of entity.</summary>
+            <remarks>The resource will be a <see cref="T:System.Type"/> of entity.</remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetSome">
+            <summary>Resource authorize policy for getting some of a type of entity.</summary>
+            <remarks>The resource will be list of entities that should be filtered to only those accessible.</remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetOne">
+            <summary>Resource authorize policy for gettings single entity.</summary>
+            <remarks>The resource is the instance of the entity.</remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Update">
+            <summary>Resource authorize policy for updating an entity.</summary>
+            <remarks>The resource is the instance of the entity.</remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Add">
+            <summary>Resource authorize policy for updating an entity.</summary>
+            <remarks>The resource is the instance of the entity.</remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Delete">
+            <summary>Resource authorize policy for deleting an entity.</summary>
+            <remarks>The resource is the instance of the entity.</remarks>
+        </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeAction">
             <summary>
             Represents the type of change.
@@ -426,12 +455,13 @@
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2" />
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`1"/> base class.
             </summary>
             <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
             <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="authorizationService"></param>
         </member>
         <member name="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2">
             <summary>
@@ -444,7 +474,7 @@
             This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
             </typeparam>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2"/> base class.
             </summary>
@@ -453,6 +483,7 @@
             The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
             between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
             </param>
+            <param name="authorizationService">The authorization service.</param>
         </member>
         <member name="P:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Repository">
             <summary>
@@ -464,6 +495,11 @@
             Gets the object conversion mapper.
             </summary>
         </member>
+        <member name="P:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.AuthorizationService">
+            <summary>
+            Gets the authorization service.
+            </summary>
+        </member>
         <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetAll(System.Threading.CancellationToken)">
             <summary>
             Gets all of the entities.
@@ -471,12 +507,13 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.CheckAllowGetAsync(System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetByKeys(System.String,System.Threading.CancellationToken)">
             <summary>
-            Checks whether or not the get operation is allowed.
+            Gets all of the entities.
             </summary>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-            <returns>The task that will contain the results.  TRUE, the get operation is allowed; Otherwise, FALSE.</returns>
+            <returns></returns>
         </member>
         <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Add(`1,System.Threading.CancellationToken)">
             <summary>
@@ -486,30 +523,14 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.CheckAllowAddAsync(`0,System.Threading.CancellationToken)">
-            <summary>
-            Checks whether or not the add operation is allowed.
-            </summary>
-            <param name="entity">The entity being added.</param>
-            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-            <returns>The task that will contain the results.  TRUE, the add operation is allowed; Otherwise, FALSE.</returns>
-        </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Update(System.Object[],Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Update(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
             <summary>
             Handles an entity update request.
             </summary>
-            <param name="keys">The keys identifying the entity being updated.</param>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
             <param name="patch">The patch to apply to the entity.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
-        </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.CheckAllowUpdateAsync(`0,System.Threading.CancellationToken)">
-            <summary>
-            Checks whether or not the update operation is allowed.
-            </summary>
-            <param name="entity">The entity being updated.</param>
-            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-            <returns>The task that will contain the results.  TRUE, the update operation is allowed; Otherwise, FALSE.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Delete(System.Object[],System.Threading.CancellationToken)">
             <summary>
@@ -519,13 +540,12 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.CheckAllowDeleteAsync(`0,System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.AuthorizationFailed(Microsoft.AspNetCore.Authorization.AuthorizationResult)">
             <summary>
-            Checks whether or not the delete operation is allowed.
+            Handles a failed authorization.
             </summary>
-            <param name="entity">The entity being deleted.</param>
-            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-            <returns>The task that will contain the results.  TRUE, the delete operation is allowed; Otherwise, FALSE.</returns>
+            <param name="authorizationResult">The authorization result.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> respresenting the failure.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.Entity">
             <summary>
@@ -539,11 +559,32 @@
             <param name="keys">The key values to convert to an array.  Order of the keys is important to an entity.</param>
             <returns>The provided key values as an array.</returns>
         </member>
+        <member name="M:Labradoratory.Fetch.Entity.DecodeKeys``1(System.String)">
+            <summary>
+            Decodes the keys using the specified <see cref="T:Labradoratory.Fetch.Entity"/> type.
+            </summary>
+            <typeparam name="T">The type to use to decode the keys.</typeparam>
+            <param name="encodedKeys">The encoded keys to decode.</param>
+            <returns>The decoded keys.</returns>
+        </member>
         <member name="M:Labradoratory.Fetch.Entity.GetKeys">
             <summary>
             Gets the keys that uniquely identify the entity in storage.
             </summary>
             <returns>An array of uniquely identifying values.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.EncodeKeys">
+            <summary>
+            Gets the instance's keys as a URL friendly string.
+            </summary>
+            <returns>The string representation of the entity's keys.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.DecodeKeys(System.String)">
+            <summary>
+            Decodes the string encoded keys.
+            </summary>
+            <param name="encodedKeys">The encoded keys to decode.</param>
+            <returns>The decoded keys.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.IAsyncQueryResolver`1">
             <summary>

@@ -18,16 +18,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>.\Labradoratory.Fetch.xml</DocumentationFile>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(NCrunch)' == '1'">
-    <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
-    <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
-    <GenerateGitVersionInformation>false</GenerateGitVersionInformation>
-    <GetVersion>false</GetVersion>
-    <GenerateGitVersionWixDefines>false</GenerateGitVersionWixDefines>
-    <UpdateVersionProperties>false</UpdateVersionProperties>
-    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />

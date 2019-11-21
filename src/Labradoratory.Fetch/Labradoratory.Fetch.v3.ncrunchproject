@@ -1,3 +1,7 @@
 ﻿<ProjectConfiguration>
-  <Settings />
+  <Settings>
+    <CustomBuildProperties>
+      <Value>DisableGitVersionTask = true</Value>
+    </CustomBuildProperties>
+  </Settings>
 </ProjectConfiguration>

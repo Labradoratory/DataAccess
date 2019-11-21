@@ -1,15 +1,17 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Labradoratory.AspNetCore.JsonPatch.Patchable;
+using Labradoratory.Fetch.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Labradoratory.AspNetCore.JsonPatch.Patchable;
-using System.Collections.Generic;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Labradoratory.Fetch.Controllers
 {
+    // TODO: Add security hooks.
+
     /// <summary>
     /// A base controller implementation that provides add, update and delete functionality for an entity.
     /// </summary>
@@ -23,8 +25,12 @@ namespace Labradoratory.Fetch.Controllers
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">The mapper to use for object conversion.</param>
-        public EntityRepositoryController(Repository<TEntity> repository, IMapper mapper)
-            : base(repository, mapper)
+        /// <param name="authorizationService"></param>
+        public EntityRepositoryController(
+            Repository<TEntity> repository, 
+            IMapper mapper,
+            IAuthorizationService authorizationService)
+            : base(repository, mapper, authorizationService)
         {}
     }
 
@@ -49,10 +55,15 @@ namespace Labradoratory.Fetch.Controllers
         /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
         /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
         /// </param>
-        protected EntityRepositoryController(Repository<TEntity> repository, IMapper mapper)
+        /// <param name="authorizationService">The authorization service.</param>
+        protected EntityRepositoryController(
+            Repository<TEntity> repository,
+            IMapper mapper,
+            IAuthorizationService authorizationService)
         {
             Repository = repository;
             Mapper = mapper;
+            AuthorizationService = authorizationService;
         }
 
         /// <summary>
@@ -66,6 +77,11 @@ namespace Labradoratory.Fetch.Controllers
         protected IMapper Mapper { get; }
 
         /// <summary>
+        /// Gets the authorization service.
+        /// </summary>
+        protected IAuthorizationService AuthorizationService { get; }
+
+        /// <summary>
         /// Gets all of the entities.
         /// </summary>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
@@ -73,35 +89,16 @@ namespace Labradoratory.Fetch.Controllers
         [HttpGet, Route("")]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            if(await CheckAllowPreGetAllAsync(cancellationToken))
-                return Unauthorized();
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, typeof(TEntity), EntityAuthorizationPolicies.GetAll);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
+                
+            var entities = await Repository.GetAsyncQueryResolver().ToListAsync(cancellationToken);
+            authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
 
-            return Ok(
-                Mapper.Map<IEnumerable<TView>>(
-                    await FilterAccessibleEntities(
-                        await Repository.GetAsyncQueryResolver().ToListAsync(),
-                        cancellationToken)));
-        }
-
-        /// <summary>
-        /// Checks whether or not the get all operation is allowed for the user.
-        /// </summary>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The task that will contain the results.  TRUE, the get operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<bool> CheckAllowPreGetAllAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(true);
-        }
-
-        /// <summary>
-        /// Filters the list of entities to just those the user is allowed to access.
-        /// </summary>
-        /// <param name="entities">The list of entities to filter.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The task that will contain the results.  TRUE, the get operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<IEnumerable<TEntity>> FilterAccessibleEntities(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(entities);
+            return Ok(Mapper.Map<IEnumerable<TView>>(entities));
         }
 
         /// <summary>
@@ -114,21 +111,15 @@ namespace Labradoratory.Fetch.Controllers
         public async Task<IActionResult> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
-            if (await CheckAllowGetByKeysAsync(keys, cancellationToken))
-                return Unauthorized();
+            var entity = await Repository.FindAsync(keys, cancellationToken);
+            if (entity == null)
+                return NotFound();
 
-            return Ok(Mapper.Map<IEnumerable<TView>>(await Repository.GetAsyncQueryResolver().ToListAsync()));
-        }
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.GetOne);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
 
-        /// <summary>
-        /// Checks whether or not the entity specified by the keys can be accessed by the current user.
-        /// </summary>
-        /// <param name="keys">The keys to check.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns></returns>
-        protected virtual Task<bool> CheckAllowGetByKeysAsync(object[] keys, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(true);
+            return Ok(Mapper.Map<TView>(entity));
         }
 
         /// <summary>
@@ -141,23 +132,12 @@ namespace Labradoratory.Fetch.Controllers
         public async Task<IActionResult> Add(TView view, CancellationToken cancellationToken)
         {
             var entity = Mapper.Map<TEntity>(view);
-
-            if (await CheckAllowAddAsync(entity, cancellationToken))
-                return Unauthorized();
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
 
             await Repository.AddAsync(entity, cancellationToken);
             return Ok(Mapper.Map<TView>(entity));
-        }
-
-        /// <summary>
-        /// Checks whether or not the add operation is allowed.
-        /// </summary>
-        /// <param name="entity">The entity being added.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The task that will contain the results.  TRUE, the add operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<bool> CheckAllowAddAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -175,33 +155,23 @@ namespace Labradoratory.Fetch.Controllers
             if (entity == null)
                 return NotFound();
 
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Update);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
+
             var view = Mapper.Map<TView>(entity);
 
             var errors = new List<JsonPatchError>();
             patch.ApplyToIfPatchable(view, error => errors.Add(error));
 
             if (errors.Count > 0)
-                return BadRequest(errors);            
+                return BadRequest(errors);       
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
             
-            if (await CheckAllowUpdateAsync(entity, cancellationToken))
-                return Unauthorized();
-
             await Repository.UpdateAsync(entity, cancellationToken);
             return Ok(entity);
-        }
-
-        /// <summary>
-        /// Checks whether or not the update operation is allowed.
-        /// </summary>
-        /// <param name="entity">The entity being updated.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The task that will contain the results.  TRUE, the update operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<bool> CheckAllowUpdateAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -217,8 +187,9 @@ namespace Labradoratory.Fetch.Controllers
             if (entity == null)
                 return NotFound();
 
-            if (await CheckAllowDeleteAsync(entity, cancellationToken))
-                return Unauthorized();
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Delete);
+            if (!authorizationResult.Succeeded)
+                return AuthorizationFailed(authorizationResult);
 
             await Repository.DeleteAsync(entity, cancellationToken);
 
@@ -226,14 +197,17 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
-        /// Checks whether or not the delete operation is allowed.
+        /// Handles a failed authorization.
         /// </summary>
-        /// <param name="entity">The entity being deleted.</param>
-        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns>The task that will contain the results.  TRUE, the delete operation is allowed; Otherwise, FALSE.</returns>
-        protected virtual Task<bool> CheckAllowDeleteAsync(TEntity entity, CancellationToken cancellationToken)
+        /// <param name="authorizationResult">The authorization result.</param>
+        /// <returns>An <see cref="IActionResult"/> respresenting the failure.</returns>
+        protected virtual IActionResult AuthorizationFailed(AuthorizationResult authorizationResult)
         {
-            return Task.FromResult(true);
+            // TODO: Should we pass something back?
+            if (User.Identity.IsAuthenticated)
+                return Forbid();
+
+            return Unauthorized();
         }
     }
 }

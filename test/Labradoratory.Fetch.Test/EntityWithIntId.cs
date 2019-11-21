@@ -9,7 +9,7 @@ namespace Labradoratory.Fetch.Test
             return ToKeys(Id);
         }
 
-        public override string EncodedKeys()
+        public override string EncodeKeys()
         {
             return Id.ToString();
         }
