@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Labradoratory.Fetch.Processors.DataPackages;
 
 namespace Labradoratory.Fetch.Processors
@@ -21,7 +22,8 @@ namespace Labradoratory.Fetch.Processors
         /// Processes the provided <see cref="DataPackage"/> asynchronously.
         /// </summary>
         /// <param name="package">The package to be processed.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
-        Task ProcessAsync(T package);
+        Task ProcessAsync(T package, CancellationToken cancellationToken = default);
     }
 }

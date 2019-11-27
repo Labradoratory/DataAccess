@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Labradoratory.Fetch.ChangeTracking;
@@ -80,8 +81,11 @@ namespace Labradoratory.Fetch
         /// </summary>
         /// <param name="entity">The entity with updates.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
+        public async Task<ChangeSet> UpdateAsync(T entity, CancellationToken cancellationToken)
         {
+            if (!entity.HasChanges)
+                return null;
+
             var updatingPackage = new EntityUpdatingPackage<T>(entity);
             await ProcessorPipeline.ProcessAsync(updatingPackage, cancellationToken);
 
@@ -90,6 +94,8 @@ namespace Labradoratory.Fetch
 
             var updatedPackage = new EntityUpdatedPackage<T>(entity, changes);
             await ProcessorPipeline.ProcessAsync(updatedPackage, cancellationToken);
+
+            return changes;
         }
 
         /// <summary>
@@ -145,6 +151,6 @@ namespace Labradoratory.Fetch
         /// <returns>
         /// An instance of an async query resolver that queries <typeparamref name="T" /> and returns results as <typeparamref name="TResult" />.
         /// </returns>
-        public abstract IAsyncQueryResolver<TResult> GetAsyncQueryResolver<TResult>(System.Func<IQueryable<T>, IQueryable<TResult>> query);
+        public abstract IAsyncQueryResolver<TResult> GetAsyncQueryResolver<TResult>(Func<IQueryable<T>, IQueryable<TResult>> query);
     }
 }

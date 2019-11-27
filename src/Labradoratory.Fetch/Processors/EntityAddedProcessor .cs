@@ -10,6 +10,5 @@ namespace Labradoratory.Fetch.Processors
     /// <seealso cref="IProcessor{TEntity}" />
     public abstract class EntityAddedProcessor<TEntity> : BaseEntityProcessor<TEntity, EntityAddedPackage<TEntity>>
         where TEntity : Entity
-    {
-    } 
+    { } 
 }

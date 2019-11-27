@@ -11,9 +11,9 @@ namespace Labradoratory.Fetch.Processors
     /// <remarks>
     /// 
     /// </remarks>
-    public class ProcessorPipeline
+    public sealed class ProcessorPipeline
     {
-        private AsyncLocal<DataPackage> Current { get; }
+        private AsyncLocal<DataPackage> Current { get; } = new AsyncLocal<DataPackage>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessorPipeline"/> class.
@@ -27,7 +27,7 @@ namespace Labradoratory.Fetch.Processors
         /// <summary>
         /// Gets the provider of <see cref="DataPackage"/> processors.
         /// </summary>
-        protected IProcessorProvider ProcessorProvider { get; }
+        private IProcessorProvider ProcessorProvider { get; }
 
         /// <summary>
         /// Processes the provided <see cref="DataPackage"/>.
@@ -46,9 +46,9 @@ namespace Labradoratory.Fetch.Processors
             // to determine what initiated the processing.
             Current.Value = package;
             
-            foreach (var processor in ProcessorProvider.GetProcessors<T>().OrderBy(p => p.Priority))
+            foreach (var processor in ProcessorProvider.GetProcessors<T>().OrderByDescending(p => p.Priority))
             {
-                await processor.ProcessAsync(package);
+                await processor.ProcessAsync(package, cancellationToken);
             }
         }
     }        

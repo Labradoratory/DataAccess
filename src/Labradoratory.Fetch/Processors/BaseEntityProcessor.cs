@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Labradoratory.Fetch.Processors.DataPackages;
 
 namespace Labradoratory.Fetch.Processors
@@ -17,6 +18,6 @@ namespace Labradoratory.Fetch.Processors
         public abstract uint Priority { get; }
 
         /// <inheritdoc />
-        public abstract Task ProcessAsync(TDataPackage package);
+        public abstract Task ProcessAsync(TDataPackage package, CancellationToken cancellationToken = default);
     }
 }

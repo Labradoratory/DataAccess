@@ -27,7 +27,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="mapper">The mapper to use for object conversion.</param>
         /// <param name="authorizationService"></param>
         public EntityRepositoryController(
-            Repository<TEntity> repository, 
+            Repository<TEntity> repository,
             IMapper mapper,
             IAuthorizationService authorizationService)
             : base(repository, mapper, authorizationService)

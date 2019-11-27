@@ -722,7 +722,7 @@
         <member name="P:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.Priority">
             <inheritdoc />
         </member>
-        <member name="M:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.ProcessAsync(`1)">
+        <member name="M:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.ProcessAsync(`1,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1">
@@ -948,11 +948,12 @@
             TODO
             </remarks>
         </member>
-        <member name="M:Labradoratory.Fetch.Processors.IProcessor`1.ProcessAsync(`0)">
+        <member name="M:Labradoratory.Fetch.Processors.IProcessor`1.ProcessAsync(`0,System.Threading.CancellationToken)">
             <summary>
             Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> asynchronously.
             </summary>
             <param name="package">The package to be processed.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.Processors.IProcessorProvider">
