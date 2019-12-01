@@ -507,6 +507,13 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.FilterGetAll(System.Linq.IQueryable{`0})">
+            <summary>
+            Applies a filter to the query executed when <see cref="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetAll(System.Threading.CancellationToken)" /> is called.
+            </summary>
+            <param name="query">The query to apply the filter to.</param>
+            <returns>The filtered query.</returns>
+        </member>
         <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetByKeys(System.String,System.Threading.CancellationToken)">
             <summary>
             Gets all of the entities.
@@ -532,11 +539,11 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Delete(System.Object[],System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Delete(System.String,System.Threading.CancellationToken)">
             <summary>
             Handle an entity delete request.
             </summary>
-            <param name="keys">The keys that identify the entity to delete.</param>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>

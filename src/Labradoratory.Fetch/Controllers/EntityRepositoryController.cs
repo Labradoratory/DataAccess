@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -93,12 +94,22 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
                 
-            var entities = await Repository.GetAsyncQueryResolver().ToListAsync(cancellationToken);
+            var entities = await Repository.GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken);
             authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome);
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
             return Ok(Mapper.Map<IEnumerable<TView>>(entities));
+        }
+
+        /// <summary>
+        /// Applies a filter to the query executed when <see cref="GetAll(CancellationToken)" /> is called.
+        /// </summary>
+        /// <param name="query">The query to apply the filter to.</param>
+        /// <returns>The filtered query.</returns>
+        protected virtual IQueryable<TEntity> FilterGetAll(IQueryable<TEntity> query)
+        {
+            return query;
         }
 
         /// <summary>
@@ -177,12 +188,13 @@ namespace Labradoratory.Fetch.Controllers
         /// <summary>
         /// Handle an entity delete request.
         /// </summary>
-        /// <param name="keys">The keys that identify the entity to delete.</param>
+        /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
-        [HttpDelete, Route("")]
-        public async Task<IActionResult> Delete(object[] keys, CancellationToken cancellationToken)
+        [HttpDelete, Route("{encodedKeys")]
+        public async Task<IActionResult> Delete(string encodedKeys, CancellationToken cancellationToken)
         {
+            var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
             if (entity == null)
                 return NotFound();
@@ -203,7 +215,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <returns>An <see cref="IActionResult"/> respresenting the failure.</returns>
         protected virtual IActionResult AuthorizationFailed(AuthorizationResult authorizationResult)
         {
-            // TODO: Should we pass something back?
+            // TODO: Should we pass something back?  A message?
             if (User.Identity.IsAuthenticated)
                 return Forbid();
 
