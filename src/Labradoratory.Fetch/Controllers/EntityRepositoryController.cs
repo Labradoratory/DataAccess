@@ -182,7 +182,7 @@ namespace Labradoratory.Fetch.Controllers
             Mapper.Map(view, entity);
             
             await Repository.UpdateAsync(entity, cancellationToken);
-            return Ok(entity);
+            return Ok(Mapper.Map<TView>(entity));
         }
 
         /// <summary>
