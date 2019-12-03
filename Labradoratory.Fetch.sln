@@ -13,10 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labradoratory.Fetch.Test", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A812C894-3CD8-4263-B2D2-E850814B017A}"
 	ProjectSection(SolutionItems) = preProject
-		..\JsonPatch.Patchable\azure-pipelines.yml = ..\JsonPatch.Patchable\azure-pipelines.yml
-		..\JsonPatch.Patchable\CODE_OF_CONDUCT.md = ..\JsonPatch.Patchable\CODE_OF_CONDUCT.md
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
 		gitversion.yml = gitversion.yml
-		..\JsonPatch.Patchable\LICENSE = ..\JsonPatch.Patchable\LICENSE
+		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject

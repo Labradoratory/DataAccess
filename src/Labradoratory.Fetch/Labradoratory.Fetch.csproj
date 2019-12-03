@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Ed Downs</Authors>
     <Company>Labradoratory</Company>
-    <Description>TODO</Description>
+    <Description>Fetch is a base implementation of the repository pattern that includes a processing pipeline for extending the functionality of a respository.  This library also includes entity change tracking to support the pipeline system and base controller implementations to get service implementations off the ground quickly.</Description>
     <Copyright>2019</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl />
