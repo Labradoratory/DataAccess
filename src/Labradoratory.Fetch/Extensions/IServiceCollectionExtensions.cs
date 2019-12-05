@@ -13,14 +13,14 @@ namespace Labradoratory.Fetch.Extensions
         /// <summary>
         /// Adds the dependencies for the Fetch library.
         /// </summary>
-        /// <param name="sericeCollection">The serice collection.</param>
-        /// <returns></returns>
-        public static IServiceCollection AddFetch(this IServiceCollection sericeCollection)
+        /// <param name="serviceCollection">The serice collection.</param>
+        /// <returns>The <paramref name="serviceCollection"/>.</returns>
+        public static IServiceCollection AddFetch(this IServiceCollection serviceCollection)
         {
-            sericeCollection.TryAddSingleton<ProcessorPipeline>();
-            sericeCollection.TryAddSingleton<IProcessorProvider, DefaultProcessorProvider>();
+            serviceCollection.TryAddSingleton<ProcessorPipeline>();
+            serviceCollection.TryAddSingleton<IProcessorProvider, DefaultProcessorProvider>();
 
-            return sericeCollection;
+            return serviceCollection;
         }
     }
 }

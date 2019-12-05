@@ -98,6 +98,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(a => a.Forbid())
                 .CallBase();
+            mockSubject
+                .Setup(c => c.GetAll(It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -150,6 +153,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(a => a.Unauthorized())
                 .CallBase();
+            mockSubject
+                .Setup(c => c.GetAll(It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -180,6 +186,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null,
                 null,
                 mockAuthorizationService.Object);
+            mockSubject
+                .Setup(c => c.GetAll(It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject
                 .Protected()
                 .Setup<IActionResult>("AuthorizationFailed", ItExpr.IsAny<AuthorizationResult>())
@@ -257,6 +266,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
+                .CallBase();
+            mockSubject
+                .Setup(c => c.GetAll(It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -353,6 +365,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
                 .CallBase();
+            mockSubject
+                .Setup(c => c.GetAll(It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -422,6 +437,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Forbid())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.GetByKeys(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -494,6 +512,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Unauthorized())
                 .CallBase();
+            mockSubject
+                .Setup(c => c.GetByKeys(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -565,6 +586,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
                 .CallBase();
+            mockSubject
+                .Setup(c => c.GetByKeys(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -609,6 +633,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null);
             mockSubject
                 .Setup(c => c.NotFound())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.GetByKeys(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
 
             var subject = mockSubject.Object;
@@ -668,6 +695,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Forbid())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -732,6 +762,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Unauthorized())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -810,6 +843,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
                 .CallBase();
+            mockSubject
+                .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -861,6 +897,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null);
             mockSubject
                 .Setup(c => c.NotFound())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
 
             var subject = mockSubject.Object;
@@ -921,6 +960,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Forbid())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -986,6 +1028,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Unauthorized())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1074,6 +1119,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1170,6 +1218,9 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.BadRequest(It.IsAny<object>()))
                 .CallBase();
+            mockSubject
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
+                .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -1208,6 +1259,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null);
             mockSubject
                 .Setup(c => c.NotFound())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
 
             var subject = mockSubject.Object;
@@ -1268,6 +1322,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Forbid())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1333,6 +1390,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .CallBase();
             mockSubject
                 .Setup(c => c.Unauthorized())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1405,6 +1465,9 @@ namespace Labradoratory.Fetch.Test.Controllers
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.Ok())
+                .CallBase();
+            mockSubject
+                .Setup(c => c.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(

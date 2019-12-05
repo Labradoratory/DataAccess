@@ -88,7 +88,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpGet, Route("")]
-        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        public virtual async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, typeof(TEntity), EntityAuthorizationPolicies.GetAll);
             if (!authorizationResult.Succeeded)
@@ -119,7 +119,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpGet, Route("{encodedKeys}")]
-        public async Task<IActionResult> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
+        public virtual async Task<IActionResult> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
@@ -140,7 +140,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpPost, Route("")]
-        public async Task<IActionResult> Add(TView view, CancellationToken cancellationToken)
+        public virtual async Task<IActionResult> Add(TView view, CancellationToken cancellationToken)
         {
             var entity = Mapper.Map<TEntity>(view);
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add);
@@ -159,7 +159,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpPatch, Route("encodedKeys")]
-        public async Task<IActionResult> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
+        public virtual async Task<IActionResult> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
@@ -176,7 +176,7 @@ namespace Labradoratory.Fetch.Controllers
             patch.ApplyToIfPatchable(view, error => errors.Add(error));
 
             if (errors.Count > 0)
-                return BadRequest(errors);       
+                return BadRequest(errors);   
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
@@ -192,7 +192,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
         [HttpDelete, Route("{encodedKeys")]
-        public async Task<IActionResult> Delete(string encodedKeys, CancellationToken cancellationToken)
+        public virtual async Task<IActionResult> Delete(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
