@@ -554,6 +554,21 @@
             <param name="authorizationResult">The authorization result.</param>
             <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> respresenting the failure.</returns>
         </member>
+        <member name="T:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider">
+            <summary>
+            A default implementation of <see cref="T:Labradoratory.Fetch.Processors.IProcessorProvider"/> that uses the Microsoft
+            dependency injection system to find relavent <see cref="T:Labradoratory.Fetch.Processors.IProcessor`1"/> instances.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider.#ctor(System.IServiceProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider"/> class.
+            </summary>
+            <param name="serviceProvider">The service provider.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider.GetProcessors``1">
+            <inheritdoc />
+        </member>
         <member name="T:Labradoratory.Fetch.Entity">
             <summary>
             Represents a storable, entity withing the data access framework.
@@ -592,6 +607,31 @@
             </summary>
             <param name="encodedKeys">The encoded keys to decode.</param>
             <returns>The decoded keys.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IEnumerableExtensions">
+            <summary>
+            Methods to make working with <see cref="T:System.Collections.Generic.IEnumerable`1"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEnumerableExtensions.EmptyIfNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns an empty enumerable if the <paramref name="target"/> enumerable is null.
+            </summary>
+            <typeparam name="T">The type contained in the enumerable.</typeparam>
+            <param name="target">The target.</param>
+            <returns>An empty enumerable if the target is null; Otherwise, returns the <paramref name="target"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetch(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the dependencies for the Fetch library.
+            </summary>
+            <param name="serviceCollection">The serice collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.IAsyncQueryResolver`1">
             <summary>

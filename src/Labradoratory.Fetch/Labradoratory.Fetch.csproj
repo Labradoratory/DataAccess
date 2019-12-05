@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Ed Downs</Authors>
     <Company>Labradoratory</Company>
     <Description>Fetch is a base implementation of the repository pattern that includes a processing pipeline for extending the functionality of a respository.  This library also includes entity change tracking to support the pipeline system and base controller implementations to get service implementations off the ground quickly.</Description>
@@ -15,18 +15,14 @@
     <PackageTags>repository, aspnetcore</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <DocumentationFile>.\Labradoratory.Fetch.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="GitVersionTask" Version="5.1.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="1.0.20" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.0.0" />
+    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="1.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
