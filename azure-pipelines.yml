@@ -74,6 +74,15 @@ steps:
     projects: '**/*Test/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  condition: and(succeeded(), variables['publishArtifacts'])
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    nobuild: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'GitVersion.SemVer'
+
 - task: CopyFiles@2
   condition: and(succeeded(), variables['publishArtifacts'])
   inputs:
