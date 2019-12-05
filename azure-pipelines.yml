@@ -79,9 +79,7 @@ steps:
   condition: and(succeeded(), variables['publishArtifacts'])
   inputs:
     command: 'pack'
-    packagesToPack: |
-      **/*.csproj
-      !**/*Test.csproj
+    packagesToPack: '!**/*Test.csproj;**/*.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.SemVer'  
