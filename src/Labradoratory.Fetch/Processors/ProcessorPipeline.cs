@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Labradoratory.Fetch.Extensions;
 using Labradoratory.Fetch.Processors.DataPackages;
 
 namespace Labradoratory.Fetch.Processors
@@ -46,7 +47,7 @@ namespace Labradoratory.Fetch.Processors
             // to determine what initiated the processing.
             Current.Value = package;
             
-            foreach (var processor in ProcessorProvider.GetProcessors<T>().OrderByDescending(p => p.Priority))
+            foreach (var processor in ProcessorProvider.GetProcessors<T>().EmptyIfNull().OrderByDescending(p => p.Priority))
             {
                 await processor.ProcessAsync(package, cancellationToken);
             }

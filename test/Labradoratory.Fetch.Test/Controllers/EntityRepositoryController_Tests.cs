@@ -108,7 +108,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.True(result is ForbidResult);
+            Assert.IsType<ForbidResult>(result);
 
             mockSubject.Protected().Verify("AuthorizationFailed",
                 Times.Once(),
@@ -160,7 +160,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.True(result is UnauthorizedResult);
+            Assert.IsType<UnauthorizedResult>(result);
 
             mockSubject.Protected().Verify("AuthorizationFailed",
                 Times.Once(),
@@ -268,7 +268,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.True(result is OkObjectResult);
+            Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.Equal(expectedList, okResult.Value);
 
@@ -433,7 +433,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is ForbidResult);
+            Assert.IsType<ForbidResult>(result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -504,7 +504,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is UnauthorizedResult);
+            Assert.IsType<UnauthorizedResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -575,7 +575,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is OkObjectResult);
+            Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.Equal(expectedEntity, okResult.Value);
 
@@ -614,7 +614,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is NotFoundResult);
+            Assert.IsType<NotFoundResult>(result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -679,7 +679,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedEntity, CancellationToken.None);
-            Assert.True(result is ForbidResult);
+            Assert.IsType<ForbidResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -743,7 +743,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedEntity, CancellationToken.None);
-            Assert.True(result is UnauthorizedResult);
+            Assert.IsType<UnauthorizedResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -820,7 +820,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedViewEntity, CancellationToken.None);
-            Assert.True(result is OkObjectResult);
+            Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.Same(expectedViewEntity, okResult.Value);
 
@@ -866,7 +866,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.True(result is NotFoundResult);
+            Assert.IsType<NotFoundResult>(result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -932,7 +932,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.True(result is ForbidResult);
+            Assert.IsType<ForbidResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -997,7 +997,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.True(result is UnauthorizedResult);
+            Assert.IsType<UnauthorizedResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -1089,7 +1089,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             patch.Replace(e => e.StringValue, expectedNewValue);
 
             var result = await subject.Update(expectedEncodedKeys, patch, CancellationToken.None);
-            Assert.True(result is OkObjectResult);
+            Assert.IsType<OkObjectResult>(result);
             var okResult = result as OkObjectResult;
             Assert.Same(expectedViewEntity, okResult.Value);
             // Make sure patch was applied.
@@ -1183,7 +1183,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             patch.Replace(e => e.Id, 54321);
 
             var result = await subject.Update(expectedEncodedKeys, patch, CancellationToken.None);
-            Assert.True(result is BadRequestObjectResult);
+            Assert.IsType<BadRequestObjectResult>(result);
 
             mockSubject.Verify(c => c.BadRequest(
                 It.Is<object>(v => v is IEnumerable<JsonPatchError>)),
@@ -1213,7 +1213,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Delete(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is NotFoundResult);
+            Assert.IsType<NotFoundResult>(result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -1279,7 +1279,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Delete(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is ForbidResult);
+            Assert.IsType<ForbidResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -1344,7 +1344,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Delete(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is UnauthorizedResult);
+            Assert.IsType<UnauthorizedResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -1416,7 +1416,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Delete(expectedEncodedKeys, CancellationToken.None);
-            Assert.True(result is OkResult);
+            Assert.IsType<OkResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),

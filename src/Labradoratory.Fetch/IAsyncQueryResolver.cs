@@ -63,7 +63,7 @@ namespace Labradoratory.Fetch
         /// </summary>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
-        Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken);
+        Task<T> FirstOrDefaultAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Asynchronously returns the first element of a sequence that satisfies a specified condition or a default value if no such element is found.

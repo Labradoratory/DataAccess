@@ -49,7 +49,7 @@ namespace Labradoratory.Fetch
         /// <param name="keys">The keys that uniquely identify the <typeparamref name="T"/>.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task containing the result of the find.</returns>
-        public abstract Task<T> FindAsync(object[] keys, CancellationToken cancellationToken);
+        public abstract Task<T> FindAsync(object[] keys, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds an entity.
@@ -57,7 +57,7 @@ namespace Labradoratory.Fetch
         /// <param name="entity">The entity.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        public async Task AddAsync(T entity, CancellationToken cancellationToken)
+        public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
         {
             var addingPackage = new EntityAddingPackage<T>(entity);
             await ProcessorPipeline.ProcessAsync(addingPackage, cancellationToken);
@@ -81,7 +81,7 @@ namespace Labradoratory.Fetch
         /// </summary>
         /// <param name="entity">The entity with updates.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task<ChangeSet> UpdateAsync(T entity, CancellationToken cancellationToken)
+        public async Task<ChangeSet> UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
             if (!entity.HasChanges)
                 return null;
@@ -113,7 +113,7 @@ namespace Labradoratory.Fetch
         /// <param name="entity">The entity to delete.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
+        public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
         {
             var deletingPackage = new EntityDeletingPackage<T>(entity);
             await ProcessorPipeline.ProcessAsync(deletingPackage, cancellationToken);
