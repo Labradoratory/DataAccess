@@ -49,7 +49,7 @@ steps:
     preferBundledVersion: false
 
 - script: echo %Action%%BuildVersion%
-  displayName: 'Set build version'
+  displayName: 'Set build version $(GitVersion.SemVer)'
   env:
     Action: '##vso[build.updatebuildnumber]'
     BuildVersion: $(GitVersion.SemVer)
@@ -79,7 +79,7 @@ steps:
   condition: and(succeeded(), variables['publishArtifacts'])
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj;!**/*.Tests.csproj'
+    packagesToPack: '**/*.csproj;!**/*.Test.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.SemVer'
