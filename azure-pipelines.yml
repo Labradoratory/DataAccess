@@ -79,10 +79,10 @@ steps:
   condition: and(succeeded(), variables['publishArtifacts'])
   inputs:
     command: 'pack'
-    packagesToPack: '!**/*Test/*.csproj;**/*.csproj'
+    packagesToPack: '**/*.csproj;!**/*.Tests.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
-    versionEnvVar: 'GitVersion.SemVer'  
+    versionEnvVar: 'GitVersion.SemVer'
 
 - task: PublishBuildArtifacts@1
   condition: and(succeeded(), variables['publishArtifacts'])
