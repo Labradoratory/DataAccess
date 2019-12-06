@@ -49,7 +49,7 @@ steps:
     preferBundledVersion: false
 
 - script: echo %Action%%BuildVersion%
-  displayName: 'Set build version $(GitVersion.SemVer)'
+  displayName: 'Set build version'
   env:
     Action: '##vso[build.updatebuildnumber]'
     BuildVersion: $(GitVersion.SemVer)
