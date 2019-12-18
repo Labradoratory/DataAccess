@@ -453,7 +453,7 @@
             A base controller implementation that provides add, update and delete functionality for an entity.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2" />
+            <seealso cref="!:EntityRepositoryController&lt;TEntity, TEntity&gt;" />
         </member>
         <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
@@ -463,7 +463,7 @@
             <param name="mapper">The mapper to use for object conversion.</param>
             <param name="authorizationService"></param>
         </member>
-        <member name="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2">
+        <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`2">
             <summary>
             A base controller implementation that provides add, update and delete functionality for an entity
             and a specialized view class to return to clients.
@@ -474,9 +474,9 @@
             This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
             </typeparam>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
-            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.EntityRepositoryController`2"/> base class.
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class.
             </summary>
             <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
             <param name="mapper">
@@ -485,36 +485,36 @@
             </param>
             <param name="authorizationService">The authorization service.</param>
         </member>
-        <member name="P:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Repository">
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Repository">
             <summary>
             Gets the data access instance for <typeparamref name="TEntity"/>.
             </summary>
         </member>
-        <member name="P:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Mapper">
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Mapper">
             <summary>
             Gets the object conversion mapper.
             </summary>
         </member>
-        <member name="P:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.AuthorizationService">
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AuthorizationService">
             <summary>
             Gets the authorization service.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetAll(System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAll(System.Threading.CancellationToken)">
             <summary>
             Gets all of the <typeparamref name="TView"/> instances.
             </summary>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The collection of <typeparamref name="TView"/>.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.FilterGetAll(System.Linq.IQueryable{`0})">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.FilterGetAll(System.Linq.IQueryable{`0})">
             <summary>
-            Applies a filter to the query executed when <see cref="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetAll(System.Threading.CancellationToken)" /> is called.
+            Applies a filter to the query executed when <see cref="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAll(System.Threading.CancellationToken)" /> is called.
             </summary>
             <param name="query">The query to apply the filter to.</param>
             <returns>The filtered query.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.GetByKeys(System.String,System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetByKeys(System.String,System.Threading.CancellationToken)">
             <summary>
             Gets the specified instance of <typeparamref name="TView"/>.
             </summary>
@@ -522,7 +522,7 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The instance of <typeparamref name="TView"/>.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Add(`1,System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Add(`1,System.Threading.CancellationToken)">
             <summary>
             Addes the provided instance of <typeparamref name="TView"/>.
             </summary>
@@ -530,7 +530,7 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The instance of <typeparamref name="TView"/> that was added.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Update(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Update(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
             <summary>
             Updates the specified instance of <typeparamref name="TView"/>.
             </summary>
@@ -539,7 +539,7 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The instance of <typeparamref name="TView"/> that was updated.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.Delete(System.String,System.Threading.CancellationToken)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Delete(System.String,System.Threading.CancellationToken)">
             <summary>
             Deletes the specified instance of <typeparamref name="TView"/>.
             </summary>
@@ -547,20 +547,20 @@
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns></returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.AuthorizationFailed(Microsoft.AspNetCore.Authorization.AuthorizationResult)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.AuthorizationFailed(Microsoft.AspNetCore.Authorization.AuthorizationResult)">
             <summary>
             Handles a failed authorization.
             </summary>
             <param name="authorizationResult">The authorization result.</param>
             <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> respresenting the failure.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.MethodNotAllowed">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed">
             <summary>
             Creates a <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> with <see cref="F:System.Net.HttpStatusCode.MethodNotAllowed"/> code.
             </summary>
             <returns>The result.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.EntityRepositoryController`2.MethodNotAllowed(System.Object)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed(System.Object)">
             <summary>
             Creates a <see cref="T:Microsoft.AspNetCore.Mvc.ObjectResult"/> with <see cref="F:System.Net.HttpStatusCode.MethodNotAllowed"/> code and the provided <paramref name="value"/>.
             </summary>

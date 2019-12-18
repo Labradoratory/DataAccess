@@ -20,7 +20,7 @@ namespace Labradoratory.Fetch.Controllers
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="EntityRepositoryController{TEntity, TEntity}" />
-    public abstract class RepositoryController<TEntity> : EntityRepositoryController<TEntity, TEntity>
+    public abstract class RepositoryController<TEntity> : RepositoryController<TEntity, TEntity>
         where TEntity : Entity
     {
         /// <summary>
@@ -46,12 +46,12 @@ namespace Labradoratory.Fetch.Controllers
     /// The view respresentation of the entity to provided clients.  
     /// This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
     /// </typeparam>
-    public abstract class EntityRepositoryController<TEntity, TView> : ControllerBase
+    public abstract class RepositoryController<TEntity, TView> : ControllerBase
         where TEntity : Entity
         where TView : class
     {
         /// <summary>
-        /// Initializes the <see cref="EntityRepositoryController{TEntity, TView}"/> base class.
+        /// Initializes the <see cref="RepositoryController{TEntity, TView}"/> base class.
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">
@@ -59,7 +59,7 @@ namespace Labradoratory.Fetch.Controllers
         /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
         /// </param>
         /// <param name="authorizationService">The authorization service.</param>
-        protected EntityRepositoryController(
+        protected RepositoryController(
             Repository<TEntity> repository,
             IMapper mapper,
             IAuthorizationService authorizationService)

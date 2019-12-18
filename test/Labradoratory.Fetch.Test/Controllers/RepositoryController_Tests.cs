@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 using Moq;
@@ -37,7 +36,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null,
                 null);
 
-            Assert.True(mockSubject.Object is EntityRepositoryController<TestEntity, TestEntity>);
+            Assert.True(mockSubject.Object is RepositoryController<TestEntity, TestEntity>);
         }
 
         [Fact]
