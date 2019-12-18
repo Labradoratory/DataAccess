@@ -273,7 +273,7 @@ namespace Labradoratory.Fetch.Test
         }
 
         [Fact]
-        public async Task GetAsyncQueryResolver_NoParams_CallsParamVersionWithUnmodifedQuery()
+        public void GetAsyncQueryResolver_NoParams_CallsParamVersionWithUnmodifedQuery()
         {
             var mockExecuter = new Mock<IAsyncQueryResolver<TestEntity>>(MockBehavior.Strict);
             mockExecuter

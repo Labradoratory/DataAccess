@@ -26,12 +26,12 @@ using Xunit;
 
 namespace Labradoratory.Fetch.Test.Controllers
 {
-    public class EntityRepositoryController_Tests
+    public class RepositoryController_Tests
     {
         [Fact]
         public void Ctor_NoViewType_EntityAsView()
         {
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 null,
@@ -86,7 +86,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 null,
@@ -111,7 +111,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.IsType<ForbidResult>(result);
+            Assert.IsType<ForbidResult>(result.Result);
 
             mockSubject.Protected().Verify("AuthorizationFailed",
                 Times.Once(),
@@ -141,7 +141,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 null,
@@ -166,7 +166,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.IsType<UnauthorizedResult>(result);
+            Assert.IsType<UnauthorizedResult>(result.Result);
 
             mockSubject.Protected().Verify("AuthorizationFailed",
                 Times.Once(),
@@ -181,7 +181,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
                 .ReturnsAsync(AuthorizationResult.Failed());
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 null,
@@ -255,7 +255,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<IEnumerable<TestEntity>>(It.IsAny<object>()))
                 .Returns<object>(value => value as IEnumerable<TestEntity>);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 mockMapper.Object,
@@ -280,8 +280,8 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetAll(CancellationToken.None);
-            Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
             Assert.Equal(expectedList, okResult.Value);
 
             mockRepository.Verify(r => r.GetAsyncQueryResolver(
@@ -350,7 +350,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.GetAsyncQueryResolver(It.IsAny<Func<IQueryable<TestEntity>, IQueryable<TestEntity>>>()))
                 .Returns(mockResolver.Object);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -426,7 +426,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -451,7 +451,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.IsType<ForbidResult>(result);
+            Assert.IsType<ForbidResult>(result.Result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -500,7 +500,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -525,7 +525,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.IsType<UnauthorizedResult>(result);
+            Assert.IsType<UnauthorizedResult>(result.Result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -578,7 +578,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
                 .Returns<object>(value => value as TestEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 mockMapper.Object,
@@ -599,8 +599,8 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
             Assert.Equal(expectedEntity, okResult.Value);
 
             mockRepository.Verify(r => r.FindAsync(
@@ -626,7 +626,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((TestEntity)null);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -641,7 +641,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.GetByKeys(expectedEncodedKeys, CancellationToken.None);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundResult>(result.Result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -684,7 +684,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
                 .Returns<object>(v => v as TestEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 mockMapper.Object,
@@ -709,7 +709,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedEntity, CancellationToken.None);
-            Assert.IsType<ForbidResult>(result);
+            Assert.IsType<ForbidResult>(result.Result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -751,7 +751,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
                 .Returns<object>(v => v as TestEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 null,
                 mockMapper.Object,
@@ -776,7 +776,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedEntity, CancellationToken.None);
-            Assert.IsType<UnauthorizedResult>(result);
+            Assert.IsType<UnauthorizedResult>(result.Result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -835,7 +835,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup<Task>("ExecuteAddAsync", ItExpr.IsAny<TestEntity>(), ItExpr.IsAny<CancellationToken>())
                 .Returns(Task.CompletedTask);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
                 mockMapper.Object,
@@ -856,8 +856,8 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Add(expectedViewEntity, CancellationToken.None);
-            Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
             Assert.Same(expectedViewEntity, okResult.Value);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
@@ -890,7 +890,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((TestEntity)null);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -905,7 +905,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundResult>(result.Result);
 
             mockRepository.Verify(r => r.FindAsync(
                 It.Is<object[]>(v => Equals(v[0], expectedEntity.Id)),
@@ -949,7 +949,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -974,7 +974,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.IsType<ForbidResult>(result);
+            Assert.IsType<ForbidResult>(result.Result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -1017,7 +1017,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -1042,7 +1042,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Update(expectedEncodedKeys, null, CancellationToken.None);
-            Assert.IsType<UnauthorizedResult>(result);
+            Assert.IsType<UnauthorizedResult>(result.Result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
@@ -1112,7 +1112,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup<Task<ChangeSet>>("ExecuteUpdateAsync", ItExpr.IsAny<TestEntity>(), ItExpr.IsAny<ChangeSet>(), ItExpr.IsAny<CancellationToken>())
                 .Returns<TestEntity, ChangeSet, CancellationToken>((te, cs, ct) => Task.FromResult(cs));
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
                 mockMapper.Object,
@@ -1137,8 +1137,8 @@ namespace Labradoratory.Fetch.Test.Controllers
             patch.Replace(e => e.StringValue, expectedNewValue);
 
             var result = await subject.Update(expectedEncodedKeys, patch, CancellationToken.None);
-            Assert.IsType<OkObjectResult>(result);
-            var okResult = result as OkObjectResult;
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
             Assert.Same(expectedViewEntity, okResult.Value);
             // Make sure patch was applied.
             Assert.Equal(expectedNewValue, expectedViewEntity.StringValue);
@@ -1210,7 +1210,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedModelEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
                 mockMapper.Object,
@@ -1234,7 +1234,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             patch.Replace(e => e.Id, 54321);
 
             var result = await subject.Update(expectedEncodedKeys, patch, CancellationToken.None);
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result.Result);
 
             mockSubject.Verify(c => c.BadRequest(
                 It.Is<object>(v => v is IEnumerable<JsonPatchError>)),
@@ -1252,7 +1252,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync((TestEntity)null);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -1311,7 +1311,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -1379,7 +1379,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
                 null,
@@ -1458,7 +1458,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup<Task>("ExecuteDeleteAsync", ItExpr.IsAny<TestEntity>(), ItExpr.IsAny<CancellationToken>())
                 .Returns(Task.CompletedTask);
 
-            var mockSubject = new Mock<EntityRepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
                 null,
@@ -1508,7 +1508,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             }
         }
 
-        public class TestController : EntityRepositoryController<TestEntity>
+        public class TestController : RepositoryController<TestEntity>
         {
             public TestController(
                 Repository<TestEntity> repository,

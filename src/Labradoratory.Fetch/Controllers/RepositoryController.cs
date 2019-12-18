@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,16 +20,16 @@ namespace Labradoratory.Fetch.Controllers
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <seealso cref="EntityRepositoryController{TEntity, TEntity}" />
-    public abstract class EntityRepositoryController<TEntity> : EntityRepositoryController<TEntity, TEntity>
+    public abstract class RepositoryController<TEntity> : EntityRepositoryController<TEntity, TEntity>
         where TEntity : Entity
     {
         /// <summary>
-        /// Initializes the <see cref="EntityRepositoryController{TEntity}"/> base class.
+        /// Initializes the <see cref="RepositoryController{TEntity}"/> base class.
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">The mapper to use for object conversion.</param>
         /// <param name="authorizationService"></param>
-        public EntityRepositoryController(
+        public RepositoryController(
             Repository<TEntity> repository,
             IMapper mapper,
             IAuthorizationService authorizationService)
@@ -83,12 +85,12 @@ namespace Labradoratory.Fetch.Controllers
         protected IAuthorizationService AuthorizationService { get; }
 
         /// <summary>
-        /// Gets all of the entities.
+        /// Gets all of the <typeparamref name="TView"/> instances.
         /// </summary>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns></returns>
+        /// <returns>The collection of <typeparamref name="TView"/>.</returns>
         [HttpGet, Route("")]
-        public virtual async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        public virtual async Task<ActionResult<List<TView>>> GetAll(CancellationToken cancellationToken)
         {
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, typeof(TEntity), EntityAuthorizationPolicies.GetAll);
             if (!authorizationResult.Succeeded)
@@ -113,13 +115,13 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
-        /// Gets all of the entities.
+        /// Gets the specified instance of <typeparamref name="TView"/>.
         /// </summary>
         /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns></returns>
+        /// <returns>The instance of <typeparamref name="TView"/>.</returns>
         [HttpGet, Route("{encodedKeys}")]
-        public virtual async Task<IActionResult> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
+        public virtual async Task<ActionResult<TView>> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
@@ -134,13 +136,13 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
-        /// Handles an entity add request.
+        /// Addes the provided instance of <typeparamref name="TView"/>.
         /// </summary>
         /// <param name="view">The view of the entity being added.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns></returns>
+        /// <returns>The instance of <typeparamref name="TView"/> that was added.</returns>
         [HttpPost, Route("")]
-        public virtual async Task<IActionResult> Add(TView view, CancellationToken cancellationToken)
+        public virtual async Task<ActionResult<TView>> Add(TView view, CancellationToken cancellationToken)
         {
             var entity = Mapper.Map<TEntity>(view);
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add);
@@ -152,14 +154,14 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
-        /// Handles an entity update request.
+        /// Updates the specified instance of <typeparamref name="TView"/>.
         /// </summary>
         /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="patch">The patch to apply to the entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-        /// <returns></returns>
+        /// <returns>The instance of <typeparamref name="TView"/> that was updated.</returns>
         [HttpPatch, Route("encodedKeys")]
-        public virtual async Task<IActionResult> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
+        public virtual async Task<ActionResult<TView>> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
             var entity = await Repository.FindAsync(keys, cancellationToken);
@@ -186,7 +188,7 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
-        /// Handle an entity delete request.
+        /// Deletes the specified instance of <typeparamref name="TView"/>.
         /// </summary>
         /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
@@ -213,13 +215,32 @@ namespace Labradoratory.Fetch.Controllers
         /// </summary>
         /// <param name="authorizationResult">The authorization result.</param>
         /// <returns>An <see cref="IActionResult"/> respresenting the failure.</returns>
-        protected virtual IActionResult AuthorizationFailed(AuthorizationResult authorizationResult)
+        protected virtual ActionResult AuthorizationFailed(AuthorizationResult authorizationResult)
         {
             // TODO: Should we pass something back?  A message?
             if (User.Identity.IsAuthenticated)
                 return Forbid();
 
             return Unauthorized();
+        }
+
+        /// <summary>
+        /// Creates a <see cref="StatusCodeResult"/> with <see cref="HttpStatusCode.MethodNotAllowed"/> code.
+        /// </summary>
+        /// <returns>The result.</returns>
+        public StatusCodeResult MethodNotAllowed()
+        {
+            return StatusCode(Convert.ToInt32(HttpStatusCode.MethodNotAllowed));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ObjectResult"/> with <see cref="HttpStatusCode.MethodNotAllowed"/> code and the provided <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value to include in the result</param>
+        /// <returns>The result.</returns>
+        public ObjectResult MethodNotAllowed(object value)
+        {
+            return StatusCode(Convert.ToInt32(HttpStatusCode.MethodNotAllowed), value);
         }
     }
 }

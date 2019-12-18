@@ -9,7 +9,7 @@ using Labradoratory.Fetch.Processors.DataPackages;
 namespace Labradoratory.Fetch
 {
     /// <summary>
-    /// The base implementation of an object used to access data.  
+    /// The base implementation of an repository used to access data.  
     /// </summary>
     /// <remarks>
     /// <para>All data accessors derive from this class.</para>
@@ -18,11 +18,11 @@ namespace Labradoratory.Fetch
     /// pushes the modification actions into the processing pipeline.
     /// </para>
     /// </remarks>
-    /// <typeparam name="T">The type of entity the accessor supports.</typeparam>
-    /// <seealso cref="ISupportsAsyncQueryResolution{T}" />
+    /// <typeparam name="TEntity">The type of entity the accessor supports.</typeparam>
+    /// <seealso cref="ISupportsAsyncQueryResolution{TEntity}" />
     /// <seealso cref="ProcessorPipeline"/>
-    public abstract class Repository<T> : ISupportsAsyncQueryResolution<T>
-        where T : Entity
+    public abstract class Repository<TEntity> : ISupportsAsyncQueryResolution<TEntity>
+        where TEntity : Entity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository{T}"/> class.
@@ -41,15 +41,15 @@ namespace Labradoratory.Fetch
         /// <summary>
         /// Gets a queryable collection of entities.
         /// </summary>
-        public abstract IQueryable<T> Get();
+        public abstract IQueryable<TEntity> Get();
 
         /// <summary>
         /// Finds a specific entity using the identifing <paramref name="keys"/>.
         /// </summary>
-        /// <param name="keys">The keys that uniquely identify the <typeparamref name="T"/>.</param>
+        /// <param name="keys">The keys that uniquely identify the <typeparamref name="TEntity"/>.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task containing the result of the find.</returns>
-        public abstract Task<T> FindAsync(object[] keys, CancellationToken cancellationToken = default);
+        public abstract Task<TEntity> FindAsync(object[] keys, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds an entity.
@@ -57,14 +57,14 @@ namespace Labradoratory.Fetch
         /// <param name="entity">The entity.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            var addingPackage = new EntityAddingPackage<T>(entity);
+            var addingPackage = new EntityAddingPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(addingPackage, cancellationToken);
 
             await ExecuteAddAsync(entity, cancellationToken);
 
-            var addedPackage = new EntityAddedPackage<T>(entity);
+            var addedPackage = new EntityAddedPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(addedPackage, cancellationToken);
         }
 
@@ -74,25 +74,25 @@ namespace Labradoratory.Fetch
         /// <param name="entity">To add.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        protected abstract Task ExecuteAddAsync(T entity, CancellationToken cancellationToken);
+        protected abstract Task ExecuteAddAsync(TEntity entity, CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates an entity.
         /// </summary>
         /// <param name="entity">The entity with updates.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task<ChangeSet> UpdateAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task<ChangeSet> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (!entity.HasChanges)
                 return null;
 
-            var updatingPackage = new EntityUpdatingPackage<T>(entity);
+            var updatingPackage = new EntityUpdatingPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(updatingPackage, cancellationToken);
 
             var changes = entity.CommitChanges();
             await ExecuteUpdateAsync(entity, changes, cancellationToken);
 
-            var updatedPackage = new EntityUpdatedPackage<T>(entity, changes);
+            var updatedPackage = new EntityUpdatedPackage<TEntity>(entity, changes);
             await ProcessorPipeline.ProcessAsync(updatedPackage, cancellationToken);
 
             return changes;
@@ -105,7 +105,7 @@ namespace Labradoratory.Fetch
         /// <param name="changes">The changes to the entity.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        protected abstract Task<ChangeSet> ExecuteUpdateAsync(T entity, ChangeSet changes, CancellationToken cancellationToken);
+        protected abstract Task<ChangeSet> ExecuteUpdateAsync(TEntity entity, ChangeSet changes, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes an entity.
@@ -113,14 +113,14 @@ namespace Labradoratory.Fetch
         /// <param name="entity">The entity to delete.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            var deletingPackage = new EntityDeletingPackage<T>(entity);
+            var deletingPackage = new EntityDeletingPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(deletingPackage, cancellationToken);
 
             await ExecuteDeleteAsync(entity, cancellationToken);
 
-            var deletedPackage = new EntityDeletedPackage<T>(entity);
+            var deletedPackage = new EntityDeletedPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(deletedPackage, cancellationToken);
         }
 
@@ -130,15 +130,15 @@ namespace Labradoratory.Fetch
         /// <param name="entity">The entity to delete.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
-        protected abstract Task ExecuteDeleteAsync(T entity, CancellationToken cancellationToken);
+        protected abstract Task ExecuteDeleteAsync(TEntity entity, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets as asynchronous query resolver working on the full set of data.
         /// </summary>
         /// <returns>
-        /// An instance of an async query resolver that queries <typeparamref name="T" /> and returns results as <typeparamref name="T" />.
+        /// An instance of an async query resolver that queries <typeparamref name="TEntity" /> and returns results as <typeparamref name="TEntity" />.
         /// </returns>
-        public IAsyncQueryResolver<T> GetAsyncQueryResolver()
+        public IAsyncQueryResolver<TEntity> GetAsyncQueryResolver()
         {
             return GetAsyncQueryResolver(query => query);
         }
@@ -149,8 +149,8 @@ namespace Labradoratory.Fetch
         /// <typeparam name="TResult">The type of the result of the query.</typeparam>
         /// <param name="query">A root query to use for additional querying.</param>
         /// <returns>
-        /// An instance of an async query resolver that queries <typeparamref name="T" /> and returns results as <typeparamref name="TResult" />.
+        /// An instance of an async query resolver that queries <typeparamref name="TEntity" /> and returns results as <typeparamref name="TResult" />.
         /// </returns>
-        public abstract IAsyncQueryResolver<TResult> GetAsyncQueryResolver<TResult>(Func<IQueryable<T>, IQueryable<TResult>> query);
+        public abstract IAsyncQueryResolver<TResult> GetAsyncQueryResolver<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> query);
     }
 }
