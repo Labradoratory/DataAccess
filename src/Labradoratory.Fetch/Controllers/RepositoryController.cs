@@ -92,12 +92,12 @@ namespace Labradoratory.Fetch.Controllers
         [HttpGet, Route("")]
         public virtual async Task<ActionResult<List<TView>>> GetAll(CancellationToken cancellationToken)
         {
-            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, typeof(TEntity), EntityAuthorizationPolicies.GetAll);
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, typeof(TEntity), EntityAuthorizationPolicies.GetAll.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
                 
             var entities = await Repository.GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken);
-            authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome);
+            authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
@@ -128,7 +128,7 @@ namespace Labradoratory.Fetch.Controllers
             if (entity == null)
                 return NotFound();
 
-            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.GetOne);
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.GetOne.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
@@ -145,7 +145,7 @@ namespace Labradoratory.Fetch.Controllers
         public virtual async Task<ActionResult<TView>> Add(TView view, CancellationToken cancellationToken)
         {
             var entity = Mapper.Map<TEntity>(view);
-            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add);
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
@@ -168,7 +168,7 @@ namespace Labradoratory.Fetch.Controllers
             if (entity == null)
                 return NotFound();
 
-            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Update);
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Update.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
@@ -201,7 +201,7 @@ namespace Labradoratory.Fetch.Controllers
             if (entity == null)
                 return NotFound();
 
-            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Delete);
+            var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Delete.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 

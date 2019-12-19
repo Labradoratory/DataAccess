@@ -200,7 +200,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, typeof(TestEntity))),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetAll))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetAll.ForType<TestEntity>()))),
                 Times.Once());
         }
 
@@ -294,7 +294,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedList)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetSome))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetSome.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("FilterGetAll",
@@ -309,10 +309,10 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             var mockAuthorizationService = new Mock<IAuthorizationService>(MockBehavior.Strict);
             mockAuthorizationService
-                .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.Is<string>(v => v == EntityAuthorizationPolicies.GetAll)))
+                .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.Is<string>(v => v == EntityAuthorizationPolicies.GetAll.ForType<TestEntity>())))
                 .ReturnsAsync(AuthorizationResult.Success());
             mockAuthorizationService
-                .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.Is<string>(v => v == EntityAuthorizationPolicies.GetSome)))
+                .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.Is<string>(v => v == EntityAuthorizationPolicies.GetSome.ForType<TestEntity>())))
                 .ReturnsAsync(expectedAuthorizationResult);
 
             var mockAuthFeature = new Mock<IHttpAuthenticationFeature>(MockBehavior.Strict);
@@ -385,7 +385,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, typeof(TestEntity))),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetAll))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetAll.ForType<TestEntity>()))),
                 Times.Once());
         }
 
@@ -460,7 +460,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -529,7 +529,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -610,7 +610,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetOne.ForType<TestEntity>()))),
                 Times.Once());
         }
 
@@ -713,7 +713,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -780,7 +780,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -862,7 +862,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedModelEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add.ForType<TestEntity>()))),
                 Times.Once());
 
             mockMapper.Verify(m => m.Map<TestEntity>(
@@ -978,7 +978,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -1046,7 +1046,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -1145,7 +1145,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedModelEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Update.ForType<TestEntity>()))),
                 Times.Once());
 
             mockRespository.Verify(r => r.FindAsync(
@@ -1340,7 +1340,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -1408,7 +1408,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete.ForType<TestEntity>()))),
                 Times.Once());
 
             mockSubject.Protected().Verify("AuthorizationFailed",
@@ -1483,7 +1483,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
                 It.Is<object>(v => Equals(v, expectedEntity)),
-                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete))),
+                It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Delete.ForType<TestEntity>()))),
                 Times.Once());
 
             mockRespository.Verify(r => r.FindAsync(

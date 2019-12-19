@@ -10,21 +10,21 @@ namespace Labradoratory.Fetch.Authorization
     {
         /// <summary>Resource authorize policy for getting all of a type of entity.</summary>
         /// <remarks>The resource will be a <see cref="Type"/> of entity.</remarks>
-        public static string GetAll = "EntityGetAll";
+        public static readonly EntityAuthorizationPolicy GetAll = "EntityGetAll";
         /// <summary>Resource authorize policy for getting some of a type of entity.</summary>
         /// <remarks>The resource will be list of entities that should be filtered to only those accessible.</remarks>
-        public static string GetSome = "EntityGetSome";
+        public static readonly EntityAuthorizationPolicy GetSome = "EntityGetSome";
         /// <summary>Resource authorize policy for gettings single entity.</summary>
         /// <remarks>The resource is the instance of the entity.</remarks>
-        public static string GetOne = "EntityGetOne";
+        public static readonly EntityAuthorizationPolicy GetOne = "EntityGetOne";
         /// <summary>Resource authorize policy for updating an entity.</summary>
         /// <remarks>The resource is the instance of the entity.</remarks>
-        public static string Update = "EntityUpdate";
+        public static readonly EntityAuthorizationPolicy Update = "EntityUpdate";
         /// <summary>Resource authorize policy for updating an entity.</summary>
         /// <remarks>The resource is the instance of the entity.</remarks>
-        public static string Add = "EntityAdd";
+        public static readonly EntityAuthorizationPolicy Add = "EntityAdd";
         /// <summary>Resource authorize policy for deleting an entity.</summary>
         /// <remarks>The resource is the instance of the entity.</remarks>
-        public static string Delete = "EntityDelete";
-    }
+        public static readonly EntityAuthorizationPolicy Delete = "EntityDelete";
+    }    
 }

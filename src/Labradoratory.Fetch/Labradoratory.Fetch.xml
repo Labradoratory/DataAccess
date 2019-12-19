@@ -33,6 +33,32 @@
             <summary>Resource authorize policy for deleting an entity.</summary>
             <remarks>The resource is the instance of the entity.</remarks>
         </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy">
+            <summary>
+            Represents a entity based policy.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.op_Implicit(System.String)~Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.String"/> to <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.Name">
+            <summary>
+            Gets the base policy name.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.ForType``1">
+            <summary>
+            Gets the policy name for a specified type.
+            </summary>
+            <typeparam name="T">The type of policy to get.</typeparam>
+            <returns>The policy name for <typeparamref name="T"/>.</returns>
+        </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeAction">
             <summary>
             Represents the type of change.
