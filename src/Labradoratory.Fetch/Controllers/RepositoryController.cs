@@ -70,6 +70,11 @@ namespace Labradoratory.Fetch.Controllers
         }
 
         /// <summary>
+        /// Gets the created response options to use when an Add operation completes.
+        /// </summary>
+        protected virtual CreatedResponseOptions AddResponseOptions => CreatedResponseOptions.Location;
+ 
+        /// <summary>
         /// Gets the data access instance for <typeparamref name="TEntity"/>.
         /// </summary>
         protected Repository<TEntity> Repository { get; }
@@ -151,7 +156,20 @@ namespace Labradoratory.Fetch.Controllers
                 return AuthorizationFailed(authorizationResult);
 
             await Repository.AddAsync(entity, cancellationToken);
-            return Ok(Mapper.Map<TView>(entity));
+
+            switch (AddResponseOptions)
+            {
+                case CreatedResponseOptions.Empty:
+                    return Ok();
+                case CreatedResponseOptions.Instance:
+                    return Ok(Mapper.Map<TView>(entity));
+                case CreatedResponseOptions.Location:
+                    return CreatedAtAction(nameof(GetByKeys), new { encodedKeys = entity.EncodeKeys() }, null);
+                case CreatedResponseOptions.Location | CreatedResponseOptions.Instance:
+                    return CreatedAtAction(nameof(GetByKeys), new { encodedKeys = entity.EncodeKeys() }, Mapper.Map<TView>(entity));
+                default:
+                    throw new InvalidOperationException($"{nameof(AddResponseOptions)} value of {AddResponseOptions} is invalid.");
+            }
         }
 
         /// <summary>
@@ -208,7 +226,7 @@ namespace Labradoratory.Fetch.Controllers
 
             await Repository.DeleteAsync(entity, cancellationToken);
 
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>

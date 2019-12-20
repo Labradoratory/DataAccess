@@ -64,7 +64,7 @@ namespace Labradoratory.Fetch.Authorization
             /// Sets the instance as authorized.
             /// </summary>
             /// <remarks>After calling, <see cref="IsAuthorized"/> will be <c>true</c>.</remarks>
-            public void Success()
+            public void Succeed()
             {
                 IsAuthorized = true;
             }

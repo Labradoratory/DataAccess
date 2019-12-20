@@ -215,7 +215,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                     if (o is EntityAuthorizationSet<TestEntity> eas)
                     {
                         foreach (var v in eas.Values)
-                            v.Success();
+                            v.Succeed();
                     }
                 })
                 .ReturnsAsync(AuthorizationResult.Success());
@@ -852,6 +852,10 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
+            mockSubject
+                .Protected()
+                .SetupGet<CreatedResponseOptions>("AddResponseOptions")
+                .Returns(CreatedResponseOptions.Instance);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -1470,7 +1474,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 null,
                 mockAuthorizationService.Object);
             mockSubject
-                .Setup(c => c.Ok())
+                .Setup(c => c.NoContent())
                 .CallBase();
             mockSubject
                 .Setup(c => c.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -1485,7 +1489,7 @@ namespace Labradoratory.Fetch.Test.Controllers
             var subject = mockSubject.Object;
 
             var result = await subject.Delete(expectedEncodedKeys, CancellationToken.None);
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<NoContentResult>(result);
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
