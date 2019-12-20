@@ -33,15 +33,6 @@ namespace Labradoratory.Fetch.Authorization
         }
 
         /// <summary>
-        /// Gets all of the entities that have not yet been authorized.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<TEntity> GetNotAuthorized()
-        {
-            return Values.Where(v => !v.IsAuthorized).Select(v => v.Entity);
-        }
-
-        /// <summary>
         /// A single <typeparamref name="TEntity"/> to be authorized.
         /// </summary>
         public class EntityAuthorizationValue
