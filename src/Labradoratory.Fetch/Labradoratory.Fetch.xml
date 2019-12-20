@@ -59,6 +59,59 @@
             <typeparam name="T">The type of policy to get.</typeparam>
             <returns>The policy name for <typeparamref name="T"/>.</returns>
         </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1">
+            <summary>
+            A set of <typeparamref name="TEntity"/> to be authorized.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/> class.
+            </summary>
+            <param name="entities">The entities.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.Values">
+            <summary>
+            Gets the authorization values.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.GetAuthorized">
+            <summary>
+            Gets all of the authorized entities.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue">
+            <summary>
+            A single <typeparamref name="TEntity"/> to be authorized.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue"/> class.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Entity">
+            <summary>
+            Gets the entity.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.IsAuthorized">
+            <summary>
+            Gets a value indicating whether this instance is authorized.
+            </summary>
+            <value>
+              <c>true</c> if this instance is authorized; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Success">
+            <summary>
+            Sets the instance as authorized.
+            </summary>
+            <remarks>After calling, <see cref="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.IsAuthorized"/> will be <c>true</c>.</remarks>
+        </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeAction">
             <summary>
             Represents the type of change.

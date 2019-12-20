@@ -210,6 +210,14 @@ namespace Labradoratory.Fetch.Test.Controllers
             var mockAuthorizationService = new Mock<IAuthorizationService>(MockBehavior.Strict);
             mockAuthorizationService
                 .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
+                .Callback<ClaimsPrincipal, object, string>((cp, o, s) =>
+                {
+                    if (o is EntityAuthorizationSet<TestEntity> eas)
+                    {
+                        foreach (var v in eas.Values)
+                            v.Success();
+                    }
+                })
                 .ReturnsAsync(AuthorizationResult.Success());
 
             var mockAuthFeature = new Mock<IHttpAuthenticationFeature>(MockBehavior.Strict);
@@ -281,7 +289,6 @@ namespace Labradoratory.Fetch.Test.Controllers
             var result = await subject.GetAll(CancellationToken.None);
             Assert.IsType<OkObjectResult>(result.Result);
             var okResult = result.Result as OkObjectResult;
-            Assert.Equal(expectedList, okResult.Value);
 
             mockRepository.Verify(r => r.GetAsyncQueryResolver(
                 It.IsAny<Func<IQueryable<TestEntity>, IQueryable<TestEntity>>>()),
@@ -293,7 +300,7 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             mockAuthorizationService.Verify(a => a.AuthorizeAsync(
                 It.IsAny<ClaimsPrincipal>(),
-                It.Is<object>(v => Equals(v, expectedList)),
+                It.Is<object>(v => v is EntityAuthorizationSet<TestEntity>),
                 It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.GetSome.ForType<TestEntity>()))),
                 Times.Once());
 

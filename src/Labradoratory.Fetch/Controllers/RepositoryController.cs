@@ -96,12 +96,13 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
                 
-            var entities = await Repository.GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken);
+            var entities = new EntityAuthorizationSet<TEntity>(
+                await Repository.GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken));
             authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            return Ok(Mapper.Map<IEnumerable<TView>>(entities));
+            return Ok(Mapper.Map<IEnumerable<TView>>(entities.GetAuthorized()));
         }
 
         /// <summary>
