@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace Labradoratory.Fetch.Controllers
     /// A base controller implementation that provides add, update and delete functionality for an entity.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    /// <seealso cref="EntityRepositoryController{TEntity, TEntity}" />
+    /// <seealso cref="RepositoryController{TEntity, TEntity}" />
     public abstract class RepositoryController<TEntity> : RepositoryController<TEntity, TEntity>
         where TEntity : Entity
     {
@@ -72,7 +73,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <summary>
         /// Gets the created response options to use when an Add operation completes.
         /// </summary>
-        protected virtual CreatedResponseOptions AddResponseOptions => CreatedResponseOptions.Location;
+        protected virtual CreatedResponseOptions AddResponseOptions => CreatedResponseOptions.Instance | CreatedResponseOptions.Location;
  
         /// <summary>
         /// Gets the data access instance for <typeparamref name="TEntity"/>.
@@ -150,6 +151,8 @@ namespace Labradoratory.Fetch.Controllers
         [HttpPost, Route("")]
         public virtual async Task<ActionResult<TView>> Add(TView view, CancellationToken cancellationToken)
         {
+            ValidateView(view);
+
             var entity = Mapper.Map<TEntity>(view);
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
@@ -179,7 +182,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="patch">The patch to apply to the entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The instance of <typeparamref name="TView"/> that was updated.</returns>
-        [HttpPatch, Route("encodedKeys")]
+        [HttpPatch, Route("{encodedKeys}")]
         public virtual async Task<ActionResult<TView>> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
@@ -197,7 +200,9 @@ namespace Labradoratory.Fetch.Controllers
             patch.ApplyToIfPatchable(view, error => errors.Add(error));
 
             if (errors.Count > 0)
-                return BadRequest(errors);   
+                return BadRequest(errors);
+
+            ValidateView(view);
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
@@ -212,7 +217,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
         /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns></returns>
-        [HttpDelete, Route("{encodedKeys")]
+        [HttpDelete, Route("{encodedKeys}")]
         public virtual async Task<IActionResult> Delete(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
@@ -241,6 +246,24 @@ namespace Labradoratory.Fetch.Controllers
                 return Forbid();
 
             return Unauthorized();
+        }
+
+        /// <summary>
+        /// Validates the view object's properties.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns>A <see cref="BadRequestObjectResult"/> if the object is invalid; Otherwise, <c>null</c>.</returns>
+        /// <remarks>Uses <see cref="Validator"/> to do the validation.</remarks>
+        protected virtual BadRequestObjectResult ValidateView(TView view)
+        {
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(view, serviceProvider: ControllerContext.HttpContext.RequestServices, items: null);
+            var validationResults = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(view, context, validationResults, true))
+            {
+                return BadRequest(validationResults);
+            }
+
+            return null;
         }
 
         /// <summary>

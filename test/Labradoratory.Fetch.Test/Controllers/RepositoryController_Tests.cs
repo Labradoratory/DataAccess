@@ -705,6 +705,10 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
+            mockSubject
+                .Protected()
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -772,6 +776,10 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
+            mockSubject
+                .Protected()
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -856,6 +864,10 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Protected()
                 .SetupGet<CreatedResponseOptions>("AddResponseOptions")
                 .Returns(CreatedResponseOptions.Instance);
+            mockSubject
+                .Protected()
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(
@@ -1133,6 +1145,10 @@ namespace Labradoratory.Fetch.Test.Controllers
             mockSubject
                 .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
+            mockSubject
+                .Protected()
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
                     new ActionContext(

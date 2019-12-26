@@ -15,7 +15,7 @@
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetSome">
             <summary>Resource authorize policy for getting some of a type of entity.</summary>
-            <remarks>The resource will be list of entities that should be filtered to only those accessible.</remarks>
+            <remarks>The resource will be an <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/>.</remarks>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetOne">
             <summary>Resource authorize policy for gettings single entity.</summary>
@@ -106,7 +106,7 @@
               <c>true</c> if this instance is authorized; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Success">
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Succeed">
             <summary>
             Sets the instance as authorized.
             </summary>
@@ -527,12 +527,26 @@
             <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty"/>.</param>
             <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
         </member>
+        <member name="T:Labradoratory.Fetch.Controllers.CreatedResponseOptions">
+            <summary>
+            Defines the content to include with a 201 Created response.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Empty">
+            <summary>Enpty, no content.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Instance">
+            <summary>Include the instance that was created.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Location">
+            <summary>Include the location header.</summary>
+        </member>
         <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`1">
             <summary>
             A base controller implementation that provides add, update and delete functionality for an entity.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="!:EntityRepositoryController&lt;TEntity, TEntity&gt;" />
+            <seealso cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2" />
         </member>
         <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
@@ -563,6 +577,11 @@
             between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
             </param>
             <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AddResponseOptions">
+            <summary>
+            Gets the created response options to use when an Add operation completes.
+            </summary>
         </member>
         <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Repository">
             <summary>
@@ -632,6 +651,14 @@
             </summary>
             <param name="authorizationResult">The authorization result.</param>
             <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> respresenting the failure.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.ValidateView(`1)">
+            <summary>
+            Validates the view object's properties.
+            </summary>
+            <param name="view">The view.</param>
+            <returns>A <see cref="T:Microsoft.AspNetCore.Mvc.BadRequestObjectResult"/> if the object is invalid; Otherwise, <c>null</c>.</returns>
+            <remarks>Uses <see cref="T:System.ComponentModel.DataAnnotations.Validator"/> to do the validation.</remarks>
         </member>
         <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed">
             <summary>
