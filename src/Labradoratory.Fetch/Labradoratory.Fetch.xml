@@ -10,28 +10,40 @@
             </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetAll">
-            <summary>Resource authorize policy for getting all of a type of entity.</summary>
-            <remarks>The resource will be a <see cref="T:System.Type"/> of entity.</remarks>
+            <summary>
+            Resource authorize policy for getting all of a type of entity.
+            The resource will be a <see cref="T:System.Type"/> of entity.
+            </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetSome">
-            <summary>Resource authorize policy for getting some of a type of entity.</summary>
-            <remarks>The resource will be an <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/>.</remarks>
+            <summary>
+            Resource authorize policy for getting some of a type of entity.
+            The resource will be an <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/>.
+            </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetOne">
-            <summary>Resource authorize policy for gettings single entity.</summary>
-            <remarks>The resource is the instance of the entity.</remarks>
+            <summary>
+            Resource authorize policy for gettings single entity.
+            The resource is the instance of the entity.
+            </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Update">
-            <summary>Resource authorize policy for updating an entity.</summary>
-            <remarks>The resource is the instance of the entity.</remarks>
+            <summary>
+            Resource authorize policy for updating an entity.
+            The resource is the instance of the entity.
+            </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Add">
-            <summary>Resource authorize policy for updating an entity.</summary>
-            <remarks>The resource is the instance of the entity.</remarks>
+            <summary>
+            Resource authorize policy for updating an entity.
+            The resource is the instance of the entity.
+            </summary>
         </member>
         <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Delete">
-            <summary>Resource authorize policy for deleting an entity.</summary>
-            <remarks>The resource is the instance of the entity.</remarks>
+            <summary>
+            Resource authorize policy for deleting an entity.
+            The resource is the instance of the entity.
+            </summary>
         </member>
         <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy">
             <summary>
@@ -931,20 +943,6 @@
             <param name="query">A root query to use for additional querying.</param>
             <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="TResult"/>.</returns>
         </member>
-        <member name="T:Labradoratory.Fetch.Processors.BaseEntityProcessor`2">
-            <summary>
-            The base implementation of a processor that handles an <see cref="T:Labradoratory.Fetch.Entity"/>.
-            </summary>
-            <typeparam name="TEntity">The type of entity handled by the processor.</typeparam>
-            <typeparam name="TDataPackage">The type of the data package.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="P:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.Priority">
-            <inheritdoc />
-        </member>
-        <member name="M:Labradoratory.Fetch.Processors.BaseEntityProcessor`2.ProcessAsync(`1,System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1">
             <summary>
             A base implementation of a <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that contains <see cref="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity"/> data.
@@ -1111,48 +1109,6 @@
             Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage`1"/> class.
             </summary>
             <param name="entity">The entity being updated.</param>
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityAddedProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> that was added.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityAddingProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> being added.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityDeletedProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> that was deleted.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityDeletingProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> being added.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityUpdatedProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> that was updated.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
-        </member>
-        <member name="T:Labradoratory.Fetch.Processors.EntityUpdatingProcessor`1">
-            <summary>
-            Processes an <typeparamref name="TEntity"/> being updated.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <seealso cref="T:Labradoratory.Fetch.Processors.IProcessor`1" />
         </member>
         <member name="T:Labradoratory.Fetch.Processors.IProcessor`1">
             <summary>
