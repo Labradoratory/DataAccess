@@ -30,6 +30,15 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
+        public void HasChanges_FalseWhenSameValueSet()
+        {
+            var expected = "Initial Value";
+            var subject = new ChangeContainerValue(expected);
+            subject.CurrentValue = expected;
+            Assert.False(subject.HasChanges);
+        }
+
+        [Fact]
         public void Reset_HasChangesFalseAfterReset()
         {
             var subject = new ChangeContainerValue("Initial Value");

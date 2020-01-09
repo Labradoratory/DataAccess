@@ -52,5 +52,5 @@ namespace Labradoratory.Fetch.Processors
                 await processor.ProcessAsync(package, cancellationToken);
             }
         }
-    }        
+    }
 }

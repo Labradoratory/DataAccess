@@ -96,7 +96,18 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             subject.StringValue = "The new value";
 
             var result = subject.GetChangeSet();
-            Assert.Equal(2, result.Count);    
+            Assert.Equal(2, result.Count);
+        }
+
+        [Fact]
+        public void HasChanges_NotTrueWhenSameValue()
+        {
+            var expected = "Test string";
+            var subject = new TestObject();
+            subject.StringValue = expected;
+            Assert.False(subject.HasChanges);
+            subject.StringValue = expected;
+            Assert.False(subject.HasChanges);
         }
 
         private class TestObject : ChangeTrackingObject
