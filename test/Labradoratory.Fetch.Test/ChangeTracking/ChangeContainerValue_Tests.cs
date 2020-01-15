@@ -52,7 +52,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         public void Reset_CurrentValueBackToOldAfterReset()
         {
             var expectedValue = "Initial Value";
-            var subject = new ChangeContainerValue(expectedValue);            
+            var subject = new ChangeContainerValue(expectedValue);
             subject.CurrentValue = "FirstValue";
             subject.Reset();
             Assert.Equal(expectedValue, subject.CurrentValue);
