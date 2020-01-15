@@ -133,7 +133,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var path = ChangePath.Create("Path");
             var result = subject.GetChangeSet(path);
 
-            var expectedPath = path.AppendAction(ChangeAction.Add);
+            var expectedPath = path.WithAction(ChangeAction.Add);
 
             Assert.Single(result);
             Assert.Contains(expectedPath, result as IDictionary<ChangePath, ChangeValue>);
@@ -212,7 +212,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var path = ChangePath.Create("Path");
             var result = subject.GetChangeSet(path);
 
-            var expectedPath = path.AppendAction(ChangeAction.Remove);
+            var expectedPath = path.WithAction(ChangeAction.Remove);
 
             Assert.Single(result);
             Assert.Contains(expectedPath, result as IDictionary<ChangePath, ChangeValue>);

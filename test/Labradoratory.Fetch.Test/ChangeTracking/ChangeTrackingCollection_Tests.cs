@@ -165,7 +165,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectedItem = new TestItem();
             subject.Add(expectedItem);
             var path = ChangePath.Create("path");
-            var expectedKey = path.AppendIndex(1).AppendAction(ChangeAction.Add);
+            var expectedKey = path.AppendIndex(1).WithAction(ChangeAction.Add);
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
@@ -190,7 +190,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             };
             var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
             var path = ChangePath.Create("path");
-            var expectedKey = path.AppendIndex(1).AppendAction(ChangeAction.Remove);
+            var expectedKey = path.AppendIndex(1).WithAction(ChangeAction.Remove);
             Assert.True(subject.Remove(expectedRemove));
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);

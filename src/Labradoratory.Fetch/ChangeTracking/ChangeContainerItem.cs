@@ -105,7 +105,7 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         private ChangeSet ProcessAdd(ChangePath key)
         {
-            key = key.AppendAction(ChangeAction.Add);
+            key = key.WithAction(ChangeAction.Add);
 
             return new ChangeSet
             {
@@ -148,7 +148,7 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         private ChangeSet ProcessRemove(ChangePath path)
         {
-            path = path.AppendAction(ChangeAction.Remove);
+            path = path.WithAction(ChangeAction.Remove);
             return new ChangeSet
             {
                 {

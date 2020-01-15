@@ -72,11 +72,9 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         public void AppendAction_Success()
         {
             var expectedValue = ChangeAction.Remove;
-            var path = ChangePath.Empty.AppendAction(expectedValue);
-            Assert.Single(path.Parts);
-            Assert.True(path.Parts[0] is ChangePathAction);
-            var cpa = path.Parts[0] as ChangePathAction;
-            Assert.Equal(expectedValue, cpa.Action);
+            var path = ChangePath.Empty.WithAction(expectedValue);
+            Assert.Empty(path.Parts);
+            Assert.Equal(expectedValue, path.Action);
         }
 
         [Fact]

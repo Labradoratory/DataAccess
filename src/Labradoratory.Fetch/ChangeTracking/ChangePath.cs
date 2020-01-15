@@ -8,7 +8,7 @@ namespace Labradoratory.Fetch.ChangeTracking
     {
         public static readonly ChangePath Empty = new ChangePath();
 
-        public static ChangePath Create(ChangePathPart part)
+        public static ChangePath Create(IChangePathPart part)
         {
             return Empty.Append(part);
         }
@@ -18,19 +18,29 @@ namespace Labradoratory.Fetch.ChangeTracking
             return Empty.AppendProperty(property);
         }
 
-        private ChangePath(IEnumerable<ChangePathPart> parts, ChangePathPart newPart)
+        private ChangePath(IEnumerable<IChangePathPart> parts, IChangePathPart newPart)
         {
+            Action = ChangeAction.None;
             Parts = parts.Append(newPart).ToList();
+        }
+
+        private ChangePath(IEnumerable<IChangePathPart> parts, ChangeAction action)
+        {
+            Action = action;
+            Parts = parts.ToList();
         }
 
         private ChangePath()
         {
-            Parts = new List<ChangePathPart>(0);
+            Action = ChangeAction.None;
+            Parts = new List<IChangePathPart>(0);
         }
 
-        public IReadOnlyList<ChangePathPart> Parts { get; }
+        public ChangeAction Action { get; }
 
-        public ChangePath Append(ChangePathPart part)
+        public IReadOnlyList<IChangePathPart> Parts { get; }
+
+        public ChangePath Append(IChangePathPart part)
         {
             return new ChangePath(Parts, part);
         }
@@ -38,11 +48,6 @@ namespace Labradoratory.Fetch.ChangeTracking
         public ChangePath AppendProperty(string property)
         {
             return Append(new ChangePathProperty(property));
-        }
-
-        public ChangePath AppendAction(ChangeAction action)
-        {
-            return Append(new ChangePathAction(action));
         }
 
         public ChangePath AppendIndex(int index)
@@ -55,6 +60,11 @@ namespace Labradoratory.Fetch.ChangeTracking
             return Append(new ChangePathKey(key));
         }
 
+        public ChangePath WithAction(ChangeAction action)
+        {
+            return new ChangePath(Parts, action);
+        }
+
         public override string ToString()
         {
             return ToString('.');
@@ -62,7 +72,7 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         public string ToString(char separator)
         {
-            return string.Join(separator, Parts);
+            return $"{Action}:{string.Join(separator, Parts)}";
         }
 
         public override bool Equals(object obj)
@@ -70,8 +80,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (!(obj is ChangePath ck))
                 return false;
 
-            var result = Parts.SequenceEqual(ck.Parts);
-            return result;
+            return Action == ck.Action && Parts.SequenceEqual(ck.Parts);
         }
 
         public override int GetHashCode()
@@ -80,12 +89,12 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
     }
 
-    public abstract class ChangePathPart
+    public interface IChangePathPart
     {
 
     }
 
-    public class ChangePathProperty : ChangePathPart
+    public class ChangePathProperty : IChangePathPart
     {
         public ChangePathProperty(string property)
         {
@@ -113,35 +122,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
     }
 
-    public class ChangePathAction : ChangePathPart
-    {
-        public ChangePathAction(ChangeAction action)
-        {
-            Action = action;
-        }
-
-        public ChangeAction Action { get; }
-
-        public override string ToString()
-        {
-            return Action.ToString().ToLower();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is ChangePathAction cpa))
-                return false;
-
-            return Action == cpa.Action;
-        }
-
-        public override int GetHashCode()
-        {
-            return $"Action{Action}".GetHashCode();
-        }
-    }
-
-    public class ChangePathIndex : ChangePathPart
+    public class ChangePathIndex : IChangePathPart
     {
         public ChangePathIndex(int index)
         {
@@ -169,7 +150,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
     }
 
-    public class ChangePathKey : ChangePathPart
+    public class ChangePathKey : IChangePathPart
     {
         public ChangePathKey(object key)
         {
