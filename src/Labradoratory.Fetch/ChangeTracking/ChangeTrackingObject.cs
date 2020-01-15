@@ -49,7 +49,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         public bool HasChanges => Changes.Values.Any(v => v.HasChanges);
 
         /// <inheritdoc />
-        public ChangeSet GetChangeSet(string path = "", bool commit = false)
+        public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             if (!HasChanges)
                 return null;
@@ -57,7 +57,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             var changes = new ChangeSet();
             foreach(var change in Changes)
             {
-                changes.Merge(change.Value.GetChangeSet(ChangeSet.CombinePaths(path, change.Key), commit));
+                changes.Merge(change.Value.GetChangeSet(path.AppendKey(change.Key), commit));
             }
 
             return changes;

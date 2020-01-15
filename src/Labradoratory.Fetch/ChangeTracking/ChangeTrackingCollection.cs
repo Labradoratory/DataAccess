@@ -95,7 +95,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
 
         /// <inheritdoc />
-        public ChangeSet GetChangeSet(string path = "", bool commit = false)
+        public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             if (!HasChanges)
                 return null;
@@ -108,7 +108,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             {
                 changes.Merge(
                     item.GetChangeSet(
-                        ChangeSet.CombinePaths(path, (changeIndex++).ToString()),
+                        path.AppendIndex(changeIndex++),
                         commit));
             }
 
@@ -117,7 +117,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             {
                 changes.Merge(
                     removed.GetChangeSet(
-                        ChangeSet.CombinePaths(path, (changeIndex++).ToString()),
+                        path.AppendIndex(changeIndex++),
                         commit));
             }
 

@@ -170,14 +170,14 @@
             Gets a value indicating whether this instance has changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <summary>
             Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.
             </summary>
             <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
             <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
             will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(System.String,System.Boolean)" /> immdiately after a commit will return an
+            <see cref="!:GetChangeSet(string, bool)" /> immdiately after a commit will return an
             empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.</param>
             <returns>
             A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" /> containing all of the changes.
@@ -208,14 +208,14 @@
             Gets a value indicating whether this instance has changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <summary>
             Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.
             </summary>
             <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
             <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
             will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(System.String,System.Boolean)" /> immdiately after a commit will return an
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)" /> immdiately after a commit will return an
             empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.</param>
             <returns>
             A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" /> containing all of the changes.
@@ -230,13 +230,6 @@
             <summary>
             Contains a set of changes.
             </summary>
-        </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.CombinePaths(System.String[])">
-            <summary>
-            Combines the paths into one.
-            </summary>
-            <param name="paths">The paths to combine.</param>
-            <returns>The combined paths.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Merge(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
             <summary>
@@ -308,7 +301,7 @@
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.System#Collections#IEnumerable#GetEnumerator">
             <inheritdoc />
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Reset">
@@ -388,7 +381,7 @@
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.System#Collections#IEnumerable#GetEnumerator">
             <inheritdoc />
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Reset">
@@ -422,7 +415,7 @@
             Gets whether or not there are changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <inheritdoc />
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.Reset">
@@ -508,7 +501,7 @@
             Gets whether or not there are changes.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(System.String,System.Boolean)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <summary>
             Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
             </summary>
@@ -516,7 +509,7 @@
             <param name="commit">
             Whether or not to commit the changes during the get.  Commiting the changes
             will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(System.String,System.Boolean)"/> immdiately after a commit will return an
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)"/> immdiately after a commit will return an
             empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
             </param>
             <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing all of the changes.</returns>
@@ -531,12 +524,19 @@
             Methods to make working with <see cref="T:Labradoratory.Fetch.ChangeTracking.ITracksChanges"/> a little easier.
             </summary>
         </member>
-        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.Fetch.ChangeTracking.ITracksChanges,System.String)">
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.Fetch.ChangeTracking.ITracksChanges,Labradoratory.Fetch.ChangeTracking.ChangePath)">
             <summary>
             Commits the changes.
             </summary>
             <param name="target">The target.</param>
-            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty"/>.</param>
+            <param name="path">The path the change set represents.</param>
+            <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.Fetch.ChangeTracking.ITracksChanges)">
+            <summary>
+            Commits the changes.
+            </summary>
+            <param name="target">The target.</param>
             <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.Controllers.CreatedResponseOptions">

@@ -76,7 +76,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>
         /// A <see cref="ChangeSet" /> containing all of the changes.
         /// </returns>
-        public ChangeSet GetChangeSet(string path = "", bool commit = false)
+        public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             ChangeSet changes;
             switch (Action)
@@ -103,14 +103,14 @@ namespace Labradoratory.Fetch.ChangeTracking
             return changes;
         }
 
-        private ChangeSet ProcessAdd(string path)
+        private ChangeSet ProcessAdd(ChangePath key)
         {
-            path = ChangeSet.CombinePaths(path, "add");
+            key = key.AppendAction(ChangeAction.Add);
 
             return new ChangeSet
             {
                 {
-                    path,
+                    key,
                     new ChangeValue
                     {
                         Target = Target,
@@ -121,14 +121,14 @@ namespace Labradoratory.Fetch.ChangeTracking
             };
         }
 
-        private ChangeSet ProcessUpdate(string path, bool commit)
+        private ChangeSet ProcessUpdate(ChangePath key, bool commit)
         {
             if (_oldItem.HasValue)
             {
                 return new ChangeSet
                 {
                     {
-                        path,
+                        key,
                         new ChangeValue
                         {
                             Target = Target,
@@ -141,14 +141,14 @@ namespace Labradoratory.Fetch.ChangeTracking
             }
 
             if (Item is ITracksChanges tc)
-                return tc.GetChangeSet(path, commit);
+                return tc.GetChangeSet(key, commit);
 
             throw new InvalidOperationException($"Updates are not allowed for types that don't implement {nameof(ITracksChanges)}");
         }
 
-        private ChangeSet ProcessRemove(string path)
+        private ChangeSet ProcessRemove(ChangePath path)
         {
-            path = ChangeSet.CombinePaths(path, "remove");
+            path = path.AppendAction(ChangeAction.Remove);
             return new ChangeSet
             {
                 {
