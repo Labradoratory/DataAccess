@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Labradoratory.Fetch.ChangeTracking;
 using Xunit;
 
@@ -8,16 +6,6 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 {
     public class ChangeSet_Tests
     {
-        [Fact]
-        public void CombinePaths_ValueValue()
-        {
-            var part1 = "Part1";
-            var part2 = "Part2";
-            var expectedResult = $"{part1}.{part2}";
-            var result = ChangeSet.CombinePaths(part1, part2);
-            Assert.Equal(expectedResult, result);
-        }
-
         [Fact]
         public void Merge_NullDoesNothing()
         {
@@ -30,19 +18,19 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         [Fact]
         public void Merge_MergesEntries()
         {
-            var expectedKeyOne = "one";
-            var expectedKeyTwo = "two";
+            var expectetPathOne = ChangePath.Create("one");
+            var expectedPathTwo = ChangePath.Create("two");
             var subject = new ChangeSet();
-            subject.Add(expectedKeyOne, new ChangeValue());
+            subject.Add(expectetPathOne, new ChangeValue());
             var mergeMe = new ChangeSet();
-            mergeMe.Add(expectedKeyTwo, new ChangeValue());
+            mergeMe.Add(expectedPathTwo, new ChangeValue());
 
             subject.Merge(mergeMe);
 
             Assert.Equal(2, subject.Count);
             Assert.Single(mergeMe);
-            Assert.Contains(expectedKeyOne, subject as IDictionary<string, ChangeValue>);
-            Assert.Contains(expectedKeyTwo, subject as IDictionary<string, ChangeValue>);
+            Assert.Contains(expectetPathOne, subject as IDictionary<ChangePath, ChangeValue>);
+            Assert.Contains(expectedPathTwo, subject as IDictionary<ChangePath, ChangeValue>);
         }
     }
 }

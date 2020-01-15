@@ -57,7 +57,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             var changes = new ChangeSet();
             foreach(var change in Changes)
             {
-                changes.Merge(change.Value.GetChangeSet(path.AppendKey(change.Key), commit));
+                changes.Merge(change.Value.GetChangeSet(path.AppendProperty(change.Key), commit));
             }
 
             return changes;

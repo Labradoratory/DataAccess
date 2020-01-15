@@ -1,6 +1,7 @@
 ﻿using System;
 using Labradoratory.Fetch.ChangeTracking;
 using Xunit;
+using System.Linq;
 
 namespace Labradoratory.Fetch.Test.ChangeTracking
 {
@@ -63,32 +64,31 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         {
             var expectedOldValue = "Initial Value";
             var expectedNewValue = "New Value";
-            var expectedKey = "Key";
+            var expectedPath = ChangePath.Create("Key");
             var subject = new ChangeContainerValue(expectedOldValue);
             subject.CurrentValue = expectedNewValue;
-            var changes = subject.GetChangeSet(expectedKey);
+            var changes = subject.GetChangeSet(expectedPath);
 
             Assert.Single(changes);
-            Assert.True(changes.ContainsKey(expectedKey));
-            Assert.Equal(ChangeAction.Update, changes[expectedKey].Action);
-            Assert.Equal(expectedOldValue, changes[expectedKey].OldValue);
-            Assert.Equal(expectedNewValue, changes[expectedKey].NewValue);
+            Assert.True(changes.ContainsKey(expectedPath));
+            Assert.Equal(ChangeAction.Update, changes[expectedPath].Action);
+            Assert.Equal(expectedOldValue, changes[expectedPath].OldValue);
+            Assert.Equal(expectedNewValue, changes[expectedPath].NewValue);
         }
 
         [Fact]
         public void GetChangeSet_GeneratesCorrectChangeSetForITracksChanges()
         {
-            var path = "Key";
-            var expectedKey = $"{path}.{nameof(NestedObject.StringValue)}";
+            var path = ChangePath.Create("Key");
+            var expectedPath = path.AppendProperty(nameof(NestedObject.StringValue));
             var nested = ChangeTrackingObject.CreateTrackable<NestedObject>();
             var subject = new ChangeContainerValue(nested);
 
             nested.StringValue = "My new value;";
 
             var changes = subject.GetChangeSet(path);
-
             Assert.Single(changes);
-            Assert.True(changes.ContainsKey(expectedKey));
+            Assert.True(changes.ContainsKey(expectedPath));
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var subject = new ChangeContainerValue("Initial Value");
             subject.CurrentValue = "New Value";
             Assert.True(subject.HasChanges);
-            var changes = subject.GetChangeSet();
+            var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.True(subject.HasChanges);
         }
 
@@ -108,7 +108,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var subject = new ChangeContainerValue("Initial Value");
             subject.CurrentValue = expectedNewValue;
             Assert.True(subject.HasChanges);
-            var changes = subject.GetChangeSet(commit: true);
+            var changes = subject.GetChangeSet(ChangePath.Empty, commit: true);
             Assert.False(subject.HasChanges);
             Assert.Equal(expectedNewValue, subject.CurrentValue);
         }
@@ -118,7 +118,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         {
             var subject = new ChangeContainerValue("Initial Value");
             Assert.False(subject.HasChanges);
-            var changes = subject.GetChangeSet(commit: true);
+            var changes = subject.GetChangeSet(ChangePath.Empty, commit: true);
             Assert.Null(changes);
         }
 

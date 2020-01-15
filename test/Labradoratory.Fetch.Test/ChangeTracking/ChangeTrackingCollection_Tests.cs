@@ -164,13 +164,13 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var subject = new ChangeTrackingCollection<TestItem>();
             var expectedItem = new TestItem();
             subject.Add(expectedItem);
-            var path = "path";
-            var expectedKey = $"{path}.1.add";
+            var path = ChangePath.Create("path");
+            var expectedKey = path.AppendIndex(1).AppendAction(ChangeAction.Add);
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
-            Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
+            Assert.Contains(expectedKey, result as IDictionary<ChangePath, ChangeValue>);
             var change = result[expectedKey];
             Assert.Equal(ChangeAction.Add, change.Action);
             Assert.Equal(ChangeTarget.Collection, change.Target);
@@ -189,14 +189,14 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
                 new TestItem()
             };
             var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
-            var path = "path";
-            var expectedKey = $"{path}.1.remove";
+            var path = ChangePath.Create("path");
+            var expectedKey = path.AppendIndex(1).AppendAction(ChangeAction.Remove);
             Assert.True(subject.Remove(expectedRemove));
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
-            Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
+            Assert.Contains(expectedKey, result as IDictionary<ChangePath, ChangeValue>);
             var change = result[expectedKey];
             Assert.Equal(ChangeAction.Remove, change.Action);
             Assert.Equal(ChangeTarget.Collection, change.Target);
@@ -220,14 +220,14 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
                 new TestItem()
             };
             var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
-            var path = "path";
-            var expectedKey = $"{path}.1.{nameof(TestItem.StringValue)}";
+            var path = ChangePath.Create("path");
+            var expectedKey = path.AppendIndex(1).AppendProperty(nameof(TestItem.StringValue));
             expectedUpdate.StringValue = expectedNewValue;
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
             Assert.Single(result);
-            Assert.Contains(expectedKey, result as IDictionary<string, ChangeValue>);
+            Assert.Contains(expectedKey, result as IDictionary<ChangePath, ChangeValue>);
             var change = result[expectedKey];
             Assert.Equal(ChangeAction.Update, change.Action);
             Assert.Equal(ChangeTarget.Object, change.Target);
@@ -251,7 +251,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectedNewValue = "New Value";
             expectedUpdate.StringValue = expectedNewValue;
 
-            var result = subject.GetChangeSet(commit: true);
+            var result = subject.GetChangeSet(ChangePath.Empty, commit: true);
             Assert.Equal(3, result.Count);
             Assert.False(subject.HasChanges);
             Assert.False(expectedUpdate.HasChanges);
@@ -264,7 +264,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         public void GetChangeSet_NullWhenNoChanges()
         {
             var subject = new ChangeTrackingCollection<TestItem>();
-            Assert.Null(subject.GetChangeSet());
+            Assert.Null(subject.GetChangeSet(ChangePath.Empty));
         }
 
         [Fact]
@@ -290,7 +290,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             subject.Reset();
 
             Assert.False(subject.HasChanges);
-            var changes = subject.GetChangeSet();
+            var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Null(changes);
             Assert.False(expectedUpdate.HasChanges);
         }

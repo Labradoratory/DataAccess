@@ -80,7 +80,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         {
             var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
             Assert.False(subject.HasChanges);
-            var result = subject.GetChangeSet();
+            var result = subject.GetChangeSet(ChangePath.Empty);
             Assert.Null(result);
         }
 
@@ -95,7 +95,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             subject.IntValue = 100;
             subject.StringValue = "The new value";
 
-            var result = subject.GetChangeSet();
+            var result = subject.GetChangeSet(ChangePath.Empty);
             Assert.Equal(2, result.Count);
         }
 

@@ -8,12 +8,12 @@ namespace Labradoratory.Fetch.ChangeTracking
     {
         public static readonly ChangePath Empty = new ChangePath();
 
-        public ChangePath Create(ChangePathPart part)
+        public static ChangePath Create(ChangePathPart part)
         {
             return Empty.Append(part);
         }
 
-        public ChangePath Create(string property)
+        public static ChangePath Create(string property)
         {
             return Empty.AppendProperty(property);
         }
@@ -57,7 +57,12 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         public override string ToString()
         {
-            return string.Join('.', Parts);
+            return ToString('.');
+        }
+
+        public string ToString(char separator)
+        {
+            return string.Join(separator, Parts);
         }
 
         public override bool Equals(object obj)
@@ -65,7 +70,8 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (!(obj is ChangePath ck))
                 return false;
 
-            return Parts.SequenceEqual(ck.Parts);
+            var result = Parts.SequenceEqual(ck.Parts);
+            return result;
         }
 
         public override int GetHashCode()
