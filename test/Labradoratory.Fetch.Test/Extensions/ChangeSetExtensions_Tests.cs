@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Labradoratory.Fetch.ChangeTracking;
+﻿using Labradoratory.Fetch.ChangeTracking;
 using Labradoratory.Fetch.Extensions;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using Xunit;
@@ -27,7 +26,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             var operation = patch[0];
             Assert.Equal(OperationType.Add, operation.OperationType);
             Assert.Equal(expectedPath, operation.path);
-            Assert.Equal(JsonSerializer.Serialize(expectedNewValue), operation.value);
+            Assert.Equal(expectedNewValue, operation.value);
         }
 
         [Fact]
