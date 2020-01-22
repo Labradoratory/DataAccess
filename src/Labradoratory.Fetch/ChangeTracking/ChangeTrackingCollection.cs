@@ -14,7 +14,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <summary>
         /// Initializes a new, empty instance of the <see cref="ChangeTrackingCollection{T}"/> class.
         /// </summary>
-        public ChangeTrackingCollection() 
+        public ChangeTrackingCollection()
             : this(new List<T>(0))
         { }
 

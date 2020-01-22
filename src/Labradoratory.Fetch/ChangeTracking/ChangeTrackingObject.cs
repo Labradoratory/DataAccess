@@ -104,7 +104,6 @@ namespace Labradoratory.Fetch.ChangeTracking
                 Changes[propertyName].CurrentValue = value;
         }
 
-
 #pragma warning disable RCS1213 // Remove unused member declaration.  This is used via reflection.
         private void SetDefaultValue<T>(string propertyName)
         {

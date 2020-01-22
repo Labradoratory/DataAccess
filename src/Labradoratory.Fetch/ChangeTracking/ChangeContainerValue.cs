@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -90,7 +89,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// </summary>
         public void Reset()
         {
-            CurrentValue = OldValue;
+            currentValue = OldValue;
             OldValue = null;
             oldValueHasValue = false;
         }

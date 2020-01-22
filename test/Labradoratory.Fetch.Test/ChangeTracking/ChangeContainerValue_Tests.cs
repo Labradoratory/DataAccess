@@ -31,9 +31,23 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void HasChanges_FalseWhenSameValueSet()
+        public void HasChanges_String_FalseWhenSameValueSet()
         {
             var expected = "Initial Value";
+            var subject = new ChangeContainerValue(expected);
+            subject.CurrentValue = expected;
+            Assert.False(subject.HasChanges);
+        }
+        
+        // NOTE: This test was added because we were using == to check
+        // equality and because the ChangeContainerValue treats the
+        // values as objects, it was doing a reference comparison which
+        // was failing for primitives (string worked fine).  This test 
+        // covers making sure equality is being tested correctly.
+        [Fact]
+        public void HasChanges_Int_FalseWhenSameValueSet()
+        {
+            var expected = 123;
             var subject = new ChangeContainerValue(expected);
             subject.CurrentValue = expected;
             Assert.False(subject.HasChanges);

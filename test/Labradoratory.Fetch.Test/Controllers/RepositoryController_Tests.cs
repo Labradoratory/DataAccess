@@ -1532,6 +1532,13 @@ namespace Labradoratory.Fetch.Test.Controllers
                 get => GetValue<string>();
                 set => SetValue(value);
             }
+
+            [Patchable]
+            public int IntValue
+            {
+                get => GetValue<int>();
+                set => SetValue(value);
+            }
         }
 
         public class TestController : RepositoryController<TestEntity>
