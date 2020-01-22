@@ -24,7 +24,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             get => currentValue;
             set
             {
-                if (value == currentValue)
+                if (Equals(value, currentValue))
                     return;
 
                 if (!oldValueHasValue)
