@@ -21,16 +21,16 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectetPathOne = ChangePath.Create("one");
             var expectedPathTwo = ChangePath.Create("two");
             var subject = new ChangeSet();
-            subject.Add(expectetPathOne, new ChangeValue());
+            subject.Append(expectetPathOne, new ChangeValue());
             var mergeMe = new ChangeSet();
-            mergeMe.Add(expectedPathTwo, new ChangeValue());
+            mergeMe.Append(expectedPathTwo, new ChangeValue());
 
             subject.Merge(mergeMe);
 
             Assert.Equal(2, subject.Count);
             Assert.Single(mergeMe);
-            Assert.Contains(expectetPathOne, subject as IDictionary<ChangePath, ChangeValue>);
-            Assert.Contains(expectedPathTwo, subject as IDictionary<ChangePath, ChangeValue>);
+            Assert.Contains(expectetPathOne, subject as IDictionary<ChangePath, List<ChangeValue>>);
+            Assert.Contains(expectedPathTwo, subject as IDictionary<ChangePath, List<ChangeValue>>);
         }
     }
 }

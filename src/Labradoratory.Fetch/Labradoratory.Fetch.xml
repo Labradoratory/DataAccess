@@ -226,6 +226,11 @@
             Resets the changes.
             </summary>
         </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePath.Target">
+            <summary>
+            Gets or sets the target of the changes in this set.
+            </summary>
+        </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeSet">
             <summary>
             Contains a set of changes.
@@ -442,11 +447,6 @@
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeValue">
             <summary>
             Represents a value change.
-            </summary>
-        </member>
-        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeValue.Target">
-            <summary>
-            Gets or sets the target of the changes in this set.
             </summary>
         </member>
         <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeValue.Action">
@@ -738,6 +738,19 @@
             </summary>
             <param name="encodedKeys">The encoded keys to decode.</param>
             <returns>The decoded keys.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.ChangeSetExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.ChangeSetExtensions.ToJsonPatch(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> into an array of <see cref="T:Microsoft.AspNetCore.JsonPatch.Operations.Operation"/>
+            objects representing a JSON Patch.
+            </summary>
+            <param name="changes">The changes to convert.</param>
+            <returns>The array of <see cref="T:Microsoft.AspNetCore.JsonPatch.Operations.Operation"/> objects representing a JSON Patch.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.Extensions.IEnumerableExtensions">
             <summary>

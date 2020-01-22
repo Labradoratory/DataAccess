@@ -100,6 +100,8 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (!HasChanges)
                 return null;
 
+            path = path.WithTarget(ChangeTarget.Collection);
+
             var changes = new ChangeSet();
             // In order to have unique keys in the set, we add an integer to each
             // add/remove paths (key).  This value can be ignored during processing.
@@ -107,18 +109,14 @@ namespace Labradoratory.Fetch.ChangeTracking
             foreach(var item in Items.Where(i => i.HasChanges))
             {
                 changes.Merge(
-                    item.GetChangeSet(
-                        path.AppendIndex(changeIndex++),
-                        commit));
+                    item.GetChangeSet(path, commit));
             }
 
             changeIndex = 1;
             foreach(var removed in Removed)
             {
                 changes.Merge(
-                    removed.GetChangeSet(
-                        path.AppendIndex(changeIndex++),
-                        commit));
+                    removed.GetChangeSet(path, commit));
             }
 
             if (commit)

@@ -190,6 +190,7 @@ namespace Labradoratory.Fetch.ChangeTracking
                 return null;
 
             var changes = new ChangeSet();
+            path = path.WithTarget(ChangeTarget.Dictionary);
 
             foreach (var item in Items.Where(i => i.Value.HasChanges))
             {

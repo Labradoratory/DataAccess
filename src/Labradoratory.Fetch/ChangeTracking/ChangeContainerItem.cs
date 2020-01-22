@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -105,62 +106,45 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         private ChangeSet ProcessAdd(ChangePath key)
         {
-            key = key.WithAction(ChangeAction.Add);
-
-            return new ChangeSet
-            {
+            return ChangeSet.Create(
+                key,
+                new ChangeValue
                 {
-                    key,
-                    new ChangeValue
-                    {
-                        Target = Target,
-                        Action = Action,
-                        NewValue = Item
-                    }
-                }
-            };
+                    Action = Action,
+                    NewValue = Item
+                });
         }
 
         private ChangeSet ProcessUpdate(ChangePath key, bool commit)
         {
             if (_oldItem.HasValue)
             {
-                return new ChangeSet
-                {
+                return ChangeSet.Create(
+                    key,
+                    new ChangeValue
                     {
-                        key,
-                        new ChangeValue
-                        {
-                            Target = Target,
-                            Action = ChangeAction.Update,
-                            NewValue = Item,
-                            OldValue = _oldItem.Value
-                        }
-                    }
-                };
+                        Action = ChangeAction.Update,
+                        NewValue = Item,
+                        OldValue = _oldItem.Value
+                    });
             }
 
+            // If the update is to a child object, then make sure the path's target is Object.
             if (Item is ITracksChanges tc)
-                return tc.GetChangeSet(key, commit);
+                return tc.GetChangeSet(key.WithTarget(ChangeTarget.Object), commit);
 
             throw new InvalidOperationException($"Updates are not allowed for types that don't implement {nameof(ITracksChanges)}");
         }
 
         private ChangeSet ProcessRemove(ChangePath path)
         {
-            path = path.WithAction(ChangeAction.Remove);
-            return new ChangeSet
-            {
+            return ChangeSet.Create(
+                path,
+                new ChangeValue
                 {
-                    path,
-                    new ChangeValue
-                    {
-                        Target = Target,
-                        Action = Action,
-                        OldValue = Item
-                    }
-                }
-            };
+                    Action = Action,
+                    OldValue = Item
+                });
         }
 
         /// <summary>

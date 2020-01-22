@@ -8,11 +8,6 @@ namespace Labradoratory.Fetch.ChangeTracking
     public class ChangeValue
     {
         /// <summary>
-        /// Gets or sets the target of the changes in this set.
-        /// </summary>
-        public ChangeTarget Target { get; set; }
-
-        /// <summary>
         /// Gets or sets the action that caused the change.
         /// </summary>
         public ChangeAction Action { get; set; }

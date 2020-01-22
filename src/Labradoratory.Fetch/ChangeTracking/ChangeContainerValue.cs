@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -81,7 +82,7 @@ namespace Labradoratory.Fetch.ChangeTracking
                 oldValueHasValue = false;
             }
 
-            return new ChangeSet { { path, value } };
+            return ChangeSet.Create(path, value);
         }
 
         /// <summary>

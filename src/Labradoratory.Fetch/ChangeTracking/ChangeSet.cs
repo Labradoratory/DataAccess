@@ -6,8 +6,23 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// <summary>
     /// Contains a set of changes.
     /// </summary>
-    public class ChangeSet : Dictionary<ChangePath, ChangeValue>
+    public class ChangeSet : Dictionary<ChangePath, List<ChangeValue>>
     {
+        public static ChangeSet Create(ChangePath path, params ChangeValue[] values)
+        {
+            var changeSet = new ChangeSet();
+            changeSet.Append(path, values);
+            return changeSet;
+        }
+
+        public void Append(ChangePath path, params ChangeValue[] values)
+        {
+            if (!ContainsKey(path))
+                this[path] = new List<ChangeValue>();
+
+            this[path].AddRange(values);
+        }
+
         /// <summary>
         /// Merges the specified changes into this <see cref="ChangeSet"/>.
         /// </summary>
@@ -20,7 +35,7 @@ namespace Labradoratory.Fetch.ChangeTracking
 
             foreach (var entry in changes)
             {
-                Add(entry.Key, entry.Value);
+                Append(entry.Key, entry.Value.ToArray());
             }
         }
     }

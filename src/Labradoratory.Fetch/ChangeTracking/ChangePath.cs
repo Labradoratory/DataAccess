@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -18,31 +19,39 @@ namespace Labradoratory.Fetch.ChangeTracking
             return Empty.AppendProperty(property);
         }
 
-        private ChangePath(IEnumerable<IChangePathPart> parts, IChangePathPart newPart)
+        private ChangePath(IEnumerable<IChangePathPart> parts, IChangePathPart newPart, ChangeTarget target)
+            : this(target)
         {
-            Action = ChangeAction.None;
             Parts = parts.Append(newPart).ToList();
         }
 
-        private ChangePath(IEnumerable<IChangePathPart> parts, ChangeAction action)
+        private ChangePath(IEnumerable<IChangePathPart> parts, ChangeTarget target)
+            : this(target)
         {
-            Action = action;
             Parts = parts.ToList();
         }
 
         private ChangePath()
+            : this(ChangeTarget.Object)
         {
-            Action = ChangeAction.None;
             Parts = new List<IChangePathPart>(0);
         }
 
-        public ChangeAction Action { get; }
+        private ChangePath(ChangeTarget target)
+        {
+            Target = target;
+        }
+
+        /// <summary>
+        /// Gets or sets the target of the changes in this set.
+        /// </summary>
+        public ChangeTarget Target { get; }
 
         public IReadOnlyList<IChangePathPart> Parts { get; }
 
         public ChangePath Append(IChangePathPart part)
         {
-            return new ChangePath(Parts, part);
+            return new ChangePath(Parts, part, Target);
         }
 
         public ChangePath AppendProperty(string property)
@@ -50,7 +59,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             return Append(new ChangePathProperty(property));
         }
 
-        public ChangePath AppendIndex(int index)
+        public ChangePath AppendIndex(string index)
         {
             return Append(new ChangePathIndex(index));
         }
@@ -60,9 +69,9 @@ namespace Labradoratory.Fetch.ChangeTracking
             return Append(new ChangePathKey(key));
         }
 
-        public ChangePath WithAction(ChangeAction action)
+        public ChangePath WithTarget(ChangeTarget target)
         {
-            return new ChangePath(Parts, action);
+            return new ChangePath(Parts, target);
         }
 
         public override string ToString()
@@ -72,7 +81,7 @@ namespace Labradoratory.Fetch.ChangeTracking
 
         public string ToString(char separator)
         {
-            return $"{Action}:{string.Join(separator, Parts)}";
+            return string.Join(separator, Parts);
         }
 
         public override bool Equals(object obj)
@@ -80,7 +89,7 @@ namespace Labradoratory.Fetch.ChangeTracking
             if (!(obj is ChangePath ck))
                 return false;
 
-            return Action == ck.Action && Parts.SequenceEqual(ck.Parts);
+            return Parts.SequenceEqual(ck.Parts);
         }
 
         public override int GetHashCode()
@@ -124,16 +133,21 @@ namespace Labradoratory.Fetch.ChangeTracking
 
     public class ChangePathIndex : IChangePathPart
     {
-        public ChangePathIndex(int index)
+        public static readonly Regex IndexRegex = new Regex(@"^(\d*|-)$", RegexOptions.Compiled);
+
+        public ChangePathIndex(string index)
         {
+            if (!IndexRegex.IsMatch(index))
+                throw new ArgumentException(nameof(index), "Index value must be a positive integer or '-'.");
+
             Index = index;
         }
 
-        public int Index { get; }
+        public string Index { get; }
 
         public override string ToString()
         {
-            return Index.ToString();
+            return Index;
         }
 
         public override bool Equals(object obj)

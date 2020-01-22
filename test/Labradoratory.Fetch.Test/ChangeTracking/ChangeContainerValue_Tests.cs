@@ -71,9 +71,10 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 
             Assert.Single(changes);
             Assert.True(changes.ContainsKey(expectedPath));
-            Assert.Equal(ChangeAction.Update, changes[expectedPath].Action);
-            Assert.Equal(expectedOldValue, changes[expectedPath].OldValue);
-            Assert.Equal(expectedNewValue, changes[expectedPath].NewValue);
+            Assert.Single(changes[expectedPath]);
+            Assert.Equal(ChangeAction.Update, changes[expectedPath][0].Action);
+            Assert.Equal(expectedOldValue, changes[expectedPath][0].OldValue);
+            Assert.Equal(expectedNewValue, changes[expectedPath][0].NewValue);
         }
 
         [Fact]

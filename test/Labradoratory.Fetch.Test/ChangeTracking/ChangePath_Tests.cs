@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Labradoratory.Fetch.ChangeTracking;
 using Xunit;
 
@@ -6,6 +7,13 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 {
     public class ChangePath_Tests
     {
+        [Fact]
+        public void Empty_Success()
+        {
+            var path = ChangePath.Empty;
+            Assert.Empty(path.Parts);
+        }
+
         [Fact]
         public void Create_Property_Success()
         {
@@ -58,9 +66,9 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void AppendIndex_Success()
+        public void AppendIndex_Number_Success()
         {
-            var expectedValue = 123;
+            var expectedValue = "123";
             var path = ChangePath.Empty.AppendIndex(expectedValue);
             Assert.Single(path.Parts);
             Assert.True(path.Parts[0] is ChangePathIndex);
@@ -69,12 +77,21 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void AppendAction_Success()
+        public void AppendIndex_Dash_Success()
         {
-            var expectedValue = ChangeAction.Remove;
-            var path = ChangePath.Empty.WithAction(expectedValue);
-            Assert.Empty(path.Parts);
-            Assert.Equal(expectedValue, path.Action);
+            var expectedValue = "-";
+            var path = ChangePath.Empty.AppendIndex(expectedValue);
+            Assert.Single(path.Parts);
+            Assert.True(path.Parts[0] is ChangePathIndex);
+            var cpi = path.Parts[0] as ChangePathIndex;
+            Assert.Equal(expectedValue, cpi.Index);
+        }
+
+        [Fact]
+        public void AppendIndex_Invalid_Fail()
+        {
+            var expectedValue = "Abs123";
+            Assert.Throws<ArgumentException>(() => ChangePath.Empty.AppendIndex(expectedValue));
         }
 
         [Fact]

@@ -78,7 +78,9 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.True(subject.HasChanges);
             var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Single(changes);
-            Assert.Equal(ChangeAction.Update, changes.First().Value.Action);
+            var values = changes.First().Value;
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Update, value.Action);
         }
 
         [Fact]
@@ -90,7 +92,9 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.True(subject.HasChanges);
             var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Single(changes);
-            Assert.Equal(ChangeAction.Add, changes.First().Value.Action);
+            var values = changes.First().Value;
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Add, value.Action);
         }
 
         [Fact]
@@ -148,9 +152,10 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.True(subject.HasChanges);
             var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Single(changes);
-            var change = changes.First();
-            Assert.Equal(ChangeAction.Add, change.Value.Action);
-            Assert.Same(expectedItem, change.Value.NewValue);
+            var values = changes.First().Value;
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Add, value.Action);
+            Assert.Same(expectedItem, value.NewValue);
         }
 
         [Fact]
@@ -163,9 +168,10 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.True(subject.HasChanges);
             var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Single(changes);
-            var change = changes.First();
-            Assert.Equal(ChangeAction.Add, change.Value.Action);
-            Assert.Same(expectedItem, change.Value.NewValue);
+            var values = changes.First().Value;
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Add, value.Action);
+            Assert.Same(expectedItem, value.NewValue);
         }
 
         [Fact]
@@ -182,7 +188,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.Empty(subject);
             var changes = subject.GetChangeSet(ChangePath.Empty);
             Assert.Equal(2, changes.Count);
-            Assert.All(changes, c => Assert.Equal(ChangeAction.Remove, c.Value.Action));
+            Assert.All(changes, c => Assert.All(c.Value, v => Assert.Equal(ChangeAction.Remove, v.Action)));
         }
 
         [Fact]
@@ -391,17 +397,18 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             var expectedItem = new TestItem();
             subject.Add(expectedKey, expectedItem);
             var path = ChangePath.Create("path");
-            var expectedChangeKey = path.AppendKey(expectedKey).WithAction(ChangeAction.Add);
+            var expectedChangeKey = path.AppendKey(expectedKey);
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Contains(expectedChangeKey, result as IDictionary<ChangePath, ChangeValue>);
-            var change = result[expectedChangeKey];
-            Assert.Equal(ChangeAction.Add, change.Action);
-            Assert.Equal(ChangeTarget.Dictionary, change.Target);
-            Assert.Null(change.OldValue);
-            Assert.Same(expectedItem, change.NewValue);
+            var kvp = Assert.Single(result);
+            Assert.Equal(ChangeTarget.Dictionary, kvp.Key.Target);
+            Assert.Contains(expectedChangeKey, result as IDictionary<ChangePath, List<ChangeValue>>);
+            var values = result[expectedChangeKey];
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Add, value.Action);
+            Assert.Null(value.OldValue);
+            Assert.Same(expectedItem, value.NewValue);
         }
 
         [Fact]
@@ -417,18 +424,19 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             };
             var subject = new ChangeTrackingDictionary<string, TestItem>(expectedItems);
             var path = ChangePath.Create("path");
-            var expectedChangeKey = path.AppendKey(removeKey).WithAction(ChangeAction.Remove);
+            var expectedChangeKey = path.AppendKey(removeKey);
             Assert.True(subject.Remove(removeKey));
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Contains(expectedChangeKey, result as IDictionary<ChangePath, ChangeValue>);
-            var change = result[expectedChangeKey];
-            Assert.Equal(ChangeAction.Remove, change.Action);
-            Assert.Equal(ChangeTarget.Dictionary, change.Target);
-            Assert.Null(change.NewValue);
-            Assert.Same(expectedRemove, change.OldValue);
+            var kvp = Assert.Single(result);
+            Assert.Equal(ChangeTarget.Dictionary, kvp.Key.Target);
+            Assert.Contains(expectedChangeKey, result as IDictionary<ChangePath, List<ChangeValue>>);
+            var values = result[expectedChangeKey];
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Remove, value.Action);
+            Assert.Null(value.NewValue);
+            Assert.Same(expectedRemove, value.OldValue);
         }
 
         [Fact]
@@ -449,18 +457,19 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             };
             var subject = new ChangeTrackingDictionary<string, TestItem>(expectedItems);
             var path = ChangePath.Create("path");
-            var expectedChangeKey = path.AppendKey(expectedKey).AppendProperty(nameof(TestItem.StringValue));
+            var expectedChangePath = path.AppendKey(expectedKey).AppendProperty(nameof(TestItem.StringValue));
             expectedUpdate.StringValue = expectedNewValue;
             var result = subject.GetChangeSet(path);
             Assert.True(subject.HasChanges);
             Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Contains(expectedChangeKey, result as IDictionary<ChangePath, ChangeValue>);
-            var change = result[expectedChangeKey];
-            Assert.Equal(ChangeAction.Update, change.Action);
-            Assert.Equal(ChangeTarget.Object, change.Target);
-            Assert.Equal(expectedNewValue, change.NewValue);
-            Assert.Equal(expectedOldValue, change.OldValue);
+            var kvp = Assert.Single(result);
+            Assert.Equal(ChangeTarget.Object, kvp.Key.Target);
+            Assert.Contains(expectedChangePath, result as IDictionary<ChangePath, List<ChangeValue>>);
+            var values = result[expectedChangePath];
+            var value = Assert.Single(values);
+            Assert.Equal(ChangeAction.Update, value.Action);
+            Assert.Equal(expectedNewValue, value.NewValue);
+            Assert.Equal(expectedOldValue, value.OldValue);
         }
 
         [Fact]
