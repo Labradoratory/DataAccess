@@ -32,7 +32,7 @@ namespace Labradoratory.Fetch.Extensions
                     };
 
                     if (value.Action != ChangeAction.Remove)
-                        operation.value = JsonSerializer.Serialize(value.NewValue);
+                        operation.value = value.NewValue;
 
                     operations.Add(operation);
                 }

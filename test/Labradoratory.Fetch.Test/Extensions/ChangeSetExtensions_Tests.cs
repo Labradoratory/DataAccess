@@ -53,7 +53,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             var operation = patch[0];
             Assert.Equal(OperationType.Add, operation.OperationType);
             Assert.Equal(expectedPath, operation.path);
-            var resultValue = JsonSerializer.Deserialize<TestValue>(operation.value.ToString());
+            var resultValue = Assert.IsType<TestValue>(operation.value);
             Assert.Equal(expectedNewValue.StringValue, resultValue.StringValue);
             Assert.Equal(expectedNewValue.IntValue, resultValue.IntValue);
         }
@@ -77,7 +77,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             var operation = patch[0];
             Assert.Equal(OperationType.Replace, operation.OperationType);
             Assert.Equal(expectedPath, operation.path);
-            Assert.Equal(JsonSerializer.Serialize(expectedNewValue), operation.value);
+            Assert.Equal(expectedNewValue, operation.value);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             var operation = patch[0];
             Assert.Equal(OperationType.Replace, operation.OperationType);
             Assert.Equal(expectedPath, operation.path);
-            Assert.Equal(JsonSerializer.Serialize(expectedNewValue), operation.value);
+            Assert.Equal(expectedNewValue, operation.value);
         }
 
         [Fact]

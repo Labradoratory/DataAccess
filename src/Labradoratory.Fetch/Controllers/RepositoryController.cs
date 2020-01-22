@@ -196,6 +196,10 @@ namespace Labradoratory.Fetch.Controllers
 
             var view = Mapper.Map<TView>(entity);
 
+            // There are no changes, just return the existing view.
+            if (patch.Operations.Count == 0)
+                return Ok(view);
+
             var errors = new List<JsonPatchError>();
             patch.ApplyToIfPatchable(view, error => errors.Add(error));
 
