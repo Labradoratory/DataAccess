@@ -28,7 +28,7 @@ namespace Labradoratory.Fetch.Extensions
                     var operation = new Operation
                     {
                         op = value.Action.ToOpName(),
-                        path = string.Join('/', change.Key.Parts).ToLower()
+                        path = $"/{string.Join('/', change.Key.Parts).ToLower()}"
                     };
 
                     if (value.Action != ChangeAction.Remove)
