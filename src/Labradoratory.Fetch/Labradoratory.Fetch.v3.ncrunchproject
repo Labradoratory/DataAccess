@@ -1,7 +1,5 @@
 ﻿<ProjectConfiguration>
   <Settings>
-    <CustomBuildProperties>
-      <Value>DisableGitVersionTask = true</Value>
-    </CustomBuildProperties>
+    <InstrumentationMode>Optimised</InstrumentationMode>
   </Settings>
 </ProjectConfiguration>

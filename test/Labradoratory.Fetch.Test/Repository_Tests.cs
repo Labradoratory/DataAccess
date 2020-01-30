@@ -289,8 +289,8 @@ namespace Labradoratory.Fetch.Test
                 {
                     // Check to make sure the function just returns the same queryable, as-is.
                     var expectedQueryable = new List<TestEntity>().AsQueryable();
-                    var result = f(expectedQueryable);
-                    Assert.Same(expectedQueryable, result);
+                    var result1 = f(expectedQueryable);
+                    Assert.Same(expectedQueryable, result1);
                 });
 
             var result = mockSubject.Object.GetAsyncQueryResolver();
