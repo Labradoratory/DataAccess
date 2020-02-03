@@ -226,10 +226,232 @@
             Resets the changes.
             </summary>
         </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePath">
+            <summary>
+            Represents an immutible path to a change in object hierarchy.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangePath.Empty">
+            <summary>
+            Represents an empty path.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Create(Labradoratory.Fetch.ChangeTracking.IChangePathPart)">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> from the provided part.
+            </summary>
+            <param name="part">The part to create the path from.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Create(System.String)">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> using the provided property name to create 
+            the initial <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/>.
+            </summary>
+            <param name="property">The property.</param>
+            <returns></returns>
+        </member>
         <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePath.Target">
             <summary>
             Gets or sets the target of the changes in this set.
             </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePath.Parts">
+            <summary>
+            Gets the parts that make up the path.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Append(Labradoratory.Fetch.ChangeTracking.IChangePathPart)">
+            <summary>
+            Appends the part to the end, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="part">The part to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the part appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendProperty(System.String)">
+            <summary>
+            Appends the provided property name, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="property">The property to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendIndex(System.String)">
+            <summary>
+            Appends the provided index, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="index">The index to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendKey(System.Object)">
+            <summary>
+            Appends the provided key, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="key">The key to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.WithTarget(Labradoratory.Fetch.ChangeTracking.ChangeTarget)">
+            <summary>
+            Creates a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the specified target.
+            </summary>
+            <param name="target">The target of the path.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the specified target.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.ToString">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to its string representation.
+            </summary>
+            <remarks>The '.' is used to separate the parts.</remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.ToString(System.Char)">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to its string representation,
+            using the provided charater to separate the parts.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart">
+            <summary>
+            A marker interface, identifying a part of a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty">
+            <summary>
+            Represents a property in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/> class.
+            </summary>
+            <param name="property">The property.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.Property">
+            <summary>
+            Gets the property.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex">
+            <summary>
+            Represents an index (Array, List or other) in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.IndexRegex">
+            <summary>
+            The regular expression that an index value must match.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex"/> class.
+            </summary>
+            <param name="index">The index.</param>
+            <exception cref="T:System.ArgumentException">index - Index value must be a positive integer or '-'.</exception>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.Index">
+            <summary>
+            Gets the index.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey">
+            <summary>
+            Represents a key (Dictionary or other) in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey"/> class.
+            </summary>
+            <param name="key">The key.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathKey.Key">
+            <summary>
+            Gets the key.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
         </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeSet">
             <summary>
