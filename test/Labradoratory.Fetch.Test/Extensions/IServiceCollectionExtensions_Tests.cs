@@ -120,7 +120,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             var descriptor = descriptors.Single(d => d.ServiceType == typeof(TService));
             Assert.Equal(typeof(TService), descriptor.ServiceType);
             Assert.Equal(typeof(TImplementation), descriptor.ImplementationType);
-            Assert.Equal(ServiceLifetime.Singleton, descriptor.Lifetime);
+            Assert.Equal(ServiceLifetime.Scoped, descriptor.Lifetime);
         }
 
         public class TestEntity : Entity

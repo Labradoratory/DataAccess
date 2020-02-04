@@ -18,8 +18,8 @@ namespace Labradoratory.Fetch.Extensions
         /// <returns>The <paramref name="serviceCollection"/>.</returns>
         public static IServiceCollection AddFetch(this IServiceCollection serviceCollection)
         {
-            serviceCollection.TryAddSingleton<ProcessorPipeline>();
-            serviceCollection.TryAddSingleton<IProcessorProvider, DefaultProcessorProvider>();
+            serviceCollection.TryAddScoped<ProcessorPipeline>();
+            serviceCollection.TryAddScoped<IProcessorProvider, DefaultProcessorProvider>();
 
             return serviceCollection;
         }
