@@ -11,7 +11,7 @@ namespace Labradoratory.Fetch.Test.Extensions
         public void ToJsonPatch_Add_Simple_Success()
         {
             var path = "Test";
-            var expectedPath = $"/{path.ToLower()}";
+            var expectedPath = $"/{path.ToCamelCase()}";
             var expectedNewValue = "My new value";
             var changes = ChangeSet.Create(
                 ChangePath.Create(path),
@@ -33,7 +33,7 @@ namespace Labradoratory.Fetch.Test.Extensions
         public void ToJsonPatch_Add_Complex_Success()
         {
             var path = "Test";
-            var expectedPath = $"/{path.ToLower()}";
+            var expectedPath = $"/{path.ToCamelCase()}";
             var expectedNewValue = new TestValue
             {
                 StringValue = "My new complex value",
@@ -61,7 +61,7 @@ namespace Labradoratory.Fetch.Test.Extensions
         public void ToJsonPatch_Update_Simple_Success()
         {
             var path = "Test";
-            var expectedPath = $"/{path.ToLower()}";
+            var expectedPath = $"/{path.ToCamelCase()}";
             var expectedNewValue = "My new value";
             var changes = ChangeSet.Create(
                 ChangePath.Create(path),
@@ -83,7 +83,7 @@ namespace Labradoratory.Fetch.Test.Extensions
         public void ToJsonPatch_Update_Complex_Success()
         {
             var path = "Test";
-            var expectedPath = $"/{path.ToLower()}";
+            var expectedPath = $"/{path.ToCamelCase()}";
             var expectedNewValue = new TestValue
             {
                 StringValue = "My new complex value",
@@ -109,7 +109,7 @@ namespace Labradoratory.Fetch.Test.Extensions
         public void ToJsonPatch_Remove_Success()
         {
             var path = "Test";
-            var expectedPath = $"/{path.ToLower()}";
+            var expectedPath = $"/{path.ToCamelCase()}";
             var expectedNewValue = "My new value";
             var changes = ChangeSet.Create(
                 ChangePath.Create(path),
