@@ -788,7 +788,16 @@
             </summary>
             <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
             <param name="mapper">The mapper to use for object conversion.</param>
-            <param name="authorizationService"></param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`1"/> base class that allows for
+            lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
+            </summary>
+            <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
+            <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="authorizationService">The authorization service.</param>
         </member>
         <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`2">
             <summary>
@@ -812,14 +821,21 @@
             </param>
             <param name="authorizationService">The authorization service.</param>
         </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class that allows for
+            lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
+            </summary>
+            <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
+            <param name="mapper">
+            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
+            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+            </param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
         <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AddResponseOptions">
             <summary>
             Gets the created response options to use when an Add operation completes.
-            </summary>
-        </member>
-        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Repository">
-            <summary>
-            Gets the data access instance for <typeparamref name="TEntity"/>.
             </summary>
         </member>
         <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Mapper">
@@ -948,6 +964,15 @@
             </summary>
             <returns>An array of uniquely identifying values.</returns>
         </member>
+        <member name="M:Labradoratory.Fetch.Entity.HasKeys">
+            <summary>
+            Determines whether this instance has keys.
+            </summary>
+            <remarks>
+            This can be used to determine if an entity has been created yet
+            or if it has yet to be stored in a repository.
+            </remarks>
+        </member>
         <member name="M:Labradoratory.Fetch.Entity.EncodeKeys">
             <summary>
             Gets the instance's keys as a URL friendly string.
@@ -1052,6 +1077,18 @@
             <typeparam name="TProcessor">The type of the processor.</typeparam>
             <param name="serviceCollection">The service collection.</param>
             <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.StringExtensions">
+            <summary>
+            Methods to make working with a string a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.StringExtensions.ToCamelCase(System.String)">
+            <summary>
+            Converts a string to camelCase.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The string in camelCase.</returns>
         </member>
         <member name="T:Labradoratory.Fetch.IAsyncQueryResolver`1">
             <summary>
@@ -1443,7 +1480,7 @@
             Finds a specific entity using the identifing <paramref name="keys"/>.
             </summary>
             <param name="keys">The keys that uniquely identify the <typeparamref name="TEntity"/>.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task containing the result of the find.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.AddAsync(`0,System.Threading.CancellationToken)">
@@ -1451,7 +1488,7 @@
             Adds an entity.
             </summary>
             <param name="entity">The entity.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.ExecuteAddAsync(`0,System.Threading.CancellationToken)">
@@ -1459,7 +1496,7 @@
             Executes the add.
             </summary>
             <param name="entity">To add.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.UpdateAsync(`0,System.Threading.CancellationToken)">
@@ -1467,7 +1504,7 @@
             Updates an entity.
             </summary>
             <param name="entity">The entity with updates.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.ExecuteUpdateAsync(`0,Labradoratory.Fetch.ChangeTracking.ChangeSet,System.Threading.CancellationToken)">
             <summary>
@@ -1475,7 +1512,7 @@
             </summary>
             <param name="entity">The entity to update.</param>
             <param name="changes">The changes to the entity.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.DeleteAsync(`0,System.Threading.CancellationToken)">
@@ -1483,7 +1520,7 @@
             Deletes an entity.
             </summary>
             <param name="entity">The entity to delete.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.ExecuteDeleteAsync(`0,System.Threading.CancellationToken)">
@@ -1491,7 +1528,7 @@
             Executes the delete.
             </summary>
             <param name="entity">The entity to delete.</param>
-            <param name="cancellationToken">The cancellation token.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
         </member>
         <member name="M:Labradoratory.Fetch.Repository`1.GetAsyncQueryResolver">

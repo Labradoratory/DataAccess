@@ -38,6 +38,15 @@ namespace Labradoratory.Fetch
         public abstract object[] GetKeys();
 
         /// <summary>
+        /// Determines whether this instance has keys.
+        /// </summary>
+        /// <remarks>
+        /// This can be used to determine if an entity has been created yet
+        /// or if it has yet to be stored in a repository.
+        /// </remarks>
+        public abstract bool HasKeys();
+
+        /// <summary>
         /// Gets the instance's keys as a URL friendly string.
         /// </summary>
         /// <returns>The string representation of the entity's keys.</returns>

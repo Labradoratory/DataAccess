@@ -47,7 +47,7 @@ namespace Labradoratory.Fetch
         /// Finds a specific entity using the identifing <paramref name="keys"/>.
         /// </summary>
         /// <param name="keys">The keys that uniquely identify the <typeparamref name="TEntity"/>.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task containing the result of the find.</returns>
         public abstract Task<TEntity> FindAsync(object[] keys, CancellationToken cancellationToken = default);
 
@@ -55,7 +55,7 @@ namespace Labradoratory.Fetch
         /// Adds an entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
         public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
@@ -72,7 +72,7 @@ namespace Labradoratory.Fetch
         /// Executes the add.
         /// </summary>
         /// <param name="entity">To add.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
         protected abstract Task ExecuteAddAsync(TEntity entity, CancellationToken cancellationToken);
 
@@ -80,7 +80,7 @@ namespace Labradoratory.Fetch
         /// Updates an entity.
         /// </summary>
         /// <param name="entity">The entity with updates.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         public async Task<ChangeSet> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (!entity.HasChanges)
@@ -103,7 +103,7 @@ namespace Labradoratory.Fetch
         /// </summary>
         /// <param name="entity">The entity to update.</param>
         /// <param name="changes">The changes to the entity.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
         protected abstract Task<ChangeSet> ExecuteUpdateAsync(TEntity entity, ChangeSet changes, CancellationToken cancellationToken);
 
@@ -111,7 +111,7 @@ namespace Labradoratory.Fetch
         /// Deletes an entity.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
         public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
@@ -128,7 +128,7 @@ namespace Labradoratory.Fetch
         /// Executes the delete.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
         /// <returns>The task.</returns>
         protected abstract Task ExecuteDeleteAsync(TEntity entity, CancellationToken cancellationToken);
 

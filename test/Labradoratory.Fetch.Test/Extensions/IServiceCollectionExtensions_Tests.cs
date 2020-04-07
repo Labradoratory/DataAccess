@@ -139,6 +139,11 @@ namespace Labradoratory.Fetch.Test.Extensions
             {
                 throw new System.NotImplementedException();
             }
+
+            public override bool HasKeys()
+            {
+                return false;
+            }
         }
 
         public class TestProcessor :

@@ -29,13 +29,27 @@ namespace Labradoratory.Fetch.Controllers
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
         /// <param name="mapper">The mapper to use for object conversion.</param>
-        /// <param name="authorizationService"></param>
+        /// <param name="authorizationService">The authorization service.</param>
         public RepositoryController(
             Repository<TEntity> repository,
             IMapper mapper,
             IAuthorizationService authorizationService)
             : base(repository, mapper, authorizationService)
-        {}
+        { }
+
+        /// <summary>
+        /// Initializes the <see cref="RepositoryController{TEntity}"/> base class that allows for
+        /// lazy creation of the <see cref="Repository{TEntity}"/> instance.
+        /// </summary>
+        /// <param name="getRepositoryAsync">The function to obtain an instance of <see cref="Repository{TEntity}"/> asynchronously.</param>
+        /// <param name="mapper">The mapper to use for object conversion.</param>
+        /// <param name="authorizationService">The authorization service.</param>
+        protected RepositoryController(
+            Func<Task<Repository<TEntity>>> getRepositoryAsync,
+            IMapper mapper,
+            IAuthorizationService authorizationService)
+            : base(getRepositoryAsync, mapper, authorizationService)
+        { }
     }
 
     /// <summary>
@@ -64,22 +78,36 @@ namespace Labradoratory.Fetch.Controllers
             Repository<TEntity> repository,
             IMapper mapper,
             IAuthorizationService authorizationService)
+            : this(() => Task.FromResult(repository), mapper, authorizationService)
+        {}
+
+        /// <summary>
+        /// Initializes the <see cref="RepositoryController{TEntity, TView}"/> base class that allows for
+        /// lazy creation of the <see cref="Repository{TEntity}"/> instance.
+        /// </summary>
+        /// <param name="getRepositoryAsync">The function to obtain an instance of <see cref="Repository{TEntity}"/> asynchronously.</param>
+        /// <param name="mapper">
+        /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
+        /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+        /// </param>
+        /// <param name="authorizationService">The authorization service.</param>
+        protected RepositoryController(
+            Func<Task<Repository<TEntity>>> getRepositoryAsync,
+            IMapper mapper,
+            IAuthorizationService authorizationService)
         {
-            Repository = repository;
+            GetRepositoryAsync = getRepositoryAsync;
             Mapper = mapper;
             AuthorizationService = authorizationService;
         }
+
+        protected Func<Task<Repository<TEntity>>> GetRepositoryAsync { get; }
 
         /// <summary>
         /// Gets the created response options to use when an Add operation completes.
         /// </summary>
         protected virtual CreatedResponseOptions AddResponseOptions => CreatedResponseOptions.Instance | CreatedResponseOptions.Location;
  
-        /// <summary>
-        /// Gets the data access instance for <typeparamref name="TEntity"/>.
-        /// </summary>
-        protected Repository<TEntity> Repository { get; }
-
         /// <summary>
         /// Gets the object conversion mapper.
         /// </summary>
@@ -103,7 +131,7 @@ namespace Labradoratory.Fetch.Controllers
                 return AuthorizationFailed(authorizationResult);
                 
             var entities = new EntityAuthorizationSet<TEntity>(
-                await Repository.GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken));
+                await (await GetRepositoryAsync()).GetAsyncQueryResolver(FilterGetAll).ToListAsync(cancellationToken));
             authorizationResult = await AuthorizationService.AuthorizeAsync(User, entities, EntityAuthorizationPolicies.GetSome.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
@@ -131,7 +159,7 @@ namespace Labradoratory.Fetch.Controllers
         public virtual async Task<ActionResult<TView>> GetByKeys(string encodedKeys, CancellationToken cancellationToken)
         {
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
-            var entity = await Repository.FindAsync(keys, cancellationToken);
+            var entity = await (await GetRepositoryAsync()).FindAsync(keys, cancellationToken);
             if (entity == null)
                 return NotFound();
 
@@ -158,7 +186,7 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            await Repository.AddAsync(entity, cancellationToken);
+            await (await GetRepositoryAsync()).AddAsync(entity, cancellationToken);
 
             switch (AddResponseOptions)
             {
@@ -185,8 +213,10 @@ namespace Labradoratory.Fetch.Controllers
         [HttpPatch, Route("{encodedKeys}")]
         public virtual async Task<ActionResult<TView>> Update(string encodedKeys, [FromBody]JsonPatchDocument<TView> patch, CancellationToken cancellationToken)
         {
+            var repository = await GetRepositoryAsync();
+
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
-            var entity = await Repository.FindAsync(keys, cancellationToken);
+            var entity = await repository.FindAsync(keys, cancellationToken);
             if (entity == null)
                 return NotFound();
 
@@ -211,7 +241,7 @@ namespace Labradoratory.Fetch.Controllers
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
             
-            await Repository.UpdateAsync(entity, cancellationToken);
+            await repository.UpdateAsync(entity, cancellationToken);
             return Ok(Mapper.Map<TView>(entity));
         }
 
@@ -224,8 +254,10 @@ namespace Labradoratory.Fetch.Controllers
         [HttpDelete, Route("{encodedKeys}")]
         public virtual async Task<IActionResult> Delete(string encodedKeys, CancellationToken cancellationToken)
         {
+            var respository = await GetRepositoryAsync();
+
             var keys = Entity.DecodeKeys<TEntity>(encodedKeys);
-            var entity = await Repository.FindAsync(keys, cancellationToken);
+            var entity = await respository.FindAsync(keys, cancellationToken);
             if (entity == null)
                 return NotFound();
 
@@ -233,7 +265,7 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            await Repository.DeleteAsync(entity, cancellationToken);
+            await respository.DeleteAsync(entity, cancellationToken);
 
             return NoContent();
         }

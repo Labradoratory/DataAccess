@@ -30,9 +30,11 @@ namespace Labradoratory.Fetch.Test.Controllers
         [Fact]
         public void Ctor_NoViewType_EntityAsView()
         {
+            var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepostiory.Object,
                 null,
                 null);
 
@@ -40,7 +42,7 @@ namespace Labradoratory.Fetch.Test.Controllers
         }
 
         [Fact]
-        public void Ctor_PropertiesSet()
+        public async Task Ctor_PropertiesSet()
         {
             var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Strict, new ProcessorPipeline(null));
             var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
@@ -50,7 +52,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 mockMapper.Object,
                 mockAuthorizationService.Object);
 
-            subject.CheckProperties(
+            await subject.CheckPropertiesAsync(
                 mockRepostiory.Object,
                 mockMapper.Object,
                 mockAuthorizationService.Object);
@@ -85,9 +87,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
+            var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepostiory.Object,
                 null,
                 mockAuthorizationService.Object);
             mockSubject
@@ -140,9 +144,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
+            var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepostiory.Object,
                 null,
                 mockAuthorizationService.Object);
             mockSubject
@@ -180,9 +186,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(a => a.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<string>()))
                 .ReturnsAsync(AuthorizationResult.Failed());
 
+            var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepostiory.Object,
                 null,
                 mockAuthorizationService.Object);
             mockSubject
@@ -690,9 +698,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
                 .Returns<object>(v => v as TestEntity);
 
+            var mockRepository = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepository.Object,
                 mockMapper.Object,
                 mockAuthorizationService.Object);
             mockSubject
@@ -761,9 +771,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
                 .Returns<object>(v => v as TestEntity);
 
+            var mockRepository = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
+
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
-                null,
+                mockRepository.Object,
                 mockMapper.Object,
                 mockAuthorizationService.Object);
             mockSubject
@@ -1551,12 +1563,12 @@ namespace Labradoratory.Fetch.Test.Controllers
             {
             }
 
-            public void CheckProperties(
+            public async Task CheckPropertiesAsync(
                 Repository<TestEntity> expectedRepository,
                 IMapper expectedMapper,
                 IAuthorizationService expectedAuthorizationService)
             {
-                Assert.Same(expectedRepository, Repository);
+                Assert.Same(expectedRepository, await GetRepositoryAsync());
                 Assert.Same(expectedMapper, Mapper);
                 Assert.Same(expectedAuthorizationService, AuthorizationService);
             }

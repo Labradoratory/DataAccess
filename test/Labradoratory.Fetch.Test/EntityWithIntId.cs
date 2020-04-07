@@ -19,6 +19,11 @@ namespace Labradoratory.Fetch.Test
             return new object[] { Convert.ToInt32(encodedKeys) };
         }
 
+        public override bool HasKeys()
+        {
+            return Id > 0;
+        }
+
         public int Id { get; set; }
     }
 }
