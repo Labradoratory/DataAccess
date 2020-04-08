@@ -964,15 +964,6 @@
             </summary>
             <returns>An array of uniquely identifying values.</returns>
         </member>
-        <member name="M:Labradoratory.Fetch.Entity.HasKeys">
-            <summary>
-            Determines whether this instance has keys.
-            </summary>
-            <remarks>
-            This can be used to determine if an entity has been created yet
-            or if it has yet to be stored in a repository.
-            </remarks>
-        </member>
         <member name="M:Labradoratory.Fetch.Entity.EncodeKeys">
             <summary>
             Gets the instance's keys as a URL friendly string.
@@ -998,6 +989,43 @@
             </summary>
             <param name="changes">The changes to convert.</param>
             <returns>The array of <see cref="T:Microsoft.AspNetCore.JsonPatch.Operations.Operation"/> objects representing a JSON Patch.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.Fetch.IEntityMetadata"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.SetMetadata(Labradoratory.Fetch.IEntityMetadata,System.String,System.Object)">
+            <summary>
+            Sets the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.GetMetadata(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Gets the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <returns>The metadata object.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.GetMetadata``1(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Gets the metadata.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <returns>The typed metadata object.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.RemoveMetadata(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Removes the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
         </member>
         <member name="T:Labradoratory.Fetch.Extensions.IEnumerableExtensions">
             <summary>
@@ -1194,6 +1222,16 @@
             </summary>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>A task that represents the asynchronous operation. The task result contains a <see cref="T:System.Collections.Generic.List`1"/> that contains elements from the input sequence.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.IEntityMetadata">
+            <summary>
+            Members associate metadata with an entity.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.IEntityMetadata.Metadata">
+            <summary>
+            Gets the metadata.
+            </summary>
         </member>
         <member name="T:Labradoratory.Fetch.ISupportsAsyncQueryResolution`1">
             <summary>
