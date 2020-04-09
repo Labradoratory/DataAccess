@@ -910,6 +910,13 @@
             <returns>A <see cref="T:Microsoft.AspNetCore.Mvc.BadRequestObjectResult"/> if the object is invalid; Otherwise, <c>null</c>.</returns>
             <remarks>Uses <see cref="T:System.ComponentModel.DataAnnotations.Validator"/> to do the validation.</remarks>
         </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAddCreatedAtRouteParameters(`0)">
+            <summary>
+            Gets the parameters that are required to populate the <see cref="T:Microsoft.AspNetCore.Mvc.CreatedAtActionResult"/> after an entit is added.
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
         <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed">
             <summary>
             Creates a <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> with <see cref="F:System.Net.HttpStatusCode.MethodNotAllowed"/> code.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -195,9 +196,9 @@ namespace Labradoratory.Fetch.Controllers
                 case CreatedResponseOptions.Instance:
                     return Ok(Mapper.Map<TView>(entity));
                 case CreatedResponseOptions.Location:
-                    return CreatedAtAction(nameof(GetByKeys), new { encodedKeys = entity.EncodeKeys() }, null);
+                    return CreatedAtAction(nameof(GetByKeys), GetAddCreatedAtRouteParameters(entity), null);
                 case CreatedResponseOptions.Location | CreatedResponseOptions.Instance:
-                    return CreatedAtAction(nameof(GetByKeys), new { encodedKeys = entity.EncodeKeys() }, Mapper.Map<TView>(entity));
+                    return CreatedAtAction(nameof(GetByKeys), GetAddCreatedAtRouteParameters(entity), Mapper.Map<TView>(entity));
                 default:
                     throw new InvalidOperationException($"{nameof(AddResponseOptions)} value of {AddResponseOptions} is invalid.");
             }
@@ -300,6 +301,19 @@ namespace Labradoratory.Fetch.Controllers
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the parameters that are required to populate the <see cref="CreatedAtActionResult"/> after an entit is added.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        protected virtual ExpandoObject GetAddCreatedAtRouteParameters(TEntity entity)
+        {
+            dynamic parameters = new ExpandoObject();
+            parameters.encodedKeys = entity.EncodeKeys();
+
+            return parameters;
         }
 
         /// <summary>
