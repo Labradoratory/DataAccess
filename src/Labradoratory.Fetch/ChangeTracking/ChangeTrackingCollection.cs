@@ -44,7 +44,19 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public void Add(T item)
         {
-            Items.Add(new ChangeContainerItem<T>(item, ChangeTarget.Collection, ChangeAction.Add));
+            var removedItem = Removed.FirstOrDefault(c => object.Equals(c.Item, item));
+            if (removedItem != null)
+            {
+                // Adding an item that was removed.
+                Removed.Remove(removedItem);
+                removedItem.Item = item;
+                removedItem.Action = ChangeAction.None;
+                Items.Add(removedItem);
+            }
+            else
+            {
+                Items.Add(new ChangeContainerItem<T>(item, ChangeTarget.Collection, ChangeAction.Add));
+            }
         }
 
         /// <inheritdoc />
@@ -103,16 +115,12 @@ namespace Labradoratory.Fetch.ChangeTracking
             path = path.WithTarget(ChangeTarget.Collection);
 
             var changes = new ChangeSet();
-            // In order to have unique keys in the set, we add an integer to each
-            // add/remove paths (key).  This value can be ignored during processing.
-            var changeIndex = 1;
             foreach(var item in Items.Where(i => i.HasChanges))
             {
                 changes.Merge(
                     item.GetChangeSet(path, commit));
             }
 
-            changeIndex = 1;
             foreach(var removed in Removed)
             {
                 changes.Merge(

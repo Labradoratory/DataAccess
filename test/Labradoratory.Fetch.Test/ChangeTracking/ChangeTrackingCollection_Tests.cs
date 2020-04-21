@@ -303,6 +303,49 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             subject.Reset();
         }
 
+        [Fact]
+        public void Add_ItemAlreadyRemovedGetsRestored()
+        {
+            var expectedItems = new List<TestItem>
+            {
+                new TestItem(),
+                new TestItem(),
+                new TestItem()
+            };
+            var subject = new ChangeTrackingCollection<TestItem>(expectedItems);
+            subject.Remove(expectedItems[0]);
+            Assert.True(subject.HasChanges);
+            Assert.Equal(2, subject.Count);
+
+            subject.Add(expectedItems[0]);
+            Assert.False(subject.HasChanges);
+            Assert.Contains(expectedItems[0], subject);
+        }
+
+        [Fact]
+        public void GetChangeSet_AddAfterClear_Correct()
+        {
+            var expectedItems = new List<string>
+            {
+                "Value1",
+                "Value2",
+                "Value3"
+            };
+            var addItems = new List<string>
+            {
+                "Value1",
+                "Value2",
+                "Value3",
+                "Value4"
+            };
+            var subject = new ChangeTrackingCollection<string>(expectedItems);
+            subject.Clear();
+            addItems.ForEach(item => subject.Add(item));
+            var changes = subject.GetChangeSet(ChangePath.Empty);
+            Assert.Single(changes);
+            Assert.Single(changes.First().Value);
+        }
+
         private class TestItem : ChangeTrackingObject
         {
             public string StringValue
