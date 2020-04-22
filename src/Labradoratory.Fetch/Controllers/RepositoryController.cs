@@ -102,6 +102,9 @@ namespace Labradoratory.Fetch.Controllers
             AuthorizationService = authorizationService;
         }
 
+        /// <summary>
+        /// Gets the get repository asynchronously.
+        /// </summary>
         protected Func<Task<Repository<TEntity>>> GetRepositoryAsync { get; }
 
         /// <summary>
