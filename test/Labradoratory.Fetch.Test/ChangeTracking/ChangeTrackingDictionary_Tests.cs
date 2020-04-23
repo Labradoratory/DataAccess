@@ -539,6 +539,60 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             subject.Reset();
         }
 
+        [Fact]
+        public void Add_NoOpIfMatchingItemRemoved()
+        {
+            var key1 = "Test1";
+            var key2 = "Test2";
+            var item1 = new TestItem();
+            var item2 = new TestItem();
+            var expectedItems = new Dictionary<string, TestItem>
+            {
+                { key1, item1 },
+                { key2, item2 }
+            };
+            var subject = new ChangeTrackingDictionary<string, TestItem>(expectedItems);
+
+            subject.Remove(key1);
+            var changes = subject.GetChangeSet(ChangePath.Empty);
+            Assert.Single(changes);
+            var keyPath = ChangePath.Create(new ChangePathKey(key1));
+            Assert.Contains(keyPath, changes as IDictionary<ChangePath, List<ChangeValue>>);
+            Assert.True(changes[keyPath][0].Action == ChangeAction.Remove);
+
+            subject.Add(key1, item1);
+            changes = subject.GetChangeSet(ChangePath.Empty);
+            Assert.Null(changes);
+        }
+
+        [Fact]
+        public void Add_UpdateIfMatchingItemRemoved()
+        {
+            var key1 = "Test1";
+            var key2 = "Test2";
+            var item1 = new TestItem();
+            var item2 = new TestItem();
+            var item3 = new TestItem();
+            var expectedItems = new Dictionary<string, TestItem>
+            {
+                { key1, item1 },
+                { key2, item2 }
+            };
+            var subject = new ChangeTrackingDictionary<string, TestItem>(expectedItems);
+
+            subject.Remove(key1);
+            var changes = subject.GetChangeSet(ChangePath.Empty);
+            Assert.Single(changes);
+            var keyPath = ChangePath.Create(new ChangePathKey(key1));
+            Assert.Contains(keyPath, changes as IDictionary<ChangePath, List<ChangeValue>>);
+            Assert.True(changes[keyPath][0].Action == ChangeAction.Remove);
+
+            subject.Add(key1, item3);
+            changes = subject.GetChangeSet(ChangePath.Empty);
+            Assert.Contains(keyPath, changes as IDictionary<ChangePath, List<ChangeValue>>);
+            Assert.True(changes[keyPath][0].Action == ChangeAction.Update);
+        }
+
         private class TestItem : ChangeTrackingObject
         {
             public string StringValue

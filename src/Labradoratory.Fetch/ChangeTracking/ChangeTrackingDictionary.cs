@@ -58,7 +58,7 @@ namespace Labradoratory.Fetch.ChangeTracking
                 }
                 else
                 {
-                    Items[key] = new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.Add);
+                    Add(key, value);
                 }
             }
         }
@@ -78,7 +78,32 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public void Add(TKey key, TValue value)
         {
-            Items.Add(key, new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.Add));
+            ChangeContainerItem<TValue> cci; 
+            if (Removed.TryGetValue(key, out var removedValue))
+            {
+                Removed.Remove(key);
+                // The item was removed and is then being re-added.  This should either be
+                // handled as a no-op or an update depending on the value.
+                if (Equals(value, removedValue.Item))
+                {
+                    // This is a no-op.  Just move the value back.
+                    // We will use the item passed in, just in case it is not a ref-equals.
+                    cci = new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.None);
+                }
+                else
+                {
+                    // Value is different that original, so treat like an updated.
+                    cci = removedValue;
+                    cci.Item = value;
+                }
+            }
+            else
+            {
+                // This is a li
+                cci = new ChangeContainerItem<TValue>(value, ChangeTarget.Dictionary, ChangeAction.Add);
+            }
+
+            Items.Add(key, cci);
         }
 
         /// <inheritdoc />
