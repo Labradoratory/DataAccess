@@ -8,6 +8,12 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// </summary>
     public class ChangeSet : Dictionary<ChangePath, List<ChangeValue>>
     {
+        /// <summary>
+        /// Creates a <see cref="ChangeSet"/> using the specified path and values.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         public static ChangeSet Create(ChangePath path, params ChangeValue[] values)
         {
             var changeSet = new ChangeSet();
@@ -15,6 +21,11 @@ namespace Labradoratory.Fetch.ChangeTracking
             return changeSet;
         }
 
+        /// <summary>
+        /// Appends the path and values to the <see cref="ChangeSet"/>.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="values">The values.</param>
         public void Append(ChangePath path, params ChangeValue[] values)
         {
             if (!ContainsKey(path))

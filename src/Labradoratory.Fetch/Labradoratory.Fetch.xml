@@ -177,7 +177,7 @@
             <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
             <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
             will clear all tracking and leave the current values as-is.  Another call to
-            <see cref="!:GetChangeSet(string, bool)" /> immdiately after a commit will return an
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)" /> immdiately after a commit will return an
             empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.</param>
             <returns>
             A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" /> containing all of the changes.
@@ -366,7 +366,7 @@
             Returns a hash code for this instance.
             </summary>
             <returns>
-            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
             </returns>
         </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex">
@@ -411,7 +411,7 @@
             Returns a hash code for this instance.
             </summary>
             <returns>
-            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
             </returns>
         </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey">
@@ -450,13 +450,28 @@
             Returns a hash code for this instance.
             </summary>
             <returns>
-            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
             </returns>
         </member>
         <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeSet">
             <summary>
             Contains a set of changes.
             </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Create(Labradoratory.Fetch.ChangeTracking.ChangePath,Labradoratory.Fetch.ChangeTracking.ChangeValue[])">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> using the specified path and values.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="values">The values.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Append(Labradoratory.Fetch.ChangeTracking.ChangePath,Labradoratory.Fetch.ChangeTracking.ChangeValue[])">
+            <summary>
+            Appends the path and values to the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="values">The values.</param>
         </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Merge(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
             <summary>
@@ -832,6 +847,11 @@
             between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
             </param>
             <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.GetRepositoryAsync">
+            <summary>
+            Gets the get repository asynchronously.
+            </summary>
         </member>
         <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AddResponseOptions">
             <summary>

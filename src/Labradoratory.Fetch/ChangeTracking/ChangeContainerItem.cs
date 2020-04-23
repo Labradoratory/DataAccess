@@ -72,7 +72,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <param name="path">[Optional] The path to the change set.  Default value is <see cref="string.Empty" />.</param>
         /// <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
         /// will clear all tracking and leave the current values as-is.  Another call to
-        /// <see cref="GetChangeSet(string, bool)" /> immdiately after a commit will return an
+        /// <see cref="GetChangeSet(ChangePath, bool)" /> immdiately after a commit will return an
         /// empty <see cref="ChangeSet" />.</param>
         /// <returns>
         /// A <see cref="ChangeSet" /> containing all of the changes.
