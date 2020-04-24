@@ -128,5 +128,45 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 
             Assert.Equal(hashOne, hashTwo);
         }
+
+        [Fact]
+        public void StartsWith_TrueWhenPropertyMatch()
+        {
+            var path1 = ChangePath.Create("Property1").AppendProperty("Property");
+            var path2 = ChangePath.Create("Property1");
+            Assert.True(path1.StartsWith(path2));
+        }
+
+        [Fact]
+        public void StartsWith_TrueWhenKeyMatch()
+        {
+            var path1 = ChangePath.Create("Property1").AppendKey("123").AppendProperty("Property");
+            var path2 = ChangePath.Create("Property1").AppendKey("123");
+            Assert.True(path1.StartsWith(path2));
+        }
+
+        [Fact]
+        public void StartsWith_TrueWhenIndexMatch()
+        {
+            var path1 = ChangePath.Create("Property1").AppendIndex("123").AppendProperty("Property");
+            var path2 = ChangePath.Create("Property1").AppendIndex("123");
+            Assert.True(path1.StartsWith(path2));
+        }
+
+        [Fact]
+        public void StartsWith_FalseWhenNotMatch()
+        {
+            var path1 = ChangePath.Create("Property1").AppendKey("123").AppendProperty("Property");
+            var path2 = ChangePath.Create("Property1").AppendKey("321");
+            Assert.False(path1.StartsWith(path2));
+        }
+
+        [Fact]
+        public void StartsWith_FalseWhenPathIsLonger()
+        {
+            var path1 = ChangePath.Create("Property1");
+            var path2 = ChangePath.Create("Property1").AppendKey("321");
+            Assert.False(path1.StartsWith(path2));
+        }
     }
 }

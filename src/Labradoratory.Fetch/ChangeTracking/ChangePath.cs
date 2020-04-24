@@ -138,6 +138,36 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
 
         /// <summary>
+        /// Determines whether or not the <see cref="ChangePath"/> starts with
+        /// the provided <paramref name="changePath"/>.
+        /// </summary>
+        /// <param name="changePath">The <see cref="ChangePath"/> to check that is starts with.</param>
+        /// <returns></returns>
+        public bool StartsWith(ChangePath changePath)
+        {
+            using (var enumerator1 = changePath.Parts.GetEnumerator())
+            using (var enumerator2 = Parts.GetEnumerator())
+            {
+                while(enumerator1.MoveNext())
+                {
+                    // If we can't move any further with the current path,
+                    // then the path we are checking is longer and cannot
+                    // possible be a match.
+                    if (!enumerator2.MoveNext())
+                        return false;
+
+                    // If a part doesn't match, then it doesn't start the path we are checking.
+                    if (!Equals(enumerator1.Current, enumerator2.Current))
+                        return false;
+                }
+
+                // We matched all of the parts of the path we were checking,
+                // so it does start with the path.
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>

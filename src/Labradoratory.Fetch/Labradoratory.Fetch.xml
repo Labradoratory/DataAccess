@@ -308,6 +308,14 @@
             using the provided charater to separate the parts.
             </summary>
         </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.StartsWith(Labradoratory.Fetch.ChangeTracking.ChangePath)">
+            <summary>
+            Determines whether or not the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> starts with
+            the provided <paramref name="changePath"/>.
+            </summary>
+            <param name="changePath">The <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to check that is starts with.</param>
+            <returns></returns>
+        </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Equals(System.Object)">
             <summary>
             Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
