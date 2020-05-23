@@ -183,7 +183,9 @@ namespace Labradoratory.Fetch.Controllers
         [HttpPost, Route("")]
         public virtual async Task<ActionResult<TView>> Add(TView view, CancellationToken cancellationToken)
         {
-            ValidateView(view);
+            var validationFailedResult = ValidateView(view);
+            if (validationFailedResult != null)
+                return validationFailedResult;
 
             var entity = Mapper.Map<TEntity>(view);
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add.ForType<TEntity>());
@@ -240,7 +242,9 @@ namespace Labradoratory.Fetch.Controllers
             if (errors.Count > 0)
                 return BadRequest(errors);
 
-            ValidateView(view);
+            var validationFailedResult = ValidateView(view);
+            if (validationFailedResult != null)
+                return validationFailedResult;
 
             // Maps the patched view values back to the entity for updating.
             Mapper.Map(view, entity);
