@@ -48,6 +48,21 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// </summary>
         public bool HasChanges => Changes.Values.Any(v => v.HasChanges);
 
+        /// <summary>
+        /// Determines whether the property with the specified name has changes.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>If the property with the specified name has change, <c>true</c>; Otherwise, <c>false</c>.</returns>
+        public bool HasChange(string propertyName)
+        {
+            if(Changes.TryGetValue(propertyName, out var value))
+            {
+                return value.HasChanges;
+            }
+
+            return false;
+        }
+
         /// <inheritdoc />
         public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {

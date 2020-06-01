@@ -110,6 +110,21 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
             Assert.False(subject.HasChanges);
         }
 
+        [Fact]
+        public void HasChange_FalseWhenNoChanges()
+        {
+            var subject = new TestObject();
+            Assert.False(subject.HasChange(nameof(TestObject.IntValue)));
+        }
+
+        [Fact]
+        public void HasChange_TrueWhenHasChanges()
+        {
+            var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
+            subject.IntValue = 123;
+            Assert.True(subject.HasChange(nameof(TestObject.IntValue)));
+        }
+
         private class TestObject : ChangeTrackingObject
         {
             public string StringValue
