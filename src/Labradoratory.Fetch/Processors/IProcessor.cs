@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Labradoratory.Fetch.Processors.DataPackages;
+using Labradoratory.Fetch.Processors.Stages;
 
 namespace Labradoratory.Fetch.Processors
 {
@@ -16,7 +17,7 @@ namespace Labradoratory.Fetch.Processors
         /// <remarks>
         /// TODO
         /// </remarks>
-        uint Priority { get; }
+        IStage Stage { get; }
 
         /// <summary>
         /// Processes the provided <see cref="DataPackage"/> asynchronously.

@@ -14,6 +14,11 @@ namespace Labradoratory.Fetch.Processors
     /// </remarks>
     public sealed class ProcessorPipeline
     {
+        /// <summary>
+        /// The key for accessing the current processor for a package.
+        /// </summary>
+        public const string ProcessorKey = "ProcessorPipeline-Processor";
+
         private AsyncLocal<DataPackage> Current { get; } = new AsyncLocal<DataPackage>();
 
         /// <summary>
@@ -47,10 +52,13 @@ namespace Labradoratory.Fetch.Processors
             // to determine what initiated the processing.
             Current.Value = package;
             
-            foreach (var processor in ProcessorProvider.GetProcessors<T>().EmptyIfNull().OrderByDescending(p => p.Priority))
+            foreach (var processor in ProcessorProvider.GetProcessors<T>().EmptyIfNull().OrderBy(p => p.Stage))
             {
+                Current.Value[ProcessorKey] = processor;
                 await processor.ProcessAsync(package, cancellationToken);
             }
+
+            Current.Value.Remove(ProcessorKey);
         }
     }
 }

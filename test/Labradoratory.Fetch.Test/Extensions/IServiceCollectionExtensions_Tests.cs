@@ -7,6 +7,7 @@ using Labradoratory.Fetch.DependencyInjection;
 using Labradoratory.Fetch.Extensions;
 using Labradoratory.Fetch.Processors;
 using Labradoratory.Fetch.Processors.DataPackages;
+using Labradoratory.Fetch.Processors.Stages;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
@@ -149,7 +150,7 @@ namespace Labradoratory.Fetch.Test.Extensions
             IProcessor<EntityDeletedPackage<TestEntity>>,
             IProcessor<EntityDeletingPackage<TestEntity>>
         {
-            public uint Priority => throw new System.NotImplementedException();
+            public IStage Stage => throw new System.NotImplementedException();
 
             public Task ProcessAsync(EntityAddedPackage<TestEntity> package, CancellationToken cancellationToken = default)
             {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Labradoratory.Fetch.ChangeTracking;
 using Labradoratory.Fetch.Processors;
 using Labradoratory.Fetch.Processors.DataPackages;
+using Labradoratory.Fetch.Processors.Stages;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -33,7 +33,7 @@ namespace Labradoratory.Fetch.Test
             var executeAddCalled = false;
 
             var mockProcessorAdding = new Mock<IProcessor<EntityAddingPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorAdding.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorAdding.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorAdding
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityAddingPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -45,7 +45,7 @@ namespace Labradoratory.Fetch.Test
                 });
 
             var mockProcessorAdded = new Mock<IProcessor<EntityAddedPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorAdded.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorAdded.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorAdded
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityAddedPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -121,7 +121,7 @@ namespace Labradoratory.Fetch.Test
             var executeUpdateCalled = false;
 
             var mockProcessorUpdating = new Mock<IProcessor<EntityUpdatingPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorUpdating.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorUpdating.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorUpdating
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityUpdatingPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -133,7 +133,7 @@ namespace Labradoratory.Fetch.Test
                 });
 
             var mockProcessorUpdated = new Mock<IProcessor<EntityUpdatedPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorUpdated.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorUpdated.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorUpdated
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityUpdatedPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -203,7 +203,7 @@ namespace Labradoratory.Fetch.Test
             var executeDeleteCalled = false;
 
             var mockProcessorDeleting = new Mock<IProcessor<EntityDeletingPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorDeleting.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorDeleting.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorDeleting
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityDeletingPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -215,7 +215,7 @@ namespace Labradoratory.Fetch.Test
                 });
 
             var mockProcessorDeleted = new Mock<IProcessor<EntityDeletedPackage<TestEntity>>>(MockBehavior.Strict);
-            mockProcessorDeleted.SetupGet(p => p.Priority).Returns(0);
+            mockProcessorDeleted.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessorDeleted
                 .Setup(p => p.ProcessAsync(It.IsAny<EntityDeletedPackage<TestEntity>>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)

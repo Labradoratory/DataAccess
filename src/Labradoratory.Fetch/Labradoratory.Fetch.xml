@@ -665,6 +665,13 @@
             Gets whether or not there are changes.
             </summary>
         </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.HasChange(System.String)">
+            <summary>
+            Determines whether the property with the specified name has changes.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <returns>If the property with the specified name has change, <c>true</c>; Otherwise, <c>false</c>.</returns>
+        </member>
         <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
             <inheritdoc />
         </member>
@@ -1461,7 +1468,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="P:Labradoratory.Fetch.Processors.IProcessor`1.Priority">
+        <member name="P:Labradoratory.Fetch.Processors.IProcessor`1.Stage">
             <summary>
             Gets the priority with which the processor should execute.
             </summary>
@@ -1516,6 +1523,33 @@
             <param name="package">The package to process.</param>
             <param name="cancellationToken">The token to monitor for cancellation requests.</param>
             <returns>The task.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.Stages.IStage">
+            <summary>
+            Defines that members that an object representing a stage in the processor pipeline should implement.
+            </summary>
+            <seealso cref="T:System.IComparable" />
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage">
+            <summary>
+            An implementation of <see cref="T:Labradoratory.Fetch.Processors.Stages.IStage"/> that uses simple <see cref="T:System.UInt32"/> values to determine execution.
+            </summary>
+            <remarks>Higher values are executed first.</remarks>
+            <seealso cref="T:Labradoratory.Fetch.Processors.Stages.IStage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage"/> class.
+            </summary>
+            <param name="priority">The priority.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.Priority">
+            <summary>
+            Gets the priority of execution.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.CompareTo(Labradoratory.Fetch.Processors.Stages.IStage)">
+            <inheritdoc />
         </member>
         <member name="T:Labradoratory.Fetch.Repository`1">
             <summary>

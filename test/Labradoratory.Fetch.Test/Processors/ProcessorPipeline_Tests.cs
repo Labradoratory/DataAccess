@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Labradoratory.Fetch.Processors;
 using Labradoratory.Fetch.Processors.DataPackages;
-using Labradoratory.Fetch.Test.Processors.DataPackages;
+using Labradoratory.Fetch.Processors.Stages;
 using Moq;
 using Xunit;
 
@@ -31,18 +31,22 @@ namespace Labradoratory.Fetch.Test.Processors
             var mock2Called = false;
 
             var mockProcessor1 = new Mock<IProcessor<TestDataPackage>>(MockBehavior.Strict);
-            mockProcessor1.SetupGet(p => p.Priority).Returns(0);
+            mockProcessor1.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessor1
                 .Setup(p => p.ProcessAsync(It.IsAny<TestDataPackage>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Callback(() => Assert.True(mock2Called));
 
             var mockProcessor2 = new Mock<IProcessor<TestDataPackage>>(MockBehavior.Strict);
-            mockProcessor2.SetupGet(p => p.Priority).Returns(100);
+            mockProcessor2.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(100));
             mockProcessor2
                 .Setup(p => p.ProcessAsync(It.IsAny<TestDataPackage>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
-                .Callback(() => mock2Called = true);
+                .Callback<TestDataPackage, CancellationToken>((dp, ct) =>
+                {
+                    Assert.Same(dp[ProcessorPipeline.ProcessorKey], mockProcessor2.Object);
+                    mock2Called = true;
+                });
 
             var expectedProcessors = new List<IProcessor<TestDataPackage>>
             {
@@ -82,14 +86,14 @@ namespace Labradoratory.Fetch.Test.Processors
             var subject = new ProcessorPipeline(mockProvider.Object);
 
             var mockProcessor1 = new Mock<IProcessor<TestDataPackage>>(MockBehavior.Strict);
-            mockProcessor1.SetupGet(p => p.Priority).Returns(0);
+            mockProcessor1.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessor1
                 .Setup(p => p.ProcessAsync(It.IsAny<TestDataPackage>(), It.IsAny<CancellationToken>()))
                 .Callback<TestDataPackage, CancellationToken>((data, token) => Assert.Null(data.Previous))
                 .Returns(Task.CompletedTask);
 
             var mockProcessor2 = new Mock<IProcessor<TestDataPackage>>(MockBehavior.Strict);
-            mockProcessor2.SetupGet(p => p.Priority).Returns(100);
+            mockProcessor2.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(100));
             mockProcessor2
                 .Setup(p => p.ProcessAsync(It.IsAny<TestDataPackage>(), It.IsAny<CancellationToken>()))
                 .Callback<TestDataPackage, CancellationToken>(async (data, token) =>
@@ -100,7 +104,7 @@ namespace Labradoratory.Fetch.Test.Processors
                 .Returns(Task.CompletedTask);
 
             var mockProcessor3 = new Mock<IProcessor<TestDataPackage2>>(MockBehavior.Strict);
-            mockProcessor3.SetupGet(p => p.Priority).Returns(0);
+            mockProcessor3.SetupGet(p => p.Stage).Returns(new NumericPriorityStage(0));
             mockProcessor3
                 .Setup(p => p.ProcessAsync(It.IsAny<TestDataPackage2>(), It.IsAny<CancellationToken>()))
                 .Callback<TestDataPackage2, CancellationToken>((data, token) => Assert.Same(expectedData, data.Previous))
