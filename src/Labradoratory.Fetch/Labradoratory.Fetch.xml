@@ -1504,11 +1504,6 @@
             
             </remarks>
         </member>
-        <member name="F:Labradoratory.Fetch.Processors.ProcessorPipeline.ProcessorKey">
-            <summary>
-            The key for accessing the current processor for a package.
-            </summary>
-        </member>
         <member name="M:Labradoratory.Fetch.Processors.ProcessorPipeline.#ctor(Labradoratory.Fetch.Processors.IProcessorProvider)">
             <summary>
             Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.ProcessorPipeline"/> class.
