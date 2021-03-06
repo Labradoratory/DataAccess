@@ -21,7 +21,7 @@
   
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="2.0.0-beta.1" />
+    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="1.1.0-beta.1" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
