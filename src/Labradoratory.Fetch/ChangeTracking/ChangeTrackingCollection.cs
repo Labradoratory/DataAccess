@@ -5,10 +5,15 @@ using System.Linq;
 namespace Labradoratory.Fetch.ChangeTracking
 {
     /// <summary>
-    /// TODO
+    /// A collection that tracks changes.
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     /// <seealso cref="ICollection{T}" />
+    /// <remarks>
+    /// NOTE: This collection doesn't deal well when items shift around because of removes and adds at during the same.
+    /// It is recommended that you do removes and adds as separate changes.  Commit one before doing the other.
+    /// Will look at handling better in the future.
+    /// </remarks>
     public class ChangeTrackingCollection<T> : ICollection<T>, ITracksChanges
     {
         /// <summary>
@@ -19,18 +24,18 @@ namespace Labradoratory.Fetch.ChangeTracking
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangeTrackingCollection{T}"/> class that 
+        /// Initializes a new instance of the <see cref="ChangeTrackingCollection{T}"/> class that
         /// containes the provided item.
         /// </summary>
         /// <param name="items">The items to add to the collection.</param>
         public ChangeTrackingCollection(IEnumerable<T> items)
         {
-            Items = items.Select(i => new ChangeContainerItem<T>(i, ChangeTarget.Collection, ChangeAction.None)).ToList();
-            Removed = new List<ChangeContainerItem<T>>();
+            Items = items.Select((item, index) => new ChangeContainerItemWithIndex<T>(item, ChangeTarget.Collection, index, ChangeAction.None)).ToList();
+            Removed = new List<ChangeContainerItemWithIndex<T>>();
         }
 
-        private List<ChangeContainerItem<T>> Items { get; }
-        private List<ChangeContainerItem<T>> Removed { get; }
+        private List<ChangeContainerItemWithIndex<T>> Items { get; }
+        private List<ChangeContainerItemWithIndex<T>> Removed { get; }
 
         /// <inheritdoc />
         public bool HasChanges => Items.Any(i => i.HasChanges) || Removed.Count > 0;
@@ -51,11 +56,11 @@ namespace Labradoratory.Fetch.ChangeTracking
                 Removed.Remove(removedItem);
                 removedItem.Item = item;
                 removedItem.Action = ChangeAction.None;
-                Items.Add(removedItem);
+                Items.Insert(removedItem.Index, removedItem);
             }
             else
             {
-                Items.Add(new ChangeContainerItem<T>(item, ChangeTarget.Collection, ChangeAction.Add));
+                Items.Add(new ChangeContainerItemWithIndex<T>(item, ChangeTarget.Collection, Items.Count, ChangeAction.Add));
             }
         }
 
@@ -118,13 +123,13 @@ namespace Labradoratory.Fetch.ChangeTracking
             foreach(var item in Items.Where(i => i.HasChanges))
             {
                 changes.Merge(
-                    item.GetChangeSet(path, commit));
+                    item.GetChangeSet(path.AppendIndex(item.Index), commit));
             }
 
             foreach(var removed in Removed)
             {
                 changes.Merge(
-                    removed.GetChangeSet(path, commit));
+                    removed.GetChangeSet(path.AppendIndex(removed.Index), commit));
             }
 
             if (commit)

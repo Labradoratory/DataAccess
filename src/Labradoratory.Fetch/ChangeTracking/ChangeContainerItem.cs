@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -161,5 +160,16 @@ namespace Labradoratory.Fetch.ChangeTracking
             (Item as ITracksChanges)?.Reset();
             _action = ChangeAction.None;
         }
+    }
+
+    internal class ChangeContainerItemWithIndex<T> : ChangeContainerItem<T>
+    {
+        public ChangeContainerItemWithIndex(T item, ChangeTarget target, int index, ChangeAction action = ChangeAction.None)
+            : base(item, target, action)
+        {
+            Index = index;
+        }
+
+        public int Index { get; }
     }
 }

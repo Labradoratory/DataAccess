@@ -100,6 +100,16 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
 
         /// <summary>
+        /// Appends the provided index, creating a new <see cref="ChangePath"/>.
+        /// </summary>
+        /// <param name="index">The index to append.</param>
+        /// <returns>A new <see cref="ChangePath"/> with the <see cref="ChangePathIndex"/> appended.</returns>
+        public ChangePath AppendIndex(int index)
+        {
+            return AppendIndex(index.ToString());
+        }
+
+        /// <summary>
         /// Appends the provided key, creating a new <see cref="ChangePath"/>.
         /// </summary>
         /// <param name="key">The key to append.</param>
