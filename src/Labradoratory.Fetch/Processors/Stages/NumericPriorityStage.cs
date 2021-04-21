@@ -11,6 +11,11 @@ namespace Labradoratory.Fetch.Processors.Stages
     public class NumericPriorityStage : IStage
     {
         /// <summary>
+        /// A numeric stage with a value of zero.
+        /// </summary>
+        public readonly static IStage Zero = new NumericPriorityStage(0);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NumericPriorityStage"/> class.
         /// </summary>
         /// <param name="priority">The priority.</param>
