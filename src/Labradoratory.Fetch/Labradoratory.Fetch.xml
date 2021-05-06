@@ -1,0 +1,1677 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Labradoratory.Fetch</name>
+    </assembly>
+    <members>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies">
+            <summary>
+            The names of <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationPolicy"/> instances related to <see cref="T:Labradoratory.Fetch.Entity"/> access.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetAll">
+            <summary>
+            Resource authorize policy for getting all of a type of entity.
+            The resource will be a <see cref="T:System.Type"/> of entity.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetSome">
+            <summary>
+            Resource authorize policy for getting some of a type of entity.
+            The resource will be an <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/>.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.GetOne">
+            <summary>
+            Resource authorize policy for gettings single entity.
+            The resource is the instance of the entity.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Update">
+            <summary>
+            Resource authorize policy for updating an entity.
+            The resource is the instance of the entity.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Add">
+            <summary>
+            Resource authorize policy for updating an entity.
+            The resource is the instance of the entity.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicies.Delete">
+            <summary>
+            Resource authorize policy for deleting an entity.
+            The resource is the instance of the entity.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy">
+            <summary>
+            Represents a entity based policy.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.op_Implicit(System.String)~Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.String"/> to <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>
+            The result of the conversion.
+            </returns>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.Name">
+            <summary>
+            Gets the base policy name.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationPolicy.ForType``1">
+            <summary>
+            Gets the policy name for a specified type.
+            </summary>
+            <typeparam name="T">The type of policy to get.</typeparam>
+            <returns>The policy name for <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1">
+            <summary>
+            A set of <typeparamref name="TEntity"/> to be authorized.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1"/> class.
+            </summary>
+            <param name="entities">The entities.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.Values">
+            <summary>
+            Gets the authorization values.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.GetAuthorized">
+            <summary>
+            Gets all of the authorized entities.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue">
+            <summary>
+            A single <typeparamref name="TEntity"/> to be authorized.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue"/> class.
+            </summary>
+            <param name="entity">The entity.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Entity">
+            <summary>
+            Gets the entity.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.IsAuthorized">
+            <summary>
+            Gets a value indicating whether this instance is authorized.
+            </summary>
+            <value>
+              <c>true</c> if this instance is authorized; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.Succeed">
+            <summary>
+            Sets the instance as authorized.
+            </summary>
+            <remarks>After calling, <see cref="P:Labradoratory.Fetch.Authorization.EntityAuthorizationSet`1.EntityAuthorizationValue.IsAuthorized"/> will be <c>true</c>.</remarks>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeAction">
+            <summary>
+            Represents the type of change.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeAction.None">
+            <summary>There was no change.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeAction.Add">
+            <summary>Value was added.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeAction.Remove">
+            <summary>Value was removed.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeAction.Update">
+            <summary>Value was updated.</summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1">
+            <summary>
+            This class is used internally by the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1"/> and <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2"/> to track item changes.
+            </summary>
+            <typeparam name="T">The type of the item in the container.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.#ctor(`0,Labradoratory.Fetch.ChangeTracking.ChangeTarget,Labradoratory.Fetch.ChangeTracking.ChangeAction)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1"/> class.
+            </summary>
+            <param name="item">The value the container represents</param>
+            <param name="target"></param>
+            <param name="action">The action the container represents.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.Action">
+            <summary>
+            Gets the action this change represents.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.Item">
+            <summary>
+            Gets or sets the current value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.HasChanges">
+            <summary>
+            Gets a value indicating whether this instance has changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <summary>
+            Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.
+            </summary>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
+            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)" /> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.</param>
+            <returns>
+            A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" /> containing all of the changes.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerItem`1.Reset">
+            <summary>
+            Resets the changes.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue">
+            <summary>
+            This class is used internally by the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject"/> to track value changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.CurrentValue">
+            <summary>
+            Gets or sets the current value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.OldValue">
+            <summary>
+            Gets the old value, before any changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.HasChanges">
+            <summary>
+            Gets a value indicating whether this instance has changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <summary>
+            Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.
+            </summary>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty" />.</param>
+            <param name="commit">Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)" /> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" />.</param>
+            <returns>
+            A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet" /> containing all of the changes.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeContainerValue.Reset">
+            <summary>
+            Resets the changes.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePath">
+            <summary>
+            Represents an immutible path to a change in object hierarchy.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangePath.Empty">
+            <summary>
+            Represents an empty path.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Create(Labradoratory.Fetch.ChangeTracking.IChangePathPart)">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> from the provided part.
+            </summary>
+            <param name="part">The part to create the path from.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Create(System.String)">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> using the provided property name to create 
+            the initial <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/>.
+            </summary>
+            <param name="property">The property.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePath.Target">
+            <summary>
+            Gets or sets the target of the changes in this set.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePath.Parts">
+            <summary>
+            Gets the parts that make up the path.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Append(Labradoratory.Fetch.ChangeTracking.IChangePathPart)">
+            <summary>
+            Appends the part to the end, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="part">The part to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the part appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendProperty(System.String)">
+            <summary>
+            Appends the provided property name, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="property">The property to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendIndex(System.String)">
+            <summary>
+            Appends the provided index, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="index">The index to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendIndex(System.Int32)">
+            <summary>
+            Appends the provided index, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="index">The index to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.AppendKey(System.Object)">
+            <summary>
+            Appends the provided key, creating a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <param name="key">The key to append.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey"/> appended.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.WithTarget(Labradoratory.Fetch.ChangeTracking.ChangeTarget)">
+            <summary>
+            Creates a new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the specified target.
+            </summary>
+            <param name="target">The target of the path.</param>
+            <returns>A new <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> with the specified target.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.ToString">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to its string representation.
+            </summary>
+            <remarks>The '.' is used to separate the parts.</remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.ToString(System.Char)">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to its string representation,
+            using the provided charater to separate the parts.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.StartsWith(Labradoratory.Fetch.ChangeTracking.ChangePath)">
+            <summary>
+            Determines whether or not the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> starts with
+            the provided <paramref name="changePath"/>.
+            </summary>
+            <param name="changePath">The <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/> to check that is starts with.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePath.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart">
+            <summary>
+            A marker interface, identifying a part of a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty">
+            <summary>
+            Represents a property in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathProperty"/> class.
+            </summary>
+            <param name="property">The property.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.Property">
+            <summary>
+            Gets the property.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathProperty.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex">
+            <summary>
+            Represents an index (Array, List or other) in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.IndexRegex">
+            <summary>
+            The regular expression that an index value must match.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathIndex"/> class.
+            </summary>
+            <param name="index">The index.</param>
+            <exception cref="T:System.ArgumentException">index - Index value must be a positive integer or '-'.</exception>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.Index">
+            <summary>
+            Gets the index.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathIndex.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey">
+            <summary>
+            Represents a key (Dictionary or other) in a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePath"/>.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.IChangePathPart" />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangePathKey"/> class.
+            </summary>
+            <param name="key">The key.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangePathKey.Key">
+            <summary>
+            Gets the key.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.ToString">
+            <summary>
+            Converts the part to its string representation.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangePathKey.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeSet">
+            <summary>
+            Contains a set of changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Create(Labradoratory.Fetch.ChangeTracking.ChangePath,Labradoratory.Fetch.ChangeTracking.ChangeValue[])">
+            <summary>
+            Creates a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> using the specified path and values.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="values">The values.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Append(Labradoratory.Fetch.ChangeTracking.ChangePath,Labradoratory.Fetch.ChangeTracking.ChangeValue[])">
+            <summary>
+            Appends the path and values to the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="path">The path.</param>
+            <param name="values">The values.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeSet.Merge(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
+            <summary>
+            Merges the specified changes into this <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="changes">The changes to merge with this <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.</param>
+            <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.</exception>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeTarget">
+            <summary>
+            Identifies the target of a change.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeTarget.Object">
+            <summary>An object was the target of a change.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeTarget.Collection">
+            <summary>A collection was the target of a change.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.ChangeTracking.ChangeTarget.Dictionary">
+            <summary>A dictionary was the target of a change.</summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1">
+            <summary>
+            A collection that tracks changes.
+            </summary>
+            <typeparam name="T">The type of items in the collection.</typeparam>
+            <seealso cref="T:System.Collections.Generic.ICollection`1" />
+            <remarks>
+            NOTE: This collection doesn't deal well when items shift around because of removes and adds at during the same.
+            It is recommended that you do removes and adds as separate changes.  Commit one before doing the other.
+            Will look at handling better in the future.
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.#ctor">
+            <summary>
+            Initializes a new, empty instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1"/> class that
+            containes the provided item.
+            </summary>
+            <param name="items">The items to add to the collection.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.HasChanges">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Add(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Contains(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.CopyTo(`0[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Remove(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingCollection`1.Reset">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2">
+            <summary>
+            TODO
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TValue">The type of the value.</typeparam>
+            <seealso cref="T:System.Collections.Generic.IDictionary`2" />
+            <seealso cref="T:Labradoratory.Fetch.ChangeTracking.ITracksChanges" />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.#ctor">
+            <summary>
+            Initializes a new, empty instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2"/> class.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2"/> class, 
+            populated with the provided items.
+            </summary>
+            <param name="items">The items to populate the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2"/> with.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Item(`0)">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Keys">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Values">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Add(`0,`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.ContainsKey(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Remove(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.TryGetValue(`0,`1@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingDictionary`2.Reset">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.CreateTrackable``1">
+            <summary>
+            Creates a new instance of type <typeparamref name="T"/> and
+            initializes its values with the default for each property.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns>The new, intialized instance.</returns>
+            <remarks>
+            This method should be used to create new instances of any <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject"/>
+            where you want to start tracking changes immediately.  If you do not use this method, 
+            the initial values set will not be treated as changes.
+            </remarks>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.Changes">
+            <summary>
+            Gets the collection of changes that are being tracked.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.HasChange(System.String)">
+            <summary>
+            Determines whether the property with the specified name has changes.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <returns>If the property with the specified name has change, <c>true</c>; Otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.GetValue``1(System.String)">
+            <summary>
+            Gets the value for the specified property.
+            </summary>
+            <typeparam name="T">The type of the object being retrieved.</typeparam>
+            <param name="propertyName">[Optional] Name of the property to get the value for.  This property uses <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> if not specified.</param>
+            <returns>The value of the specified property.</returns>
+            <exception cref="T:System.ArgumentNullException">propertyName</exception>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ChangeTrackingObject.SetValue``1(``0,System.String)">
+            <summary>
+            Sets the value for the specified property.
+            </summary>
+            <typeparam name="T">The type of the value being set.</typeparam>
+            <param name="value">The value to set the property to.</param>
+            <param name="propertyName">[Optional] Name of the property to set.  This property uses <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> if not specified.</param>
+            <exception cref="T:System.ArgumentNullException">propertyName</exception>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ChangeValue">
+            <summary>
+            Represents a value change.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeValue.Action">
+            <summary>
+            Gets or sets the action that caused the change.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeValue.NewValue">
+            <summary>
+            Gets or sets the new value (post-change).
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ChangeValue.OldValue">
+            <summary>
+            Gets or sets the old value (pre-change).
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1">
+            <summary>
+            A container that tracks whether or not a value has been set.
+            </summary>
+            <typeparam name="T">The type of value in the container.</typeparam>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.HasValue">
+            <summary>
+            Gets a value indicating whether this instance has value.
+            </summary>
+            <remarks>
+            <see cref="P:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.HasValue"/> is <c>true</c> if the <see cref="P:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.Value"/> property has been set.
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.Reset">
+            <summary>
+            Resets this container.
+            </summary>
+            <remarks>
+            After reset, <see cref="P:Labradoratory.Fetch.ChangeTracking.HasValueContainer`1.HasValue"/> will be <c>false</c>.
+            </remarks>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ITracksChanges">
+            <summary>
+            Members that change tracking objects should implement.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.ChangeTracking.ITracksChanges.HasChanges">
+            <summary>
+            Gets whether or not there are changes.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)">
+            <summary>
+            Gets the current changes as a <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
+            </summary>
+            <param name="path">[Optional] The path to the change set.  Default value is <see cref="F:System.String.Empty"/>.</param>
+            <param name="commit">
+            Whether or not to commit the changes during the get.  Commiting the changes
+            will clear all tracking and leave the current values as-is.  Another call to
+            <see cref="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.GetChangeSet(Labradoratory.Fetch.ChangeTracking.ChangePath,System.Boolean)"/> immdiately after a commit will return an
+            empty <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/>.
+            </param>
+            <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing all of the changes.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChanges.Reset">
+            <summary>
+            Resets all changes.  After calling, <see cref="P:Labradoratory.Fetch.ChangeTracking.ITracksChanges.HasChanges"/> will return <c>false</c>.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.Fetch.ChangeTracking.ITracksChanges"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.Fetch.ChangeTracking.ITracksChanges,Labradoratory.Fetch.ChangeTracking.ChangePath)">
+            <summary>
+            Commits the changes.
+            </summary>
+            <param name="target">The target.</param>
+            <param name="path">The path the change set represents.</param>
+            <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ChangeTracking.ITracksChangesExtensions.CommitChanges(Labradoratory.Fetch.ChangeTracking.ITracksChanges)">
+            <summary>
+            Commits the changes.
+            </summary>
+            <param name="target">The target.</param>
+            <returns>A <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> containing the committed changes.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Controllers.CreatedResponseOptions">
+            <summary>
+            Defines the content to include with a 201 Created response.
+            </summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Empty">
+            <summary>Enpty, no content.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Instance">
+            <summary>Include the instance that was created.</summary>
+        </member>
+        <member name="F:Labradoratory.Fetch.Controllers.CreatedResponseOptions.Location">
+            <summary>Include the location header.</summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`1">
+            <summary>
+            A base controller implementation that provides add, update and delete functionality for an entity.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`1"/> base class.
+            </summary>
+            <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
+            <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`1"/> base class that allows for
+            lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
+            </summary>
+            <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
+            <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`2">
+            <summary>
+            A base controller implementation that provides add, update and delete functionality for an entity
+            and a specialized view class to return to clients.
+            </summary>
+            <typeparam name="TEntity">The type of entity the controller manages.</typeparam>
+            <typeparam name="TView">
+            The view respresentation of the entity to provided clients.  
+            This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
+            </typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class.
+            </summary>
+            <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
+            <param name="mapper">
+            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
+            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+            </param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+            <summary>
+            Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class that allows for
+            lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
+            </summary>
+            <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
+            <param name="mapper">
+            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
+            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
+            </param>
+            <param name="authorizationService">The authorization service.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.GetRepositoryAsync">
+            <summary>
+            Gets the get repository asynchronously.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AddResponseOptions">
+            <summary>
+            Gets the created response options to use when an Add operation completes.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Mapper">
+            <summary>
+            Gets the object conversion mapper.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.AuthorizationService">
+            <summary>
+            Gets the authorization service.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAll(System.Threading.CancellationToken)">
+            <summary>
+            Gets all of the <typeparamref name="TView"/> instances.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The collection of <typeparamref name="TView"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.FilterGetAll(System.Linq.IQueryable{`0})">
+            <summary>
+            Applies a filter to the query executed when <see cref="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAll(System.Threading.CancellationToken)" /> is called.
+            </summary>
+            <param name="query">The query to apply the filter to.</param>
+            <returns>The filtered query.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetByKeys(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the specified instance of <typeparamref name="TView"/>.
+            </summary>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The instance of <typeparamref name="TView"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Add(`1,System.Threading.CancellationToken)">
+            <summary>
+            Addes the provided instance of <typeparamref name="TView"/>.
+            </summary>
+            <param name="view">The view of the entity being added.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The instance of <typeparamref name="TView"/> that was added.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Update(System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{`1},System.Threading.CancellationToken)">
+            <summary>
+            Updates the specified instance of <typeparamref name="TView"/>.
+            </summary>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
+            <param name="patch">The patch to apply to the entity.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The instance of <typeparamref name="TView"/> that was updated.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.Delete(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the specified instance of <typeparamref name="TView"/>.
+            </summary>
+            <param name="encodedKeys">An encoded string representation of the keys to identify an instance of an entity.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.AuthorizationFailed(Microsoft.AspNetCore.Authorization.AuthorizationResult)">
+            <summary>
+            Handles a failed authorization.
+            </summary>
+            <param name="authorizationResult">The authorization result.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> respresenting the failure.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.ValidateView(`1)">
+            <summary>
+            Validates the view object's properties.
+            </summary>
+            <param name="view">The view.</param>
+            <returns>A <see cref="T:Microsoft.AspNetCore.Mvc.BadRequestObjectResult"/> if the object is invalid; Otherwise, <c>null</c>.</returns>
+            <remarks>Uses <see cref="T:System.ComponentModel.DataAnnotations.Validator"/> to do the validation.</remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.GetAddCreatedAtRouteParameters(`0)">
+            <summary>
+            Gets the parameters that are required to populate the <see cref="T:Microsoft.AspNetCore.Mvc.CreatedAtActionResult"/> after an entit is added.
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Mvc.StatusCodeResult"/> with <see cref="F:System.Net.HttpStatusCode.MethodNotAllowed"/> code.
+            </summary>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.MethodNotAllowed(System.Object)">
+            <summary>
+            Creates a <see cref="T:Microsoft.AspNetCore.Mvc.ObjectResult"/> with <see cref="F:System.Net.HttpStatusCode.MethodNotAllowed"/> code and the provided <paramref name="value"/>.
+            </summary>
+            <param name="value">The value to include in the result</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider">
+            <summary>
+            A default implementation of <see cref="T:Labradoratory.Fetch.Processors.IProcessorProvider"/> that uses the Microsoft
+            dependency injection system to find relavent <see cref="T:Labradoratory.Fetch.Processors.IProcessor`1"/> instances.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider.#ctor(System.IServiceProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider"/> class.
+            </summary>
+            <param name="serviceProvider">The service provider.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.DependencyInjection.DefaultProcessorProvider.GetProcessors``1">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.Fetch.Entity">
+            <summary>
+            Represents a storable, entity withing the data access framework.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.ToKeys(System.Object[])">
+            <summary>
+            Converts the provided values into a keys array.
+            </summary>
+            <param name="keys">The key values to convert to an array.  Order of the keys is important to an entity.</param>
+            <returns>The provided key values as an array.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.DecodeKeys``1(System.String)">
+            <summary>
+            Decodes the keys using the specified <see cref="T:Labradoratory.Fetch.Entity"/> type.
+            </summary>
+            <typeparam name="T">The type to use to decode the keys.</typeparam>
+            <param name="encodedKeys">The encoded keys to decode.</param>
+            <returns>The decoded keys.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.GetKeys">
+            <summary>
+            Gets the keys that uniquely identify the entity in storage.
+            </summary>
+            <returns>An array of uniquely identifying values.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.EncodeKeys">
+            <summary>
+            Gets the instance's keys as a URL friendly string.
+            </summary>
+            <returns>The string representation of the entity's keys.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Entity.DecodeKeys(System.String)">
+            <summary>
+            Decodes the string encoded keys.
+            </summary>
+            <param name="encodedKeys">The encoded keys to decode.</param>
+            <returns>The decoded keys.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.ChangeSetExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.ChangeSetExtensions.ToJsonPatch(Labradoratory.Fetch.ChangeTracking.ChangeSet)">
+            <summary>
+            Converts the <see cref="T:Labradoratory.Fetch.ChangeTracking.ChangeSet"/> into an array of <see cref="T:Microsoft.AspNetCore.JsonPatch.Operations.Operation"/>
+            objects representing a JSON Patch.
+            </summary>
+            <param name="changes">The changes to convert.</param>
+            <returns>The array of <see cref="T:Microsoft.AspNetCore.JsonPatch.Operations.Operation"/> objects representing a JSON Patch.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Labradoratory.Fetch.IEntityMetadata"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.SetMetadata(Labradoratory.Fetch.IEntityMetadata,System.String,System.Object)">
+            <summary>
+            Sets the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.GetMetadata(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Gets the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <returns>The metadata object.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.GetMetadata``1(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Gets the metadata.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+            <returns>The typed metadata object.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEntityMetadataExtensions.RemoveMetadata(Labradoratory.Fetch.IEntityMetadata,System.String)">
+            <summary>
+            Removes the metadata.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="key">The key.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IEnumerableExtensions">
+            <summary>
+            Methods to make working with <see cref="T:System.Collections.Generic.IEnumerable`1"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IEnumerableExtensions.EmptyIfNull``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns an empty enumerable if the <paramref name="target"/> enumerable is null.
+            </summary>
+            <typeparam name="T">The type contained in the enumerable.</typeparam>
+            <param name="target">The target.</param>
+            <returns>An empty enumerable if the target is null; Otherwise, returns the <paramref name="target"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions">
+            <summary>
+            Methods to make working with <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetch(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the dependencies for the Fetch library.
+            </summary>
+            <param name="serviceCollection">The serice collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchAddingProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> adding processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchAddedProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> added processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchUpdatingProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> updating processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchUpdatedProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> updated processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchDeletingProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> deleting processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.IServiceCollectionExtensions.AddFetchDeletedProcessor``2(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds the <typeparamref name="TEntity"/> deleted processor, as transient.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <typeparam name="TProcessor">The type of the processor.</typeparam>
+            <param name="serviceCollection">The service collection.</param>
+            <returns>The <paramref name="serviceCollection"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Extensions.StringExtensions">
+            <summary>
+            Methods to make working with a string a little easier.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Extensions.StringExtensions.ToCamelCase(System.String)">
+            <summary>
+            Converts a string to camelCase.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The string in camelCase.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.IAsyncQueryResolver`1">
+            <summary>
+            Defines the members to be used for asynchronously resolving a query.
+            </summary>
+            <typeparam name="T">The type of object that results from the query.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.AnyAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously determines whether a sequence contains any elements.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.AnyAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously determines whether any element of a sequence satisfies a condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.CountAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the number of elements in a sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the number of elements in a sequence that satisfy a condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.FirstAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.FirstAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence that satisfies a specified condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.FirstOrDefaultAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence, or a default value if the sequence contains no elements.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the first element of a sequence that satisfies a specified condition or a default value if no such element is found.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.SingleAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.SingleAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.SingleOrDefaultAsync(System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence, or a default value if the sequence is empty; 
+            this method throws an exception if there is more than one element in the sequence.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.SingleOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously returns the only element of a sequence that satisfies a specified condition or a default value if no such element exists; 
+            this method throws an exception if more than one element satisfies the condition.
+            </summary>
+            <param name="predicate">A function to test each element for a condition.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.IAsyncQueryResolver`1.ToListAsync(System.Threading.CancellationToken)">
+            <summary>
+            Creates a <see cref="T:System.Collections.Generic.List`1"/> from an <see cref="T:System.Linq.IQueryable`1"/> by enumerating it asynchronously.
+            </summary>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains a <see cref="T:System.Collections.Generic.List`1"/> that contains elements from the input sequence.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.IEntityMetadata">
+            <summary>
+            Members associate metadata with an entity.
+            </summary>
+        </member>
+        <member name="P:Labradoratory.Fetch.IEntityMetadata.Metadata">
+            <summary>
+            Gets the metadata.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.ISupportsAsyncQueryResolution`1">
+            <summary>
+            Defines members that a object that supports async query resolution should implement.
+            </summary>
+            <typeparam name="T">The type of the query to resolve asynchronously.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.ISupportsAsyncQueryResolution`1.GetAsyncQueryResolver">
+            <summary>
+            Gets as asynchronous query resolver working on the full set of data.
+            </summary>
+            <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.ISupportsAsyncQueryResolution`1.GetAsyncQueryResolver``1(System.Func{System.Linq.IQueryable{`0},System.Linq.IQueryable{``0}})">
+            <summary>
+            Gets as asynchronous query resolver that supports additional querying.
+            </summary>
+            <typeparam name="TResult">The type of the result of the query.</typeparam>
+            <param name="query">A root query to use for additional querying.</param>
+            <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="TResult"/>.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1">
+            <summary>
+            A base implementation of a <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that contains <see cref="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity"/> data.
+            </summary>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity">
+            <summary>
+            Gets the entity that was added.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage">
+            <summary>
+            Represents a piece of data that is to be processed.
+            </summary>
+            <seealso cref="T:System.Collections.Generic.Dictionary`2" />
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.DataPackages.DataPackage.Previous">
+            <summary>
+            Gets the previous <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that caused this <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/>
+            to enter the processing pipeline.
+            </summary>
+            <remarks>
+            <para>
+            Because processing can cause additional changes, it may be necessary to track the
+            <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that resulted in this one.  This can be useful in some
+            scenarios, such as: processing loops, hierarchical data exchange, etc.
+            </para>
+            <para>This property will be <c>null</c> for the first package in a chain.</para>
+            <para>See <see cref="T:Labradoratory.Fetch.Processors.ProcessorPipeline"/> for more info.</para>
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.DataPackage.GetValue``1(System.String)">
+            <summary>
+            Gets the value from the base dictionary for a specified property.
+            </summary>
+            <typeparam name="T">The type of the value to get.</typeparam>
+            <param name="property">
+            [Optional] The property to get the value for.
+            Has the <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> which is used if not specified.
+            </param>
+            <returns>The value for the specified property.</returns>
+            <exception cref="T:System.ArgumentNullException">property</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">property</exception>
+            <remarks>
+            <para>
+            The <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> class inherits from <see cref="T:System.Collections.Generic.Dictionary`2"/>
+            so that undefined values can be stored in a package for use by other processors.
+            </para>
+            <para>
+            Constant properties of a specialized instance of <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> should use the 
+            GetValue/SetValue members to store values in the base dictionary.
+            </para>
+            </remarks>
+            <example>
+            public class MyDataPackage : DataPackage
+            {
+                public string MyValue
+                {
+                    get => GetValue{string}();
+                    set => SetValue(value);
+                }
+            } 
+            </example>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.DataPackage.SetValue``1(``0,System.String)">
+            <summary>
+            Sets the value for a specified property.
+            </summary>
+            <typeparam name="T">The type of the value being set.</typeparam>
+            <param name="value">The value.</param>
+            <param name="property">
+            [Optional] The name of the property to set the value for.
+            Has the <see cref="T:System.Runtime.CompilerServices.CallerMemberNameAttribute"/> which is used if not specified.
+            </param>
+            <exception cref="T:System.ArgumentNullException">property</exception>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was added.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityAddedPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1">
+            <summary>
+            The data related to adding a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityAddingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being added.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was deleted.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity was deleted.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1">
+            <summary>
+            The data related to deleting a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityDeletingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being deleted.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1">
+            <summary>
+            The data related a <typeparamref name="TEntity"/> that was updated.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1.#ctor(`0,Labradoratory.Fetch.ChangeTracking.ChangeSet)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity that was updated.</param>
+            <param name="changes">The changes that were made.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatedPackage`1.Changes">
+            <summary>
+            Gets the changes that were made to the entity.
+            </summary>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage`1">
+            <summary>
+            The data related to updating a <typeparamref name="TEntity"/>.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.EntityUpdatingPackage`1"/> class.
+            </summary>
+            <param name="entity">The entity being updated.</param>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.IProcessor`1">
+            <summary>
+            Defines the members a data processor should implement.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.IProcessor`1.Stage">
+            <summary>
+            Gets the priority with which the processor should execute.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.IProcessor`1.ProcessAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> asynchronously.
+            </summary>
+            <param name="package">The package to be processed.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.IProcessorProvider">
+            <summary>
+            Defines the members that a provider of processors should implement.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.IProcessorProvider.GetProcessors``1">
+            <summary>
+            Gets the all of the processors for the specified <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> type.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> to get processors for.</typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.ProcessorPipeline">
+            <summary>
+            The <see cref="T:Labradoratory.Fetch.Processors.ProcessorPipeline"/> is used to manage processing of <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> objects.
+            </summary>
+            <remarks>
+            
+            </remarks>
+        </member>
+        <member name="F:Labradoratory.Fetch.Processors.ProcessorPipeline.ProcessorKey">
+            <summary>
+            The key for accessing the current processor for a package.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.ProcessorPipeline.#ctor(Labradoratory.Fetch.Processors.IProcessorProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.ProcessorPipeline"/> class.
+            </summary>
+            <param name="processorProvider">The processor provider which is used to discover processors.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.ProcessorPipeline.ProcessorProvider">
+            <summary>
+            Gets the provider of <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> processors.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.ProcessorPipeline.ProcessAsync``1(``0,System.Threading.CancellationToken)">
+            <summary>
+            Processes the provided <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/>.
+            </summary>
+            <typeparam name="T">The type of the <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> to process.</typeparam>
+            <param name="package">The package to process.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.Stages.IStage">
+            <summary>
+            Defines that members that an object representing a stage in the processor pipeline should implement.
+            </summary>
+            <seealso cref="T:System.IComparable" />
+        </member>
+        <member name="T:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage">
+            <summary>
+            An implementation of <see cref="T:Labradoratory.Fetch.Processors.Stages.IStage"/> that uses simple <see cref="T:System.UInt32"/> values to determine execution.
+            </summary>
+            <remarks>Higher values are executed first.</remarks>
+            <seealso cref="T:Labradoratory.Fetch.Processors.Stages.IStage" />
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage"/> class.
+            </summary>
+            <param name="priority">The priority.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.Priority">
+            <summary>
+            Gets the priority of execution.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.CompareTo(Labradoratory.Fetch.Processors.Stages.IStage)">
+            <inheritdoc />
+        </member>
+        <member name="T:Labradoratory.Fetch.Repository`1">
+            <summary>
+            The base implementation of an repository used to access data.  
+            </summary>
+            <remarks>
+            <para>All data accessors derive from this class.</para>
+            <para>
+            The base implementation provides get, add, update and delete actions and 
+            pushes the modification actions into the processing pipeline.
+            </para>
+            </remarks>
+            <typeparam name="TEntity">The type of entity the accessor supports.</typeparam>
+            <seealso cref="T:Labradoratory.Fetch.ISupportsAsyncQueryResolution`1" />
+            <seealso cref="P:Labradoratory.Fetch.Repository`1.ProcessorPipeline"/>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.#ctor(Labradoratory.Fetch.Processors.ProcessorPipeline)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Labradoratory.Fetch.Repository`1"/> class.
+            </summary>
+            <param name="processorPipeline">The processor pipeline.</param>
+        </member>
+        <member name="P:Labradoratory.Fetch.Repository`1.ProcessorPipeline">
+            <summary>
+            Gets the processor pipeline.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.Get">
+            <summary>
+            Gets a queryable collection of entities.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.FindAsync(System.Object[],System.Threading.CancellationToken)">
+            <summary>
+            Finds a specific entity using the identifing <paramref name="keys"/>.
+            </summary>
+            <param name="keys">The keys that uniquely identify the <typeparamref name="TEntity"/>.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task containing the result of the find.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.AddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Adds an entity.
+            </summary>
+            <param name="entity">The entity.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.ExecuteAddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Executes the add.
+            </summary>
+            <param name="entity">To add.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Updates an entity.
+            </summary>
+            <param name="entity">The entity with updates.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.ExecuteUpdateAsync(`0,Labradoratory.Fetch.ChangeTracking.ChangeSet,System.Threading.CancellationToken)">
+            <summary>
+            Executes the update.
+            </summary>
+            <param name="entity">The entity to update.</param>
+            <param name="changes">The changes to the entity.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.DeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Deletes an entity.
+            </summary>
+            <param name="entity">The entity to delete.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.ExecuteDeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Executes the delete.
+            </summary>
+            <param name="entity">The entity to delete.</param>
+            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+            <returns>The task.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.GetAsyncQueryResolver">
+            <summary>
+            Gets as asynchronous query resolver working on the full set of data.
+            </summary>
+            <returns>
+            An instance of an async query resolver that queries <typeparamref name="TEntity" /> and returns results as <typeparamref name="TEntity" />.
+            </returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Repository`1.GetAsyncQueryResolver``1(System.Func{System.Linq.IQueryable{`0},System.Linq.IQueryable{``0}})">
+            <summary>
+            Gets as asynchronous query resolver that supports additional querying.
+            </summary>
+            <typeparam name="TResult">The type of the result of the query.</typeparam>
+            <param name="query">A root query to use for additional querying.</param>
+            <returns>
+            An instance of an async query resolver that queries <typeparamref name="TEntity" /> and returns results as <typeparamref name="TResult" />.
+            </returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>Ed Downs</Authors>
+    <Company>Labradoratory</Company>
+    <Description>Fetch is a base implementation of the repository pattern that includes a processing pipeline for extending the functionality of a respository.  This library also includes entity change tracking to support the pipeline system and base controller implementations to get service implementations off the ground quickly.</Description>
+    <Copyright>2019</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl />
+    <RepositoryUrl>https://github.com/Labradoratory/Fetch</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>repository, aspnetcore</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>.\Labradoratory.Fetch.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="1.1.0-beta.1" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+</Project>
