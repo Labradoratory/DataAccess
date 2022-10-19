@@ -824,21 +824,21 @@
             <typeparam name="TEntity">The type of the entity.</typeparam>
             <seealso cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2" />
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(Labradoratory.Fetch.Repository{`0},Labradoratory.Fetch.Mapping.IMapperProvider,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`1"/> base class.
             </summary>
             <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-            <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="mapperProvider">A provider to get <see cref="T:Labradoratory.Fetch.Mapping.IMapper`2"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TEntity"/>.</param>
             <param name="authorizationService">The authorization service.</param>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`1.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},Labradoratory.Fetch.Mapping.IMapperProvider,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`1"/> base class that allows for
             lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
             </summary>
             <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
-            <param name="mapper">The mapper to use for object conversion.</param>
+            <param name="mapperProvider">A provider to get <see cref="T:Labradoratory.Fetch.Mapping.IMapper`2"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TEntity"/>.</param>
             <param name="authorizationService">The authorization service.</param>
         </member>
         <member name="T:Labradoratory.Fetch.Controllers.RepositoryController`2">
@@ -852,27 +852,21 @@
             This can be the same as the <typeparamref name="TEntity"/> if there is no special view.
             </typeparam>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(Labradoratory.Fetch.Repository{`0},Labradoratory.Fetch.Mapping.IMapperProvider,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class.
             </summary>
             <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-            <param name="mapper">
-            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
-            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-            </param>
+            <param name="mapperProvider">A provider to get <see cref="T:Labradoratory.Fetch.Mapping.IMapper`2"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>.</param>
             <param name="authorizationService">The authorization service.</param>
         </member>
-        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},AutoMapper.IMapper,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
+        <member name="M:Labradoratory.Fetch.Controllers.RepositoryController`2.#ctor(System.Func{System.Threading.Tasks.Task{Labradoratory.Fetch.Repository{`0}}},Labradoratory.Fetch.Mapping.IMapperProvider,Microsoft.AspNetCore.Authorization.IAuthorizationService)">
             <summary>
             Initializes the <see cref="T:Labradoratory.Fetch.Controllers.RepositoryController`2"/> base class that allows for
             lazy creation of the <see cref="T:Labradoratory.Fetch.Repository`1"/> instance.
             </summary>
             <param name="getRepositoryAsync">The function to obtain an instance of <see cref="T:Labradoratory.Fetch.Repository`1"/> asynchronously.</param>
-            <param name="mapper">
-            The mapper to use for object conversion.  The <see cref="T:AutoMapper.IMapper"/> should support transformation
-            between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-            </param>
+            <param name="mapperProvider">A provider to get <see cref="T:Labradoratory.Fetch.Mapping.IMapper`2"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>.</param>
             <param name="authorizationService">The authorization service.</param>
         </member>
         <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.GetRepositoryAsync">
@@ -885,7 +879,7 @@
             Gets the created response options to use when an Add operation completes.
             </summary>
         </member>
-        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.Mapper">
+        <member name="P:Labradoratory.Fetch.Controllers.RepositoryController`2.MapperProvider">
             <summary>
             Gets the object conversion mapper.
             </summary>
@@ -1307,6 +1301,48 @@
             <param name="query">A root query to use for additional querying.</param>
             <returns>An instance of an async query resolver that queries <typeparamref name="T"/> and returns results as <typeparamref name="TResult"/>.</returns>
         </member>
+        <member name="T:Labradoratory.Fetch.Mapping.IMapper`2">
+            <summary>
+            Defines the members for mapping from one object type to another.
+            </summary>
+            <typeparam name="TFrom">The type mapping from.</typeparam>
+            <typeparam name="TTo">The type mapping to.</typeparam>
+        </member>
+        <member name="M:Labradoratory.Fetch.Mapping.IMapper`2.Map(`0)">
+            <summary>
+            Maps the provided <typeparamref name="TFrom"/> to <typeparamref name="TTo"/>.
+            </summary>
+            <param name="from">The object to map from.</param>
+            <returns>An instance of <typeparamref name="TTo"/> as mapped from the provided object.</returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Mapping.IMapper`2.Map(`0,`1)">
+            <summary>
+            Copies the values from the provided <typeparamref name="TFrom"/> to the provided <typeparamref name="TTo"/>.
+            </summary>
+            <param name="from">The object to copy values from.</param>
+            <param name="to">The object to copy values to.</param>
+            <returns>The provided instance of <paramref name="to"/></returns>
+        </member>
+        <member name="M:Labradoratory.Fetch.Mapping.IMapper`2.MapMany(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Maps the provided collection of <typeparamref name="TFrom"/> to a collection of <typeparamref name="TTo"/>.
+            </summary>
+            <param name="from">The objects to map from.</param>
+            <returns>An collection of instances of <typeparamref name="TTo"/> as mapped from the provided objects.</returns>
+        </member>
+        <member name="T:Labradoratory.Fetch.Mapping.IMapperProvider">
+            <summary>
+            Defines the members for creating an instance mapper.
+            </summary>
+        </member>
+        <member name="M:Labradoratory.Fetch.Mapping.IMapperProvider.GetMapper``2">
+            <summary>
+            
+            </summary>
+            <typeparam name="TFrom">The type mapping from.</typeparam>
+            <typeparam name="TTo">The type mapping to.</typeparam>
+            <returns>An instance of a mapper capable of mapping a <typeparamref name="TFrom"/> to a <typeparamref name="TTo"/>.</returns>
+        </member>
         <member name="T:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1">
             <summary>
             A base implementation of a <see cref="T:Labradoratory.Fetch.Processors.DataPackages.DataPackage"/> that contains <see cref="P:Labradoratory.Fetch.Processors.DataPackages.BaseEntityDataPackage`1.Entity"/> data.
@@ -1553,6 +1589,11 @@
             </summary>
             <remarks>Higher values are executed first.</remarks>
             <seealso cref="T:Labradoratory.Fetch.Processors.Stages.IStage" />
+        </member>
+        <member name="F:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.Zero">
+            <summary>
+            A numeric stage with a value of zero.
+            </summary>
         </member>
         <member name="M:Labradoratory.Fetch.Processors.Stages.NumericPriorityStage.#ctor(System.UInt32)">
             <summary>

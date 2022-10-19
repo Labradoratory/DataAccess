@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using AutoMapper;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {

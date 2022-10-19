@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Labradoratory.AspNetCore.JsonPatch.Patchable;
 using Labradoratory.Fetch.Authorization;
+using Labradoratory.Fetch.Mapping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +29,13 @@ namespace Labradoratory.Fetch.Controllers
         /// Initializes the <see cref="RepositoryController{TEntity}"/> base class.
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-        /// <param name="mapper">The mapper to use for object conversion.</param>
+        /// <param name="mapperProvider">A provider to get <see cref="IMapper{TFrom, TTo}"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TEntity"/>.</param>
         /// <param name="authorizationService">The authorization service.</param>
         public RepositoryController(
             Repository<TEntity> repository,
-            IMapper mapper,
+            IMapperProvider mapperProvider,
             IAuthorizationService authorizationService)
-            : base(repository, mapper, authorizationService)
+            : base(repository, mapperProvider, authorizationService)
         { }
 
         /// <summary>
@@ -43,13 +43,13 @@ namespace Labradoratory.Fetch.Controllers
         /// lazy creation of the <see cref="Repository{TEntity}"/> instance.
         /// </summary>
         /// <param name="getRepositoryAsync">The function to obtain an instance of <see cref="Repository{TEntity}"/> asynchronously.</param>
-        /// <param name="mapper">The mapper to use for object conversion.</param>
+        /// <param name="mapperProvider">A provider to get <see cref="IMapper{TFrom, TTo}"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TEntity"/>.</param>
         /// <param name="authorizationService">The authorization service.</param>
         protected RepositoryController(
             Func<Task<Repository<TEntity>>> getRepositoryAsync,
-            IMapper mapper,
+            IMapperProvider mapperProvider,
             IAuthorizationService authorizationService)
-            : base(getRepositoryAsync, mapper, authorizationService)
+            : base(getRepositoryAsync, mapperProvider, authorizationService)
         { }
     }
 
@@ -70,16 +70,13 @@ namespace Labradoratory.Fetch.Controllers
         /// Initializes the <see cref="RepositoryController{TEntity, TView}"/> base class.
         /// </summary>
         /// <param name="repository">The repository to use to manipulate <typeparamref name="TEntity"/> objects.</param>
-        /// <param name="mapper">
-        /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
-        /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-        /// </param>
+        /// <param name="mapperProvider">A provider to get <see cref="IMapper{TFrom, TTo}"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>.</param>
         /// <param name="authorizationService">The authorization service.</param>
         protected RepositoryController(
             Repository<TEntity> repository,
-            IMapper mapper,
+            IMapperProvider mapperProvider,
             IAuthorizationService authorizationService)
-            : this(() => Task.FromResult(repository), mapper, authorizationService)
+            : this(() => Task.FromResult(repository), mapperProvider, authorizationService)
         {}
 
         /// <summary>
@@ -87,18 +84,15 @@ namespace Labradoratory.Fetch.Controllers
         /// lazy creation of the <see cref="Repository{TEntity}"/> instance.
         /// </summary>
         /// <param name="getRepositoryAsync">The function to obtain an instance of <see cref="Repository{TEntity}"/> asynchronously.</param>
-        /// <param name="mapper">
-        /// The mapper to use for object conversion.  The <see cref="IMapper"/> should support transformation
-        /// between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>, both directions.
-        /// </param>
+        /// <param name="mapperProvider">A provider to get <see cref="IMapper{TFrom, TTo}"/> for mapping between <typeparamref name="TEntity"/> and <typeparamref name="TView"/>.</param>
         /// <param name="authorizationService">The authorization service.</param>
         protected RepositoryController(
             Func<Task<Repository<TEntity>>> getRepositoryAsync,
-            IMapper mapper,
+            IMapperProvider mapperProvider,
             IAuthorizationService authorizationService)
         {
             GetRepositoryAsync = getRepositoryAsync;
-            Mapper = mapper;
+            MapperProvider = mapperProvider;
             AuthorizationService = authorizationService;
         }
 
@@ -115,7 +109,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <summary>
         /// Gets the object conversion mapper.
         /// </summary>
-        protected IMapper Mapper { get; }
+        protected IMapperProvider MapperProvider { get; }
 
         /// <summary>
         /// Gets the authorization service.
@@ -140,7 +134,8 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            return Ok(Mapper.Map<IEnumerable<TView>>(entities.GetAuthorized()));
+            var mapper = MapperProvider.GetMapper<TEntity, TView>();
+            return Ok(mapper.MapMany(entities.GetAuthorized()));
         }
 
         /// <summary>
@@ -171,7 +166,8 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            return Ok(Mapper.Map<TView>(entity));
+            var mapper = MapperProvider.GetMapper<TEntity, TView>();
+            return Ok(mapper.Map(entity));
         }
 
         /// <summary>
@@ -187,7 +183,8 @@ namespace Labradoratory.Fetch.Controllers
             if (validationFailedResult != null)
                 return validationFailedResult;
 
-            var entity = Mapper.Map<TEntity>(view);
+            var viewMapper = MapperProvider.GetMapper<TView, TEntity>();
+            var entity = viewMapper.Map(view);
             var authorizationResult = await AuthorizationService.AuthorizeAsync(User, entity, EntityAuthorizationPolicies.Add.ForType<TEntity>());
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
@@ -199,11 +196,17 @@ namespace Labradoratory.Fetch.Controllers
                 case CreatedResponseOptions.Empty:
                     return Ok();
                 case CreatedResponseOptions.Instance:
-                    return Ok(Mapper.Map<TView>(entity));
+                    {
+                        var entityMapper = MapperProvider.GetMapper<TEntity, TView>();
+                        return Ok(entityMapper.Map(entity));
+                    }
                 case CreatedResponseOptions.Location:
                     return CreatedAtAction(nameof(GetByKeys), GetAddCreatedAtRouteParameters(entity), null);
                 case CreatedResponseOptions.Location | CreatedResponseOptions.Instance:
-                    return CreatedAtAction(nameof(GetByKeys), GetAddCreatedAtRouteParameters(entity), Mapper.Map<TView>(entity));
+                    {
+                        var entityMapper = MapperProvider.GetMapper<TEntity, TView>();
+                        return CreatedAtAction(nameof(GetByKeys), GetAddCreatedAtRouteParameters(entity), entityMapper.Map(entity));
+                    }
                 default:
                     throw new InvalidOperationException($"{nameof(AddResponseOptions)} value of {AddResponseOptions} is invalid.");
             }
@@ -230,7 +233,8 @@ namespace Labradoratory.Fetch.Controllers
             if (!authorizationResult.Succeeded)
                 return AuthorizationFailed(authorizationResult);
 
-            var view = Mapper.Map<TView>(entity);
+            var entityMapper = MapperProvider.GetMapper<TEntity, TView>();
+            var view = entityMapper.Map(entity);
 
             // There are no changes, just return the existing view.
             if (patch.Operations.Count == 0)
@@ -247,10 +251,11 @@ namespace Labradoratory.Fetch.Controllers
                 return validationFailedResult;
 
             // Maps the patched view values back to the entity for updating.
-            Mapper.Map(view, entity);
+            var viewMapper = MapperProvider.GetMapper<TView, TEntity>();
+            viewMapper.Map(view, entity);
             
             await repository.UpdateAsync(entity, cancellationToken);
-            return Ok(Mapper.Map<TView>(entity));
+            return Ok(entityMapper.Map(entity));
         }
 
         /// <summary>
