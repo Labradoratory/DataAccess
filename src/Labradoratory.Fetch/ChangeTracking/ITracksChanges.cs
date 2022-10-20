@@ -22,7 +22,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <see cref="GetChangeSet(ChangePath, bool)"/> immdiately after a commit will return an
         /// empty <see cref="ChangeSet"/>.
         /// </param>
-        /// <returns>A <see cref="ChangeSet"/> containing all of the changes.</returns>
+        /// <returns>A <see cref="ChangeSet"/> containing all of the changes</returns>
         ChangeSet GetChangeSet(ChangePath path, bool commit = false);
 
         /// <summary>

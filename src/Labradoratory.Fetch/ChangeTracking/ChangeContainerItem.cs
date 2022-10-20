@@ -13,7 +13,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         private readonly HasValueContainer<T> _oldItem = new HasValueContainer<T>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangeTrackingCollection{T}"/> class.
+        /// Initializes a new instance of the <see cref="ChangeContainerItem{T}"/> class.
         /// </summary>
         /// <param name="item">The value the container represents</param>
         /// <param name="target"></param>
@@ -91,7 +91,7 @@ namespace Labradoratory.Fetch.ChangeTracking
                     changes = ProcessRemove(path);
                     break;
                 default:
-                    return null;
+                    return new ChangeSet();
             }
 
             if (commit)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Labradoratory.Fetch.ChangeTracking
@@ -11,6 +8,7 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// </summary>
     public class ChangeTrackingObject : ITracksChanges
     {
+        // TODO: Reevaluate this.  May be a better way with C# and .NET changes.
         /// <summary>
         /// Creates a new instance of type <typeparamref name="T"/> and
         /// initializes its values with the default for each property.
@@ -27,6 +25,9 @@ namespace Labradoratory.Fetch.ChangeTracking
             var instance = new T();
 
             var method = typeof(ChangeTrackingObject).GetMethod("SetDefaultValue", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (method == null)
+                throw new InvalidOperationException("Could not find method 'SetDefaultValue'.");
+
             foreach(var pi in typeof(T)
                 .GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.CanRead && p.CanWrite))
@@ -67,7 +68,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             if (!HasChanges)
-                return null;
+                return new ChangeSet();
 
             var changes = new ChangeSet();
             foreach(var change in Changes)
@@ -92,13 +93,13 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <param name="propertyName">[Optional] Name of the property to get the value for.  This property uses <see cref="CallerMemberNameAttribute"/> if not specified.</param>
         /// <returns>The value of the specified property.</returns>
         /// <exception cref="ArgumentNullException">propertyName</exception>
-        protected T GetValue<T>([CallerMemberName]string propertyName = null)
+        protected T? GetValue<T>([CallerMemberName]string? propertyName = null)
         {
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));
 
-            if (Changes.TryGetValue(propertyName, out ChangeContainerValue value))
-                return (T)value.CurrentValue;
+            if (Changes.TryGetValue(propertyName, out ChangeContainerValue? value))
+                return (T?)value.CurrentValue;
 
             return default;
         }
@@ -110,7 +111,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <param name="value">The value to set the property to.</param>
         /// <param name="propertyName">[Optional] Name of the property to set.  This property uses <see cref="CallerMemberNameAttribute"/> if not specified.</param>
         /// <exception cref="ArgumentNullException">propertyName</exception>
-        protected void SetValue<T>(T value, [CallerMemberName]string propertyName = null)
+        protected void SetValue<T>(T? value, [CallerMemberName]string? propertyName = null)
         {
             if (propertyName == null)
                 throw new ArgumentNullException(nameof(propertyName));

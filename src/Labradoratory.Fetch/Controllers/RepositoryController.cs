@@ -291,7 +291,7 @@ namespace Labradoratory.Fetch.Controllers
         protected virtual ActionResult AuthorizationFailed(AuthorizationResult authorizationResult)
         {
             // TODO: Should we pass something back?  A message?
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated ?? true)
                 return Forbid();
 
             return Unauthorized();
@@ -303,7 +303,7 @@ namespace Labradoratory.Fetch.Controllers
         /// <param name="view">The view.</param>
         /// <returns>A <see cref="BadRequestObjectResult"/> if the object is invalid; Otherwise, <c>null</c>.</returns>
         /// <remarks>Uses <see cref="Validator"/> to do the validation.</remarks>
-        protected virtual BadRequestObjectResult ValidateView(TView view)
+        protected virtual BadRequestObjectResult? ValidateView(TView view)
         {
             var context = new System.ComponentModel.DataAnnotations.ValidationContext(view, serviceProvider: ControllerContext.HttpContext.RequestServices, items: null);
             var validationResults = new List<ValidationResult>();

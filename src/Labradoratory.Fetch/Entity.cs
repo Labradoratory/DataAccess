@@ -39,7 +39,7 @@ namespace Labradoratory.Fetch
         // is not relavent to the core framework, but may be used
         // by specific implementations.
 
-        private Dictionary<string, object> _metadata;
+        private Dictionary<string, object>? _metadata;
 
         IDictionary<string, object> IEntityMetadata.Metadata => _metadata ??= new Dictionary<string, object>();
 

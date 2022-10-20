@@ -1,4 +1,5 @@
 ﻿using System;
+using Labradoratory.Fetch.Extensions;
 
 namespace Labradoratory.Fetch.ChangeTracking
 {
@@ -8,14 +9,14 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// <typeparam name="T">The type of value in the container.</typeparam>
     public class HasValueContainer<T>
     {
-        private T _value;
+        private T? _value = default;
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         public T Value
         {
-            get => _value;
+            get => _value.ThrowIfNull();
             set
             {
                 _value = value;

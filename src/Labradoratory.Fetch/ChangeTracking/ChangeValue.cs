@@ -15,11 +15,11 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <summary>
         /// Gets or sets the new value (post-change).
         /// </summary>
-        public object NewValue { get; set; }
+        public object? NewValue { get; set; }
 
         /// <summary>
         /// Gets or sets the old value (pre-change).
         /// </summary>
-        public object OldValue { get; set; }
+        public object? OldValue { get; set; }
     }
 }

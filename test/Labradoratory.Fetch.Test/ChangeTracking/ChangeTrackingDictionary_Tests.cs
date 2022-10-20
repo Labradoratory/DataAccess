@@ -498,10 +498,10 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_NullWhenNoChanges()
+        public void GetChangeSet_EmptyWhenNoChanges()
         {
             var subject = new ChangeTrackingDictionary<string, TestItem>();
-            Assert.Null(subject.GetChangeSet(ChangePath.Empty));
+            Assert.Empty(subject.GetChangeSet(ChangePath.Empty));
         }
 
         [Fact]
@@ -528,7 +528,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 
             Assert.False(subject.HasChanges);
             var changes = subject.GetChangeSet(ChangePath.Empty);
-            Assert.Null(changes);
+            Assert.Empty(changes);
             Assert.False(expectedUpdate.HasChanges);
         }
 
@@ -562,7 +562,7 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
 
             subject.Add(key1, item1);
             changes = subject.GetChangeSet(ChangePath.Empty);
-            Assert.Null(changes);
+            Assert.Empty(changes);
         }
 
         [Fact]

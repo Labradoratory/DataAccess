@@ -76,12 +76,12 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_HasChangesFalse_ReturnsNull()
+        public void GetChangeSet_HasChangesFalse_IsEmpty()
         {
             var subject = ChangeTrackingObject.CreateTrackable<TestObject>();
             Assert.False(subject.HasChanges);
             var result = subject.GetChangeSet(ChangePath.Empty);
-            Assert.Null(result);
+            Assert.Empty(result);
         }
 
         [Fact]

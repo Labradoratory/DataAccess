@@ -240,12 +240,12 @@ namespace Labradoratory.Fetch.Test.ChangeTracking
         }
 
         [Fact]
-        public void GetChangeSet_NullWhenNoChanges()
+        public void GetChangeSet_EmptyWhenNoChanges()
         {
             var expectedItem = ChangeTrackingObject.CreateTrackable<TestItem>();
             var subject = new ChangeContainerItem<TestItem>(expectedItem, ChangeTarget.Collection);
             var result = subject.GetChangeSet(ChangePath.Create("path"));
-            Assert.Null(result);
+            Assert.Empty(result);
         }
 
         private class TestItem : ChangeTrackingObject

@@ -9,6 +9,11 @@ namespace Labradoratory.Fetch.ChangeTracking
     public class ChangeSet : Dictionary<ChangePath, List<ChangeValue>>
     {
         /// <summary>
+        /// Gets whether or not the <see cref="ChangeSet"/> is empty.
+        /// </summary>
+        public bool IsEmpty => Count == 0;
+
+        /// <summary>
         /// Creates a <see cref="ChangeSet"/> using the specified path and values.
         /// </summary>
         /// <param name="path">The path.</param>

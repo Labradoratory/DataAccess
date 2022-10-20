@@ -113,6 +113,9 @@ namespace Labradoratory.Fetch.Test.Extensions
             mockServiceCollection
                 .Setup(sc => sc.Add(It.IsAny<ServiceDescriptor>()))
                 .Callback<ServiceDescriptor>(d => descriptors.Add(d));
+            mockServiceCollection
+                .Setup(sc => sc.Count)
+                .Returns(0);
 
             var expectedServiceCollection = mockServiceCollection.Object;
             var result = expectedServiceCollection.AddFetch();

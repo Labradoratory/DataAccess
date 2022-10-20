@@ -37,26 +37,21 @@ namespace Labradoratory.Fetch.ChangeTracking
         }
 
         private ChangePath(IEnumerable<IChangePathPart> parts, IChangePathPart newPart, ChangeTarget target)
-            : this(target)
-        {
-            Parts = parts.Append(newPart).ToList();
-        }
+            : this(target, parts.Append(newPart).ToList())
+        { }
 
         private ChangePath(IEnumerable<IChangePathPart> parts, ChangeTarget target)
-            : this(target)
-        {
-            Parts = parts.ToList();
-        }
+            : this(target, parts.ToList())
+        { }
 
         private ChangePath()
-            : this(ChangeTarget.Object)
-        {
-            Parts = new List<IChangePathPart>(0);
-        }
+            : this(ChangeTarget.Object, new List<IChangePathPart>(0))
+        { }
 
-        private ChangePath(ChangeTarget target)
+        private ChangePath(ChangeTarget target, List<IChangePathPart> parts)
         {
             Target = target;
+            Parts = parts;
         }
 
         /// <summary>
@@ -184,7 +179,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is ChangePath ck))
                 return false;
@@ -245,7 +240,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is ChangePathProperty cpp))
                 return false;
@@ -309,7 +304,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is ChangePathIndex cpi))
                 return false;
@@ -341,7 +336,11 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <param name="key">The key.</param>
         public ChangePathKey(object key)
         {
-            Key = key.ToString();
+            string? keyAsString = key.ToString();
+            if(keyAsString == null)
+                throw new ArgumentException("ToString cannot return null.", "key");
+
+            Key = keyAsString;
         }
 
         /// <summary>
@@ -364,7 +363,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is ChangePathKey cpk))
                 return false;

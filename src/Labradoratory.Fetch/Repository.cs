@@ -84,7 +84,7 @@ namespace Labradoratory.Fetch
         public async Task<ChangeSet> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (!entity.HasChanges)
-                return null;
+                return new ChangeSet();
 
             var updatingPackage = new EntityUpdatingPackage<TEntity>(entity);
             await ProcessorPipeline.ProcessAsync(updatingPackage, cancellationToken);
