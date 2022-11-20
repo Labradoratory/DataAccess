@@ -24,7 +24,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="2.0.0-beta.2" />
+    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="2.0.0-beta.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.0" />
   </ItemGroup>
