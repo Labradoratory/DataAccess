@@ -114,12 +114,13 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
+            var changes = new ChangeSet();
+
             if (!HasChanges)
-                return null;
+                return changes;
 
             path = path.WithTarget(ChangeTarget.Collection);
 
-            var changes = new ChangeSet();
             foreach(var item in Items.Where(i => i.HasChanges))
             {
                 changes.Merge(

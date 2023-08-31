@@ -23,7 +23,8 @@ namespace Labradoratory.Fetch.Processors.DataPackages
         /// <para>This property will be <c>null</c> for the first package in a chain.</para>
         /// <para>See <see cref="ProcessorPipeline"/> for more info.</para>
         /// </remarks>
-        public DataPackage Previous { get; internal set; }
+        public DataPackage? Previous { get; internal set; }
+
 
         /// <summary>
         /// Gets the value from the base dictionary for a specified property.
@@ -56,15 +57,16 @@ namespace Labradoratory.Fetch.Processors.DataPackages
         ///     }
         /// } 
         /// </example>
-        protected T GetValue<T>([CallerMemberName] string property = null)
+        protected T? GetValue<T>([CallerMemberName] string? property = null)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            if (TryGetValue(property, out object value))
+            if (TryGetValue(property, out object? value))
                 return (T)value;
 
-            return default;
+            // NOTE: Would love to be able to return null here, but no such luck yet.
+            return default(T);
         }
 
         /// <summary>
@@ -77,12 +79,15 @@ namespace Labradoratory.Fetch.Processors.DataPackages
         /// Has the <see cref="CallerMemberNameAttribute"/> which is used if not specified.
         /// </param>
         /// <exception cref="ArgumentNullException">property</exception>
-        protected void SetValue<T>(T value, [CallerMemberName] string property = null)
+        protected void SetValue<T>(T? value, [CallerMemberName] string? property = null)
         {
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            this[property] = value;
+            if (value == null)
+                Remove(property);
+            else
+                this[property] = value;
         }
     }
 }

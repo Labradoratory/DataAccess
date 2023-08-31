@@ -13,7 +13,7 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// <typeparam name="TValue">The type of the value.</typeparam>
     /// <seealso cref="IDictionary{TKey, TValue}" />
     /// <seealso cref="ITracksChanges" />
-    public class ChangeTrackingDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ITracksChanges
+    public class ChangeTrackingDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ITracksChanges where TKey : notnull
     {
         /// <summary>
         /// Initializes a new, empty instance of the <see cref="ChangeTrackingDictionary{TKey, TValue}"/> class.
@@ -122,7 +122,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (!Items.TryGetValue(item.Key, out ChangeContainerItem<TValue> container))
+            if (!Items.TryGetValue(item.Key, out ChangeContainerItem<TValue>? container))
                 return false;
 
             if (!Equals(container.Item, item.Value))
@@ -153,7 +153,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public bool Remove(TKey key)
         {
-            if (!Items.TryGetValue(key, out ChangeContainerItem<TValue> container))
+            if (!Items.TryGetValue(key, out ChangeContainerItem<TValue>? container))
                 return false;
 
             Items.Remove(key);
@@ -171,7 +171,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!Items.TryGetValue(item.Key, out ChangeContainerItem<TValue> container))
+            if (!Items.TryGetValue(item.Key, out ChangeContainerItem<TValue>? container))
                 return false;
 
             if (!Equals(container.Item, item.Value))
@@ -192,7 +192,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <inheritdoc />
         public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
         {
-            if (Items.TryGetValue(key, out ChangeContainerItem<TValue> container))
+            if (Items.TryGetValue(key, out ChangeContainerItem<TValue>? container))
             {
                 value = container.Item;
                 return true;
@@ -212,7 +212,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             if (!HasChanges)
-                return null;
+                return new ChangeSet();
 
             var changes = new ChangeSet();
             path = path.WithTarget(ChangeTarget.Dictionary);

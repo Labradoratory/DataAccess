@@ -4,11 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Labradoratory.AspNetCore.JsonPatch.Patchable;
 using Labradoratory.Fetch.Authorization;
 using Labradoratory.Fetch.ChangeTracking;
 using Labradoratory.Fetch.Controllers;
+using Labradoratory.Fetch.Mapping;
 using Labradoratory.Fetch.Processors;
 using Labradoratory.Fetch.Processors.DataPackages;
 using Microsoft.AspNetCore.Authorization;
@@ -45,16 +45,16 @@ namespace Labradoratory.Fetch.Test.Controllers
         public async Task Ctor_PropertiesSet()
         {
             var mockRepostiory = new Mock<Repository<TestEntity>>(MockBehavior.Strict, new ProcessorPipeline(null));
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
             var mockAuthorizationService = new Mock<IAuthorizationService>(MockBehavior.Strict);
             var subject = new TestController(
                 mockRepostiory.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
 
             await subject.CheckPropertiesAsync(
                 mockRepostiory.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
         }
 
@@ -265,15 +265,27 @@ namespace Labradoratory.Fetch.Test.Controllers
                 // We just need to call it so that the verify check later passes.
                 .Callback<Func<IQueryable<TestEntity>, IQueryable<TestEntity>>>(f => f(null));
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<IEnumerable<TestEntity>>(It.IsAny<object>()))
-                .Returns<object>(value => value as IEnumerable<TestEntity>);
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.Is<TestEntity>(v => expectedList.Contains(v))))
+                .Returns<TestEntity>(v => v);
+            mockEntityMapper
+                .Setup(m => m.MapMany(It.IsAny<IEnumerable<TestEntity>>()))
+                .Returns(expectedList);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestEntity>())
+                .Returns(mockEntityMapper.Object);
+            
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestEntity>())
+                .Returns(mockEntityMapper.Object);
 
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Protected()
@@ -587,15 +599,20 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedEntity);
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
-                .Returns<object>(value => value as TestEntity);
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.IsAny<TestEntity>()))
+                .Returns<TestEntity>(v => v);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestEntity>())
+                .Returns(mockEntityMapper.Object);
 
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
@@ -693,17 +710,22 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             var expectedEntity = new TestEntity();
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
-                .Returns<object>(v => v as TestEntity);
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.IsAny<TestEntity>()))
+                .Returns<TestEntity>(v => v);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestEntity>())
+                .Returns(mockEntityMapper.Object);
 
             var mockRepository = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
 
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Protected()
@@ -766,17 +788,22 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             var expectedEntity = new TestEntity();
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.IsAny<object>()))
-                .Returns<object>(v => v as TestEntity);
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.IsAny<TestEntity>()))
+                .Returns<TestEntity>(v => v);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestEntity>())
+                .Returns(mockEntityMapper.Object);
 
             var mockRepository = new Mock<Repository<TestEntity>>(MockBehavior.Loose, new ProcessorPipeline(null));
 
             var mockSubject = new Mock<RepositoryController<TestEntity>>(
                 MockBehavior.Strict,
                 mockRepository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Protected()
@@ -836,16 +863,25 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
-            var expectedViewEntity = new TestEntity();
+            var expectedViewEntity = new TestViewEntity();
             var expectedModelEntity = new TestEntity();
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedViewEntity))))
+            var mockViewMapper = new Mock<IMapper<TestViewEntity, TestEntity>>(MockBehavior.Strict);
+            mockViewMapper
+                .Setup(m => m.Map(It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity))))
                 .Returns(expectedModelEntity);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))))
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestViewEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))))
                 .Returns(expectedViewEntity);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestViewEntity>())
+                .Returns(mockEntityMapper.Object);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestViewEntity, TestEntity>())
+                .Returns(mockViewMapper.Object);
 
             var mockProcessorProvider = new Mock<IProcessorProvider>(MockBehavior.Strict);
             mockProcessorProvider
@@ -861,16 +897,16 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup<Task>("ExecuteAddAsync", ItExpr.IsAny<TestEntity>(), ItExpr.IsAny<CancellationToken>())
                 .Returns(Task.CompletedTask);
 
-            var mockSubject = new Mock<RepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity, TestViewEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
                 .CallBase();
             mockSubject
-                .Setup(c => c.Add(It.IsAny<TestEntity>(), It.IsAny<CancellationToken>()))
+                .Setup(c => c.Add(It.IsAny<TestViewEntity>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject
                 .Protected()
@@ -878,7 +914,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Returns(CreatedResponseOptions.Instance);
             mockSubject
                 .Protected()
-                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestViewEntity>())
                 .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -900,11 +936,11 @@ namespace Labradoratory.Fetch.Test.Controllers
                 It.Is<string>(v => Equals(v, EntityAuthorizationPolicies.Add.ForType<TestEntity>()))),
                 Times.Once());
 
-            mockMapper.Verify(m => m.Map<TestEntity>(
-                It.Is<object>(v => ReferenceEquals(v, expectedViewEntity))),
+            mockViewMapper.Verify(m => m.Map(
+                It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity))),
                 Times.Once());
-            mockMapper.Verify(m => m.Map<TestEntity>(
-                It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))),
+            mockEntityMapper.Verify(m => m.Map(
+                It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))),
                 Times.Once());
 
             mockProcessorProvider.Verify(p => p.GetProcessors<EntityAddingPackage<TestEntity>>(),
@@ -1110,7 +1146,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
-            var expectedViewEntity = ChangeTrackingObject.CreateTrackable<TestEntity>();
+            var expectedViewEntity = ChangeTrackingObject.CreateTrackable<TestViewEntity>();
             expectedViewEntity.Id = 12345;
             expectedViewEntity.StringValue = "The old value";
             var expectedModelEntity = ChangeTrackingObject.CreateTrackable<TestEntity>();
@@ -1118,16 +1154,25 @@ namespace Labradoratory.Fetch.Test.Controllers
             expectedModelEntity.StringValue = expectedViewEntity.StringValue;
             var expectedEncodedKeys = expectedModelEntity.EncodeKeys();
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedViewEntity))))
+            var mockViewMapper = new Mock<IMapper<TestViewEntity, TestEntity>>(MockBehavior.Strict);
+            mockViewMapper
+                .Setup(m => m.Map(It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity))))
                 .Returns(expectedModelEntity);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))))
+            mockViewMapper
+                .Setup(m => m.Map(It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity)), It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))))
+                .Returns(expectedModelEntity);
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestViewEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))))
                 .Returns(expectedViewEntity);
-            mockMapper
-                .Setup(m => m.Map(It.IsAny<TestEntity>(), It.IsAny<TestEntity>()))
-                .Returns(expectedModelEntity);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestViewEntity>())
+                .Returns(mockEntityMapper.Object);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestViewEntity, TestEntity>())
+                .Returns(mockViewMapper.Object);
 
             var mockProcessorProvider = new Mock<IProcessorProvider>(MockBehavior.Strict);
             mockProcessorProvider
@@ -1146,20 +1191,20 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup<Task<ChangeSet>>("ExecuteUpdateAsync", ItExpr.IsAny<TestEntity>(), ItExpr.IsAny<ChangeSet>(), ItExpr.IsAny<CancellationToken>())
                 .Returns<TestEntity, ChangeSet, CancellationToken>((te, cs, ct) => Task.FromResult(cs));
 
-            var mockSubject = new Mock<RepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity, TestViewEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.Ok(It.IsAny<object>()))
                 .CallBase();
             mockSubject
-                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestViewEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject
                 .Protected()
-                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestEntity>())
+                .Setup<BadRequestObjectResult>("ValidateView", ItExpr.IsAny<TestViewEntity>())
                 .Returns<BadRequestObjectResult>(null);
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1170,7 +1215,7 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             var subject = mockSubject.Object;
 
-            var patch = new JsonPatchDocument<TestEntity>();
+            var patch = new JsonPatchDocument<TestViewEntity>();
             var expectedNewValue = "My new value";
             patch.Replace(e => e.StringValue, expectedNewValue);
 
@@ -1192,12 +1237,12 @@ namespace Labradoratory.Fetch.Test.Controllers
                 It.IsAny<CancellationToken>()),
                 Times.Once());
 
-            mockMapper.Verify(m => m.Map<TestEntity>(
-                It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))),
+            mockEntityMapper.Verify(m => m.Map(
+                It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))),
                 Times.Exactly(2));
-            mockMapper.Verify(m => m.Map(
-                It.Is<object>(v => ReferenceEquals(v, expectedViewEntity)),
-                It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))),
+            mockViewMapper.Verify(m => m.Map(
+                It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity)),
+                It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))),
                 Times.Once);
 
             mockProcessorProvider.Verify(p => p.GetProcessors<EntityUpdatingPackage<TestEntity>>(),
@@ -1227,7 +1272,7 @@ namespace Labradoratory.Fetch.Test.Controllers
                 .Setup(fc => fc.Get<IHttpAuthenticationFeature>())
                 .Returns(mockAuthFeature.Object);
 
-            var expectedViewEntity = ChangeTrackingObject.CreateTrackable<TestEntity>();
+            var expectedViewEntity = ChangeTrackingObject.CreateTrackable<TestViewEntity>();
             expectedViewEntity.Id = 12345;
             expectedViewEntity.StringValue = "The old value";
             var expectedModelEntity = ChangeTrackingObject.CreateTrackable<TestEntity>();
@@ -1235,29 +1280,38 @@ namespace Labradoratory.Fetch.Test.Controllers
             expectedModelEntity.StringValue = expectedViewEntity.StringValue;
             var expectedEncodedKeys = expectedModelEntity.EncodeKeys();
 
-            var mockMapper = new Mock<IMapper>(MockBehavior.Strict);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedViewEntity))))
+            var mockViewMapper = new Mock<IMapper<TestViewEntity, TestEntity>>(MockBehavior.Strict);
+            mockViewMapper
+                .Setup(m => m.Map(It.Is<TestViewEntity>(v => ReferenceEquals(v, expectedViewEntity))))
                 .Returns(expectedModelEntity);
-            mockMapper
-                .Setup(m => m.Map<TestEntity>(It.Is<object>(v => ReferenceEquals(v, expectedModelEntity))))
+            var mockEntityMapper = new Mock<IMapper<TestEntity, TestViewEntity>>(MockBehavior.Strict);
+            mockEntityMapper
+                .Setup(m => m.Map(It.Is<TestEntity>(v => ReferenceEquals(v, expectedModelEntity))))
                 .Returns(expectedViewEntity);
+
+            var mockMapperProvider = new Mock<IMapperProvider>(MockBehavior.Strict);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestEntity, TestViewEntity>())
+                .Returns(mockEntityMapper.Object);
+            mockMapperProvider
+                .Setup(m => m.GetMapper<TestViewEntity, TestEntity>())
+                .Returns(mockViewMapper.Object);
 
             var mockRespository = new Mock<Repository<TestEntity>>(MockBehavior.Strict, new ProcessorPipeline(null));
             mockRespository
                 .Setup(r => r.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedModelEntity);
 
-            var mockSubject = new Mock<RepositoryController<TestEntity>>(
+            var mockSubject = new Mock<RepositoryController<TestEntity, TestViewEntity>>(
                 MockBehavior.Strict,
                 mockRespository.Object,
-                mockMapper.Object,
+                mockMapperProvider.Object,
                 mockAuthorizationService.Object);
             mockSubject
                 .Setup(c => c.BadRequest(It.IsAny<object>()))
                 .CallBase();
             mockSubject
-                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestEntity>>(), It.IsAny<CancellationToken>()))
+                .Setup(c => c.Update(It.IsAny<string>(), It.IsAny<JsonPatchDocument<TestViewEntity>>(), It.IsAny<CancellationToken>()))
                 .CallBase();
             mockSubject.Object.ControllerContext =
                 new ControllerContext(
@@ -1268,7 +1322,7 @@ namespace Labradoratory.Fetch.Test.Controllers
 
             var subject = mockSubject.Object;
 
-            var patch = new JsonPatchDocument<TestEntity>();
+            var patch = new JsonPatchDocument<TestViewEntity>();
             patch.Replace(e => e.Id, 54321);
 
             var result = await subject.Update(expectedEncodedKeys, patch, CancellationToken.None);
@@ -1553,23 +1607,26 @@ namespace Labradoratory.Fetch.Test.Controllers
             }
         }
 
+        public class TestViewEntity : TestEntity
+        { }
+
         public class TestController : RepositoryController<TestEntity>
         {
             public TestController(
                 Repository<TestEntity> repository,
-                IMapper mapper,
+                IMapperProvider mapperProvider,
                 IAuthorizationService authorizationService)
-                : base(repository, mapper, authorizationService)
+                : base(repository, mapperProvider, authorizationService)
             {
             }
 
             public async Task CheckPropertiesAsync(
                 Repository<TestEntity> expectedRepository,
-                IMapper expectedMapper,
+                IMapperProvider expectedMapperProvider,
                 IAuthorizationService expectedAuthorizationService)
             {
                 Assert.Same(expectedRepository, await GetRepositoryAsync());
-                Assert.Same(expectedMapper, Mapper);
+                Assert.Same(expectedMapperProvider, MapperProvider);
                 Assert.Same(expectedAuthorizationService, AuthorizationService);
             }
         }

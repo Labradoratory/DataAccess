@@ -7,10 +7,10 @@ namespace Labradoratory.Fetch.ChangeTracking
     /// </summary>
     internal class ChangeContainerValue : ITracksChanges
     {
-        private object currentValue;
+        private object? currentValue;
         private bool oldValueHasValue;
 
-        public ChangeContainerValue(object initialValue)
+        public ChangeContainerValue(object? initialValue)
         {
             currentValue = initialValue;
         }
@@ -18,7 +18,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <summary>
         /// Gets or sets the current value.
         /// </summary>
-        public object CurrentValue
+        public object? CurrentValue
         {
             get => currentValue;
             set
@@ -39,7 +39,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         /// <summary>
         /// Gets the old value, before any changes.
         /// </summary>
-        public object OldValue { get; private set; }
+        public object? OldValue { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance has changes.
@@ -60,7 +60,7 @@ namespace Labradoratory.Fetch.ChangeTracking
         public ChangeSet GetChangeSet(ChangePath path, bool commit = false)
         {
             if (!HasChanges)
-                return null;
+                return new ChangeSet();
 
             if (path == null)
                 throw new ArgumentNullException(nameof(path));
