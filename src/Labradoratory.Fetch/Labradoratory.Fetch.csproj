@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
     <Nullable>enable</Nullable>
@@ -24,9 +24,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="2.0.0-beta.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.0" />
+    <PackageReference Include="Labradoratory.AspNetCore.JsonPatch.Patchable" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.10" />
   </ItemGroup>
 
 </Project>
